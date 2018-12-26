@@ -5,10 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "buildProd": "vue-cli-service build --PROD",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "D": "^1.0.0",
+    "axios": "^0.18.0",
+    "element-ui": "^2.4.11",
+    "md5": "^2.2.1",
+    "mockjs": "^1.0.1-beta3",
     "vue": "^2.5.17",
+    "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
@@ -17,8 +24,14 @@
     "@vue/cli-plugin-unit-mocha": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
     "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-component": "^1.1.1",
     "chai": "^4.1.2",
-    "node-sass": "^4.9.0",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.3.2",
+    "node-sass": "^4.11.0",
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"
   }

@@ -1,0 +1,76 @@
+*
+	box-sizing: border-box
+	outline: 0
+	margin: 0
+	padding: 0
+h1, h2, h3, h4, h5, h6
+	font-size: 100%
+a
+	text-decoration: none
+	&:active,
+	&:focus
+		outline: none
+menu, ol, ul
+	list-style: none
+table
+	border-collapse: collapse
+	border-spacing: 0
+fieldset, img
+	border: 0
+legend
+	display: none
+address, cite, dfn, em, var
+	font-style: normal
+code, kbd, pre, samp
+	font-family: 'courier new', courier, monospace
+input, button, textarea, select
+	font-size: 100%
+abbr[title]
+	border-bottom: 1px dotted
+	cursor: help
+button
+	cursor: pointer
+.clear
+	zoom: 1
+	&:after
+		content: ""
+		display: block
+		clear: both
+
+body
+	position: absolute
+	z-index: 1
+	top: 0
+	right: 0
+	bottom: 0
+	left: 0
+	overflow: auto
+	background-color: #fff
+	font-size: 14px
+	min-height: 800px
+#app
+	// font-family: 'Avenir', Helvetica, Arial, sans-serif
+	font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif
+	-webkit-font-smoothing: antialiased
+	-moz-osx-font-smoothing: grayscale
+	text-align: center
+	color: #2c3e50
+	height: 100%
+
+// 如果不引 better-scroll 可以删掉
+.list-wrapper
+	background-color: transparent !important
+
+
+@keyframes pulse
+	from
+		transform: scale3d(1, 1, 1)
+	50%
+		transform: scale3d(1.05, 1.05, 1.05)
+	to
+		transform: scale3d(1, 1, 1)
+
+.pulse
+	animation-name: pulse
+
+/* 声明变量 */
