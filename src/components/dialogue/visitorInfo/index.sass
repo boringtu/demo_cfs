@@ -21,10 +21,10 @@
 			.el-row
 				margin-bottom: 20px
 			.el-col
-				height: 30px
 				line-height: 30px
 				display: flex
-				justify-content: flex-end
+				&:not(.btn-col)
+					justify-content: flex-end
 			label
 				display: block
 				padding-right: 16px
@@ -36,9 +36,49 @@
 				width: 125px
 				margin-right: 30px
 				flex-shrink: 0
+			.el-textarea
+				width: 360px
+				margin-right: 30px
+				flex-shrink: 0
+			.el-button
+				line-height: 34px
+				padding: 0 34px
+				margin-left: 78px
 			/deep/
 				input
 					height: 30px
 					line-height: 30px
 					padding: 0 10px
 					color: #333
+				textarea
+					resize: none
+					height: 80px
+					line-height: 16px
+					padding: 6px 10px
+					color: #333
+		.more-box
+			border-top: 1px solid #ebebeb
+			h3
+				font-size: 18px
+				line-height: 18px
+				padding: 20px 0
+				color: #333
+			ul
+				li
+					margin-top: 20px
+					font-size: 14px
+					line-height: 14px
+					display: flex
+					label
+						color: #999
+						display: block
+						width: 80px
+						padding-right: 20px
+						text-align: right
+					a
+						color: #0381ff
+						text-decoration: underline
+						&:hover
+							text-decoration: none
+					p
+						color: #333

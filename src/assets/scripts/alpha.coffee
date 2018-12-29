@@ -34,11 +34,12 @@ export default do ->
 		serverTime:
 			get: ->
 				timeDiff = vm.$store.state.timeDiff
+				timeDiff = localStorage.getItem 'timeDiff' if timeDiff is 0
 				now = new Date()
 				unless timeDiff?
 					console.error '无服务器时间数据'
 					return now
-				new Date +now - timeDiff
+				new Date +now - ~~timeDiff
 		# 客服权限
 		permission:
 			get: ->

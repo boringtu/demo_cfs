@@ -58,14 +58,6 @@ axiosInterceptor = axios.interceptors.response.use (res) ->
 			vm.$router.push name: 'login', query: redirect: vm.$route.fullPath
 	Promise.reject err
 
-# 获取服务器时间
-axios
-	.get ALPHA.API_PATH.common.timestamp
-	.then (res) ->
-		# 保存服务器时间差值
-		vm.$store.state.timeDiff = +new Date() - res.data
-	.catch (err) ->
-		console.error '服务器时间获取失败'
 
 router.beforeEach (to, from, next) ->
 	delete vm.$store.state.needLogin if window.vm and not /^\/login/.test to.fullPath
@@ -80,6 +72,9 @@ window.vm = new Vue {
 	store
 	router
 	beforeCreate: ->
+		# 加载服务器时间差值
+		@$store.state.timeDiff = ~~localStorage.getItem 'timeDiff'
+
 		Utils.ajax = Utils.ajax.bind @
 	render: (h) => h App
 }

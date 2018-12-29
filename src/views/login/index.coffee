@@ -1,4 +1,5 @@
 'use strict'
+import axios from 'axios'
 import Utils from '@/assets/scripts/utils'
 export default
 	data: ->
@@ -17,6 +18,15 @@ export default
 		else
 			next()
 	created: ->
+		# 获取服务器时间
+		axios
+			.get ALPHA.API_PATH.common.timestamp
+			.then (res) =>
+				# 保存服务器时间差值
+				@$store.state.timeDiff = timeDiff = +new Date() - res.data
+				localStorage.setItem 'timeDiff', timeDiff
+			.catch (err) ->
+				console.error '服务器时间获取失败'
 
 	mounted: ->
 
