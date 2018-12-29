@@ -1,18 +1,9 @@
 'use strict'
-# import chatHistory from '@/components/chatHistory/chatHistory'
-# import chatFooter from '@/components/chatFooter/chatFooter'
 
 export default
 
-	components: {
-		# chatFooter
-		# chatHistory
-	}
-
-	created: ->
-
-	mounted: ->
-
-	methods:
-		# 向历史消息区推消息（单条）
-		addMsg: (data) -> @$refs.chatHistory.addMsg data
+	computed:
+		# 正在进行中的会话人数
+		chattingCount: -> @$store.state.chattingList.length
+		# 客服 ID
+		adminId: -> ALPHA.adminId

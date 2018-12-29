@@ -1,2 +1,28 @@
 .root
-	color: red
+	border: 1px solid #ebebeb
+	border-radius: 5px
+	&:before
+		height: 0
+	/deep/
+		.cell
+			text-align: center
+			white-space: nowrap
+		thead
+			color: #333
+			th
+				background-color: #f5f5f5
+				padding: 0
+			.cell
+				font-size: 16px
+				line-height: 42px
+		tbody
+			tr
+				cursor: pointer
+				color: #999
+				&:hover
+					color: #333
+			td
+				padding: 0
+			.cell
+				font-size: 14px
+				line-height: 36px

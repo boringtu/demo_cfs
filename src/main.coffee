@@ -1,3 +1,4 @@
+import '@babel/polyfill'
 import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
@@ -22,7 +23,6 @@ Vue.use Button
 
 Vue.prototype.$notify = Notification
 
-
 Vue.config.productionTip = false
 
 # 响应拦截器
@@ -34,7 +34,6 @@ axiosInterceptor = axios.interceptors.response.use (res) ->
 	else
 		data
 , (err) ->
-	console.error err
 	data = err.data
 	code = data.state
 	switch code
@@ -44,12 +43,15 @@ axiosInterceptor = axios.interceptors.response.use (res) ->
 			console.error '签名错误'
 		when ALPHA.RES_CODE.OVERTIME
 			console.error '请求参数的时间戳不在服务器系统时间 5 分钟范围内'
-		when ALPHA.RES_CODE.TOKEN_OVERTIME, ALPHA.RES_CODE.LOGIN_ERROR
-			if code is ALPHA.RES_CODE.TOKEN_OVERTIME
+		when ALPHA.RES_CODE.TOKEN_OVERTIME, ALPHA.RES_CODE.LOGIN_ERROR, ALPHA.RES_CODE.LOGIN_OVERTIME
+			# vm.$store.state.needLogin 这个参数只在路由改变的时候 delete
+			break if vm.$store.state.needLogin
+			vm.$store.state.needLogin = 1
+			if code in [ALPHA.RES_CODE.TOKEN_OVERTIME, ALPHA.RES_CODE.LOGIN_OVERTIME]
 				vm.$notify
 					type: 'warning'
 					title: '警告'
-					message: '登录超时，请重新登录'
+					message: '登录过期，请重新登录'
 			# 清空缓存的 token、客服 ID，和 权限数据
 			ALPHA.clearPermission()
 			# 跳转到登录页面
@@ -65,11 +67,14 @@ axios
 	.catch (err) ->
 		console.error '服务器时间获取失败'
 
-router
-	.afterEach (to, from) ->
-		# 页面滚动到顶部
-		document.documentElement.scrollTop = 0
-		document.body.scrollTop = 0
+router.beforeEach (to, from, next) ->
+	delete vm.$store.state.needLogin if window.vm and not /^\/login/.test to.fullPath
+	next()
+
+router.afterEach (to, from) ->
+	# 页面滚动到顶部
+	document.documentElement.scrollTop = 0
+	document.body.scrollTop = 0
 
 window.vm = new Vue {
 	store

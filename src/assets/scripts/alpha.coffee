@@ -87,6 +87,8 @@ export default do ->
 				SIGN_ERROR: 802
 				# 未登录
 				LOGIN_ERROR: 803
+				# 登录过期
+				LOGIN_OVERTIME: 804
 				# 接口拒绝 debug 模式
 				REFUSE_DEBUG: 900
 				# 请求参数的时间戳不在服务器系统时间 5 分钟范围内
@@ -108,6 +110,10 @@ export default do ->
 				dialogue:
 					# 访客列表
 					visitor: '/api/dialog/user/init'
+					# 正在进行的对话列表
+					chatting: '/api/dialog/user/chatting'
+					# 已经关闭的对话列表
+					closed: '/api/dialog/user/closed'
 				## 内部协同 ##
 				## 配置管理 ##
 	

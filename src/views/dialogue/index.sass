@@ -1,2 +1,8 @@
 .root
-	color: red
+	.row
+		display: flex
+		justify-content: space-between
+		~ .row
+			margin-top: 20px
+		> *
+			height: 600px

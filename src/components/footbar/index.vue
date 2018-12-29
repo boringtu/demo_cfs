@@ -3,15 +3,15 @@
 .footbar
 	div
 		label 当前访问量：
-		span 3
+		span {{ chattingCount }}
 	div
 		label 今日访问量：
-		span 10
+		span 不知道
 	div
 		label 客服ID：
-		span 123456
+		span {{ adminId }}
 	div
 		label 角色：
-		span 管理员
+		span 谁知道呢
 </template>
 <script lang="coffee" src="./index.coffee"></script>

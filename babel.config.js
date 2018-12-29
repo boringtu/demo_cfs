@@ -3,6 +3,9 @@ module.exports = {
 		'@vue/app',
 		'@babel/env',
 		'@vue/babel-preset-app',
+		{
+			useBuiltIns: 'entry'
+		},
 		[
 			'es2015', { modules: false }
 		]

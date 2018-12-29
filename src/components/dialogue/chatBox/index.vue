@@ -1,11 +1,7 @@
 <style lang="sass" src="./index.sass" scoped></style>
 <template lang="pug">
 .root
-	.row
-		CPNT-visitorList
-	.row
-		CPNT-dialogList
-		CPNT-chatBox
-		CPNT-visitorInfo
+	.tab-box
+	.content-box
 </template>
 <script lang="coffee" src="./index.coffee"></script>

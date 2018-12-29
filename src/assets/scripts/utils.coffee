@@ -48,7 +48,11 @@ class Utils
 		unless /^(\/api)?\/(common|user)/.test api
 			key = 'data'
 			key = 'params' if not config.type or new RegExp(/GET|DELETE/, 'i').test config.type
-			config[key] = Utils.sign config[key]
+
+			timestamp = +ALPHA.serverTime
+			config.headers =
+				timestamp: timestamp
+				sign: Utils.sign timestamp, config[key]
 		# 发起请求
 		promise = @axios api, config
 		# 注册 abort 函数到当前 Promise 实例上
@@ -59,20 +63,14 @@ class Utils
 	###
 	 # 签名
 	###
-	@sign: (data = {}) ->
-		data = {
-			...data
-			token: ALPHA.token
-			timestamp: +ALPHA.serverTime
-		}
+	@sign: (timestamp, data = {}) ->
+		token = ALPHA.token
 		tmp = []
 		str = ''
 		tmp.push key for own key, val of data
 		tmp.sort()
 		str += key + data[key] for key in tmp
-		sign = "#{ ALPHA.SALT }#{ str }".md5().toLocaleUpperCase()
-		data.sign = sign
-		data
+		"#{ ALPHA.SALT }#{ str }#{ token }#{ timestamp }".md5().toLocaleUpperCase()
 
 #****************************** 内部函数 ******************************#
 

@@ -24,7 +24,7 @@ export default new Router
 		redirect: '/dialogue'
 		component: ComponentFrame
 		children: [
-			path: '/dialogue'
+			path: '/dialogue/:id?'
 			name: 'dialogue'
 			component: (resolve) => require ["./views/dialogue"], resolve
 		]

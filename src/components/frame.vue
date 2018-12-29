@@ -3,7 +3,8 @@ div
 	sidebar
 	.container
 		headbar
-		router-view.main
+		keep-alive
+			router-view.main
 		footbar
 </template>
 

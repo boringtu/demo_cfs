@@ -35,19 +35,17 @@ export default
 			.then (res) =>
 				@login_loading = false
 				data = res.data
+				data.permission = data.menus
 				## 缓存数据
-				# token
-				localStorage.setItem 'token', data.token
-				# 客服 ID
-				localStorage.setItem 'adminId', data.adminId
-				# 客服权限
-				localStorage.setItem 'permission', data.menus
-				@$store.state.permission = data.menus
+				arr = ['token', 'adminId', 'permission']
+				for key in arr
+					localStorage.setItem key, data[key]
+					@$store.state[key] = data[key]
 
 				# 提示登录成功
 				vm.$notify
 					type: 'success'
-					title: '成功'
+					title: '登录成功'
 					message: '您已成功登录'
 
 				# 登录成功跳转页面
@@ -57,3 +55,8 @@ export default
 
 			.catch (err) =>
 				console.log err
+				# 提示登录失败
+				vm.$notify
+					type: 'error'
+					title: '登录失败'
+					message: err.msg

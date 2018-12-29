@@ -1,0 +1,128 @@
+.root
+	flex-shrink: 0
+	width: 430px
+	border: 1px solid #ebebeb
+	border-radius: 5px
+	display: flex
+	flex-direction: column
+	justify-content: space-between
+	.tab-box
+		height: 60px
+		line-height: 60px
+		background-color: #f5f5f5
+		position: relative
+		.underline
+			position: absolute
+			z-index: 1
+			bottom: 14px
+			left: 87px
+			width: 40px
+			height: 2px
+			border-radius: 1px
+			background-color: #333
+			transition: left .15s linear 0s
+		ul
+			display: flex
+			justify-content: space-between
+			li
+				width: 50%
+				font-size: 18px
+				a
+					color: #888
+					padding: 2px
+				&:hover,
+				&.active
+					a
+						color: #333
+	.content-box
+		flex-grow: 1
+		position: relative
+		> div
+			height: 100%
+		.no-data
+			position: absolute
+			z-index: 1
+			width: 100%
+			top: 125px
+			display: flex
+			flex-direction: column
+			.icon
+				font-size: 100px
+				color: #e6e6e6
+			p
+				font-size: 16px
+				color: #999
+		p.count-box
+			background-color: #fffaf0
+			border-bottom: 1px solid #e6e6e6
+			height: 30px
+			line-height: 30px
+			font-size: 12px
+			font-weight: 400
+			color: #999
+		ul
+			text-align: left
+			position: absolute
+			z-index: 1
+			width: 100%
+			top: 0
+			bottom: 0
+			overflow: auto
+			&[data-type="0"]
+				top: 30px
+			li
+				position: relative
+				&:hover,
+				&.active
+					background-color: #fafafa
+				a
+					display: flex
+					flex-direction: column
+					justify-content: space-between
+					height: 80px
+					border-top: 1px solid #e6e6e6
+					padding: 18px 65px
+					font-size: 14px
+					line-height: 14px
+					.icon-wrap
+						position: absolute
+						z-index: 1
+						left: 18px
+						top: 23px
+						width: 34px
+						height: 34px
+						background-color: #509df8
+						border-radius: 50%
+						color: #fff
+						display: flex
+						justify-content: center
+						align-items: center
+					h3
+						color: #1c1a1d
+					p
+						color: #999
+						white-space: nowrap
+						overflow: hidden
+					.time
+						color: #666
+						position: absolute
+						z-index: 1
+						top: 20px
+						right: 20px
+					.count
+						display: block
+						position: absolute
+						z-index: 1
+						right: 20px
+						bottom: 15px
+						line-height: 18px
+						padding: 0 7px
+						background-color: #ff4040
+						border-radius: 5px
+						color: #fff
+						font-size: 12px
+						text-align: center
+				&:first-child
+					a
+						border-top: 0
+						
