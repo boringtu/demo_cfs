@@ -46,8 +46,15 @@ export default
 			"99+"
 
 	watch:
-		dialogID: (id) ->
+		chattingList: -> @resetDialogInfo()
+		closedList: -> @resetDialogInfo()
+		dialogID: -> @resetDialogInfo()
+
+	methods:
+		# 重置 dialog info object
+		resetDialogInfo: ->
 			info = null
+			id = @dialogID
 			if id
 				# 先从正在进行中的会话列表中匹配
 				for item in @chattingList when item.id is id
@@ -59,8 +66,8 @@ export default
 						info = item
 						break
 			@$store.state.dialogInfo = info
+			console.log id, info
 
-	methods:
 		# 获取正在进行中的会话列表
 		fetchChattingData: ->
 			Utils.ajax ALPHA.API_PATH.dialogue.chatting
