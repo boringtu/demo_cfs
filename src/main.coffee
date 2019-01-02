@@ -36,26 +36,35 @@ axiosInterceptor = axios.interceptors.response.use (res) ->
 , (err) ->
 	data = err.data
 	code = data.state
+	gotoLogin = (msg) ->
+		# vm.$store.state.needLogin 这个参数只在路由改变的时候 delete
+		vm.$store.state.needLogin = 1
+		vm.$notify
+			type: 'warning'
+			title: '警告'
+			message: msg
+		# 清空缓存的 token、客服 ID，和 权限数据
+		ALPHA.clearPermission()
+		# 跳转到登录页面
+		vm.$router.push name: 'login', query: redirect: vm.$route.fullPath
 	switch code
 		when ALPHA.RES_CODE.MISSING_PARAMETERS
 			console.error '缺少参数'
 		when ALPHA.RES_CODE.SIGN_ERROR
 			console.error '签名错误'
+			unless ALPHA.token
+				break if vm.$store.state.needLogin
+				console.warn 'token 丢失'
+				gotoLogin '请您登录'
 		when ALPHA.RES_CODE.OVERTIME
 			console.error '请求参数的时间戳不在服务器系统时间 5 分钟范围内'
 		when ALPHA.RES_CODE.TOKEN_OVERTIME, ALPHA.RES_CODE.LOGIN_ERROR, ALPHA.RES_CODE.LOGIN_OVERTIME
-			# vm.$store.state.needLogin 这个参数只在路由改变的时候 delete
 			break if vm.$store.state.needLogin
-			vm.$store.state.needLogin = 1
 			if code in [ALPHA.RES_CODE.TOKEN_OVERTIME, ALPHA.RES_CODE.LOGIN_OVERTIME]
-				vm.$notify
-					type: 'warning'
-					title: '警告'
-					message: '登录过期，请重新登录'
-			# 清空缓存的 token、客服 ID，和 权限数据
-			ALPHA.clearPermission()
-			# 跳转到登录页面
-			vm.$router.push name: 'login', query: redirect: vm.$route.fullPath
+				msg = '登录过期，请重新登录'
+			else
+				msg = '请您登录'
+			gotoLogin msg
 	Promise.reject err
 
 
