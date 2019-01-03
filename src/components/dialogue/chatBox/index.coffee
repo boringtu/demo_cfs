@@ -4,6 +4,8 @@ import scrollBox from '@/components/scroll/scroll'
 
 export default
 	data: ->
+		# 输入的文本
+		input: ''
 		# 是否准备输入（输入框是否获取焦点）
 		isReadyToType: 0
 		# 历史消息区目前消息条数
@@ -97,6 +99,7 @@ export default
 				# @$emit 'sendSuccessful', data
 
 		# Event: 显示/隐藏 表情选择面板
+		# TODO 疑似废弃
 		eventToggleFacePanel: (event) ->
 
 		# Event: 选择并发送图片

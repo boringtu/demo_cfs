@@ -5,6 +5,7 @@ import store from './store'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import { EmojiPickerPlugin } from 'vue-emoji-picker'
 import ALPHA from '@/assets/scripts/alpha'
 import Utils from '@/assets/scripts/utils'
 # import ElementUI from 'element-ui'
@@ -16,6 +17,7 @@ import {
 
 import 'element-ui/lib/theme-chalk/index.css'
 
+Vue.use EmojiPickerPlugin
 Vue.use VueAxios, axios
 # Vue.use ElementUI
 Vue.use Input

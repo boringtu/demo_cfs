@@ -23,10 +23,20 @@
 							.msg-content {{ item.message || '&nbsp;' }}
 						.msg-arrow
 		.chat-toolbar
-			button(@click="eventToggleFacePanel")
-				i.icon.icon-face
+			//- button(@click="eventToggleFacePanel")
+			//- 	i.icon.icon-face
+			emoji-picker(@emoji="insert" class="emoji-picker")
+				button(slot="emoji-invoker" slot-scope="{ events }" v-on="events")
+					i.icon.icon-face
+				div(class="face-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert, display }")
+					span.box-bubble
+						i
+					div.face-box
+						div
+							span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insert(emoji)") {{ emoji }}
 			button(@click="eventChoosePicture")
 				i.icon.icon-picture
+
 		.chat-sendbox
 			textarea(
 				ref="input"
@@ -35,6 +45,7 @@
 				@click.enter="eventSend"
 				@focus="isReadyToType = 1"
 				@blur="isReadyToType = 0"
+				v-model="input"
 			)
 			textarea.input-copy(readonly ref="inputCopy")
 			el-button.send(type="primary" ref="btnSend" :disabled="0" @click="eventSend") 发送

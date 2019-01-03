@@ -97,17 +97,66 @@
 				// （新消息）分隔线
 				.separator
 		.chat-toolbar
+			position: relative
 			height: 36px
 			background-color: #fafafa
 			display: flex
 			align-items: center
+			.emoji-picker
+				> button
+					border: 0
+					background-color: transparent
+					color: #666
+					margin-left: 20px
+					.icon
+						font-size: 20px
+					&:hover
+						color: #333
+				.box-bubble
+					position: absolute
+					z-index: 2
+					bottom: 28px
+					left: 17px
+					width: 26px
+					height: 14px
+					overflow: hidden
+					display: block
+					i
+						display: block
+						width: 18px
+						height: 18px
+						background-color: #fff
+						transform: rotate(45deg)
+						position: relative
+						bottom: 8px
+						left: 4px
+						box-shadow: 0 0 10px 0 rgba(102, 102, 102, .6)
+				.face-box
+					position: absolute
+					z-index: 1
+					bottom: 40px
+					width: 100%
+					padding: 0 10px
+					font-size: 24px
+					> div
+						display: flex
+						flex-wrap: wrap
+						border-radius: 5px
+						background-color: #fff
+						overflow: auto
+						height: 200px
+						box-shadow: 0 0 10px 0 rgba(102, 102, 102, .6)
+						padding: 4px 0 4px 9px
+					.face
+						cursor: pointer
+						padding: 0 3px
+			// TODO
 			> button
+				margin-left: 14px
 				border: 0
 				background-color: transparent
 				color: #666
 				margin-left: 20px
-				~ button
-					margin-left: 14px
 				.icon
 					font-size: 20px
 				&:hover
