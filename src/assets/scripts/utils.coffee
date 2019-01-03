@@ -47,7 +47,7 @@ class Utils
 		# 签名（非 /common 或 /user 开头的接口
 		unless /^(\/api)?\/(common|user)/.test api
 			key = 'data'
-			key = 'params' if not config.type or new RegExp(/GET|DELETE/, 'i').test config.type
+			key = 'params' if not config.method or new RegExp(/GET|DELETE/, 'i').test config.method
 
 			timestamp = +ALPHA.serverTime
 			config.headers =

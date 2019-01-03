@@ -11,7 +11,7 @@
 					el-input(:disabled="nodata" v-model="info.name")
 				el-col(:span="12")
 					label 地区
-					el-input(:disabled="nodata" v-model="info.conversation.address")
+					el-input(:disabled="nodata" v-model="info.address")
 			el-row
 				el-col(:span="12")
 					label 性别
@@ -23,15 +23,16 @@
 			el-row
 				el-col(:span="12")
 					label 对话主题
-					el-input(:disabled="nodata" v-model="xxx")
+					el-select(:disabled="nodata" v-model="info.topicId")
+						el-option(v-for="item in topicOptions" :key="item.id" :value="item.id" :label="item.name")
 				el-col(:span="12")
 					label 对话级别
-					el-select(:disabled="nodata" v-model="info.conversation.level")
+					el-select(:disabled="nodata" v-model="info.level")
 						el-option(v-for="item in levelOptions" :key="item.value" :value="item.value" :label="item.label")
 			el-row
 				el-col(:span="24")
 					label 备注
-					el-input(:disabled="nodata" type="textarea" placeholder="请输入备注" v-model="info.conversation.remark")
+					el-input(:disabled="nodata" type="textarea" placeholder="请输入备注" v-model="info.remark")
 			el-row
 				el-col(:span="24" class="btn-col")
 					el-button(type="primary" @click="saveInfo") 保存
@@ -40,15 +41,15 @@
 			ul
 				li
 					label 来源
-					a(:href="info.conversation.origin") {{ info.conversation.origin }}
+					a(:href="info.origin") {{ info.origin }}
 				li
 					label 操作系统
-					p {{ info.conversation.os }}
+					p {{ info.os }}
 				li
 					label 浏览器
-					p {{ info.conversation.browser }}
+					p {{ info.browser }}
 				li
 					label IP地址
-					p {{ info.conversation.ip }}
+					p {{ info.ip }}
 </template>
 <script lang="coffee" src="./index.coffee"></script>

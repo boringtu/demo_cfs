@@ -4,28 +4,27 @@
 	.logo
 		i.icon.icon-logo
 	ul.level_1
-		router-link(tag="li" exact-active-class="active" to="/dialogue")
+		router-link(
+			tag="li"
+			active-class="active"
+			v-for="m1 in permissions"
+			:key="m1.id"
+			:to="m1.id | getUrl"
+		)
 			a
-				i.item-icon.icon.icon-dialogue
-				span 访客对话
-		router-link(tag="li" exact-active-class="active" to="/synergy")
-			a
-				i.item-icon.icon.icon-synergy
-				span 内部协同
-		router-link(tag="li" exact-active-class="active" to="/configuration")
-			a
-				i.item-icon.icon.icon-configuration
-				span 配置管理
-			ul.level_2
-				router-link(tag="li" exact-active-class="active" to="/configuration/setStyle")
+				i.item-icon.icon(:class="m1.id | getIcon")
+				span {{ m1.name }}
+				span.expand-icon.icon(:class="{'icon-plus': expandedId !== m1.id, 'icon-minus': expandedId === m1.id}" v-if="m1.children")
+			ul.level_2(v-if="m1.children")
+				router-link(
+					tag="li"
+					exact-active-class="active"
+					v-for="m2 in m1.children"
+					:key="m2.id"
+					:to="m2.id | getUrl"
+				)
 					a
-						span 设置样式
-				router-link(tag="li" exact-active-class="active" to="/configuration/setStyle")
-					a
-						span 设置样式
-				router-link(tag="li" exact-active-class="active" to="/configuration/setStyle")
-					a
-						span 设置样式
+						span {{ m2.name }}
 
 </template>
 <script lang="coffee" src="./index.coffee"></script>

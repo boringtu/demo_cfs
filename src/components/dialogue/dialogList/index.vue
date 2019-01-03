@@ -16,7 +16,7 @@
 			p.count-box(v-if="chattingList.length").
 				进行中的会话：{{ chattingList.length }}
 			ul(data-type="0" v-if="chattingList.length")
-				router-link(tag="li" :to="item.id | createChatRoute" v-for="item in chattingList" :key="item.id" :class="{active: dialogID === item.id}")
+				router-link(tag="li" replace :to="item.id | createChatRoute" v-for="item in chattingList" :key="item.id" :class="{active: dialogID === item.id}")
 					a
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")
@@ -29,7 +29,7 @@
 				i.icon.icon-empty-box
 				p 暂无对话记录
 			ul(data-type="1" v-if="closedList.length")
-				router-link(tag="li" :to="item.id | createChatRoute" v-for="item in closedList" :key="item.id" :class="{active: dialogID === item.id}")
+				router-link(tag="li" replace :to="item.id | createChatRoute" v-for="item in closedList" :key="item.id" :class="{active: dialogID === item.id}")
 					a
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")

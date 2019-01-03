@@ -11,12 +11,37 @@ export default do ->
 	window.ALPHA =
 		# 清空缓存的 token、客服 ID，和 权限数据
 		clearPermission: ->
-			arr = ['token', 'adminId', 'permission']
+			arr = ['token', 'admin', 'permissions', 'topics']
 			for key in arr
 				localStorage.removeItem key
 				vm.$store.state[key] = null
 
 	Object.defineProperties window.ALPHA,
+		# 枚举: 接口地址
+		API_PATH:
+			writable: off, value:
+				## 通用 ##
+				common:
+					# 登录
+					login: '/api/common/login'
+					# 登出
+					logout: '/api/common/logout'
+					# 服务器时间戳
+					timestamp: '/api/common/timestamp'
+				## 访客对话 ##
+				dialogue:
+					# 访客列表
+					visitor: '/api/dialog/user/init'
+					# 正在进行的对话列表
+					chatting: '/api/dialog/user/chatting'
+					# 已经关闭的对话列表
+					closed: '/api/dialog/user/closed'
+					# 用户信息
+					user: '/api/dialog/user'
+					# 今日访问量
+					todayVisits: '/dialog/todayVisits'
+				## 内部协同 ##
+				## 配置管理 ##
 		PROTOCOL:
 			writable: off, value: location.protocol
 		HOSTNAME:
@@ -41,17 +66,17 @@ export default do ->
 					return now
 				new Date +now - ~~timeDiff
 		# 客服权限
-		permission:
+		permissions:
 			get: ->
-				permission = vm.$store.state.permission
+				permissions = vm.$store.state.permissions
 				# 如 vuex 中已有数据，直接返回
-				return permission if permission
+				return permissions if permissions
 				# 如 vuex 中没有，则去 localStorage 中取
-				permission = localStorage.getItem 'permission'
+				permissions = localStorage.getItem 'permissions'
 				# 如 localStorage 中也没有，返回 null
-				return null unless permission
+				return null unless permissions
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
-				vm.$store.state.permission = permission.toJSON()
+				vm.$store.state.permissions = permissions.toJSON()
 		# token
 		token:
 			get: ->
@@ -64,18 +89,30 @@ export default do ->
 				return null unless token
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
 				vm.$store.state.token = token
-		# 客服 ID
-		adminId:
+		# 客服信息
+		admin:
 			get: ->
-				id = vm.$store.state.adminId
+				admin = vm.$store.state.admin
 				# 如 vuex 中已有数据，直接返回
-				return id if id
+				return admin if admin
 				# 如 vuex 中没有，则去 localStorage 中取
-				id = localStorage.getItem 'adminId'
+				admin = localStorage.getItem 'admin'
 				# 如 localStorage 中也没有，返回 null
-				return null unless id
+				return null unless admin
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
-				vm.$store.state.adminId = +id
+				vm.$store.state.admin = admin.toJSON()
+		# 对话主题列表
+		topics:
+			get: ->
+				topics = vm.$store.state.topics
+				# 如 vuex 中已有数据，直接返回
+				return topics if topics
+				# 如 vuex 中没有，则去 localStorage 中取
+				topics = localStorage.getItem 'topics'
+				# 如 localStorage 中也没有，返回 null
+				return null unless topics
+				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
+				vm.$store.state.topics = topics.toJSON()
 
 		# 枚举: 接口响应 code（非 HTTP Status Code）
 		RES_CODE:
@@ -96,26 +133,16 @@ export default do ->
 				OVERTIME: 901
 				# 无当前请求权限（一般都是跨过前端去请求指定接口才出现的情况
 				NO_PERMISSION: 902
-		# 枚举: 接口地址
-		API_PATH:
+		# 菜单地址字典
+		menuUrlMap:
 			writable: off, value:
-				## 通用 ##
-				common:
-					# 登录
-					login: '/api/common/login'
-					# 登出
-					logout: '/api/common/logout'
-					# 服务器时间戳
-					timestamp: '/api/common/timestamp'
-				## 访客对话 ##
-				dialogue:
-					# 访客列表
-					visitor: '/api/dialog/user/init'
-					# 正在进行的对话列表
-					chatting: '/api/dialog/user/chatting'
-					# 已经关闭的对话列表
-					closed: '/api/dialog/user/closed'
-				## 内部协同 ##
-				## 配置管理 ##
+				# 访客对话
+				1: icon: 'icon-dialogue', url: '/dialogue'
+				# 内部协同
+				2: icon: 'icon-synergy', url: '/synergy'
+				# 配置管理
+				3: icon: 'icon-configuration', url: '/configuration'
+				# 配置管理 - 设置样式
+				20: url: '/configuration/setStyle'
 	
 	window.ALPHA

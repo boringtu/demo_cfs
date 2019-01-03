@@ -6,12 +6,12 @@
 		span {{ chattingCount }}
 	div
 		label 今日访问量：
-		span 不知道
+		span {{ todayCount }}
 	div
 		label 客服ID：
-		span {{ adminId }}
+		span {{ admin.adminId }}
 	div
 		label 角色：
-		span 谁知道呢
+		span {{ admin.roleName }}
 </template>
 <script lang="coffee" src="./index.coffee"></script>

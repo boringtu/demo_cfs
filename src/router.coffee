@@ -26,6 +26,21 @@ export default new Router
 		children: [
 			path: '/dialogue/:id?'
 			name: 'dialogue'
-			component: (resolve) => require ["./views/dialogue"], resolve
+			component: (resolve) => require ["@/views/dialogue"], resolve
+		,
+			# 内部协同
+			path: '/synergy'
+			name: 'synergy'
+			component: (resolve) => require ["@/views/synergy"], resolve
+		,
+			# 配置管理
+			path: '/configuration'
+			name: 'configuration'
+			redirect: '/configuration/setStyle'
+		,
+			# 配置管理 - 设置样式
+			path: '/configuration/setStyle'
+			name: 'setStyle'
+			component: (resolve) => require ["@/views/configuration/setStyle"], resolve
 		]
 	]

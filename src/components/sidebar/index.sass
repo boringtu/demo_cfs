@@ -39,19 +39,34 @@
 					z-index: 1
 					top: 0
 					left: 24px
+				.expand-icon
+					position: absolute
+					z-index: 1
+					top: 0
+					right: 20px
+					font-size: 12px
+					transform: scale(.8)
+			ul.level_2
+				display: none
+				opacity: 0
+				transition: opacity .1s linear 0s
+				> li
+					height: 60px
+					line-height: 60px
+					> a
+						display: block
+						padding-left: 50px
+						font-size: 16px
+						border-left: 4px solid transparent
+						transition: border-color .2s linear 0s
+						background-color: #262e40
+					&:hover > a,
+					&.active > a
+						border-color: #329dff
 			&:hover,
 			&.active
-				background-color: #1f2533
-	ul.level_2
-		> li
-			height: 60px
-			line-height: 60px
-			> a
-				display: block
-				padding-left: 50px
-				font-size: 16px
-				border-left: 4px solid transparent
-				transition: border-color .2s linear 0s
-			&:hover > a,
-			&.active > a
-				border-color: #329dff
+				> a
+					background-color: #1f2533
+				ul.level_2
+					display: block
+					opacity: 1

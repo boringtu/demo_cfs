@@ -45,11 +45,17 @@ export default
 			.then (res) =>
 				@login_loading = false
 				data = res.data
-				data.permission = data.menus
+				data.permissions = []
+				## 处理权限数据
+				@processPermission data.permissions, data.menus
+				console.log '权限数据: ', data.permissions
 				## 缓存数据
-				arr = ['token', 'adminId', 'permission']
+				arr = ['token', 'admin', 'permissions', 'topics']
 				for key in arr
-					localStorage.setItem key, data[key]
+					if typeof data[key] is 'string'
+						localStorage.setItem key, data[key]
+					else
+						localStorage.setItem key, JSON.stringify data[key]
 					@$store.state[key] = data[key]
 
 				# 提示登录成功
@@ -70,3 +76,26 @@ export default
 					type: 'error'
 					title: '登录失败'
 					message: err.msg
+
+		# 处理权限数据
+		processPermission: (target, data) ->
+			return unless data.length
+			id = 0
+			id = target.id unless target instanceof Array
+			i = 0
+			while i < data.length
+				item = data[i]
+				if item.pid is 0
+					target.push item
+					data.remove item
+					continue
+				else if item.pid is id
+					key = 'children'
+					key = 'permissions' unless item.type
+					target[key] ?= []
+					target[key].push item
+					data.remove item
+					continue
+				i++
+			target = target.children if id
+			@processPermission item, data for item in target if target
