@@ -3,7 +3,147 @@
 	margin: 0 20px
 	border: 1px solid #ebebeb
 	border-radius: 5px
+	text-align: left
+	display: flex
+	flex-direction: column
+	justify-content: space-between
 	.tab-box
 		height: 60px
 		line-height: 60px
-		background-color: #f5f5f5
+		background-color: #f0f2f5
+		position: relative
+		h2
+			padding-left: 30px
+			font-size: 18px
+			color: #333
+		.dialogCount
+			line-height: 22px
+			position: absolute
+			z-index: 1
+			top: 19px
+			left: 114px
+			background-color: #fff
+			border-radius: 5px
+			padding: 0 8px
+			font-size: 12px
+		.close
+			border: 0
+			background-color: transparent
+			position: absolute
+			z-index: 1
+			top: 20px
+			right: 24px
+			.icon
+				font-size: 20px
+				color: #666
+			&:hover
+				.icon
+					color: #333
+	.content-box
+		flex-grow: 1
+		position: relative
+		display: flex
+		flex-direction: column
+		justify-content: space-between
+		.chat-history
+			flex-grow: 1
+			position: relative
+			overflow: auto
+			border-bottom: 1px solid #ebebeb
+			.chat-content
+				padding: 0 15px
+				font-size: 13px
+				text-align: left
+				// 气泡
+				.msg-bubble
+					box-shadow: 0 0 10px 0 rgba(102, 102, 102, .06)
+					border-radius: 6px
+					padding: 8px
+				// 气泡箭头
+				.msg-arrow
+					position: absolute
+					top: 20px
+					display: inline-block
+					width: 0
+					height: 0
+					border-top: 5px solid transparent
+					border-bottom: 5px solid transparent
+				// 消息
+				.msg-content
+				// 对方的消息
+				.msg-opposite
+					position: relative
+					padding: 9px 30px 9px 0
+					.msg-bubble
+						float: left
+						background-color: #fff
+						color: #333
+					.msg-arrow
+						left: -5px
+						border-right: 6px solid #fff
+				// 自己消息
+				.msg-self
+					position: relative
+					padding: 9px 0 9px 3px
+					.msg-bubble
+						float: right
+						background-color: #1ca2fe
+						color: #fff
+					.msg-arrow
+						right: -5px
+						border-left: 6px solid #1ca2fe
+				// 时间
+				.msg-time
+				// （新消息）分隔线
+				.separator
+		.chat-toolbar
+			height: 36px
+			background-color: #fafafa
+			display: flex
+			align-items: center
+			> button
+				border: 0
+				background-color: transparent
+				color: #666
+				margin-left: 20px
+				~ button
+					margin-left: 14px
+				.icon
+					font-size: 20px
+				&:hover
+					color: #333
+		.chat-sendbox
+			background-color: #fafafa
+			height: 175px
+			position: relative
+			textarea
+				display: block
+				border: 0
+				resize: none
+				width: 100%
+				outline: 0
+				font-size: 16px
+				line-height: 1.5
+				height: 100%
+				padding: 0 5px 0 15px
+				background-color: #fbfbfb
+				overflow-y: visible
+				&.input-copy
+					position: absolute
+					left: -9999px
+					visibility: hidden
+			button.send
+				position: absolute
+				z-index: 1
+				right: 24px
+				bottom: 20px
+				line-height: 34px
+				padding: 0 34px
+				font-size: 16px
+		&.active
+			.chat-toolbar
+				background-color: #fff
+			.chat-sendbox
+				background-color: #fff
+				textarea
+					background-color: #fff

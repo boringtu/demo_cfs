@@ -14,7 +14,8 @@
 			a
 				i.item-icon.icon(:class="m1.id | getIcon")
 				span {{ m1.name }}
-				span.expand-icon.icon(:class="{'icon-plus': expandedId !== m1.id, 'icon-minus': expandedId === m1.id}" v-if="m1.children")
+				span.expand-icon.icon.icon-plus(v-if="m1.children")
+				span.expand-icon.icon.icon-minus(v-if="m1.children")
 			ul.level_2(v-if="m1.children")
 				router-link(
 					tag="li"
