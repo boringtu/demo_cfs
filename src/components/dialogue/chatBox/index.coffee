@@ -5,7 +5,7 @@ import scrollBox from '@/components/scroll/scroll'
 export default
 	data: ->
 		# 输入的文本
-		input: ''
+		inputText: ''
 		# 是否准备输入（输入框是否获取焦点）
 		isReadyToType: 0
 		# 历史消息区目前消息条数
@@ -14,6 +14,7 @@ export default
 		newMsgCount: 0
 		# 历史消息记录列表（新数据在后）
 		list: []
+		hasChosenFace: 1
 
 	components: {
 		scrollBox
@@ -22,6 +23,15 @@ export default
 	computed:
 		# 对话信息
 		dialogInfo: -> @$store.state.dialogInfo
+
+	filters:
+		# 历史消息区 消息 class 类名（区分己方/对方）
+		sideClass: (side) ->
+			switch side
+				when 2
+					'msg-self'
+				when 1
+					'msg-opposite'
 
 	watch:
 		dialogInfo: (info) ->
@@ -38,40 +48,14 @@ export default
 		fetchHistory: ->
 			return
 
-		# Event: input 消息输入框
-		# TODO 未完成
-		eventInputSendBox: (event) ->
-			input = @$refs.input
-			btn = @$refs.btnSend
-			val = input.value
-			# 禁用/启用 发送按钮
-			if val.replace /^\s*|\s*$/g, ''
-				btn.removeAttribute 'disabled'
-			else
-				btn.setAttribute 'disabled', 'disabled'
-			return
-			e = event.target
-			t = @$refs.inputCopy
-			a = 48
-			t.value = e.value
-			console.log 't.scrollHeight: ', t.scrollHeight
-			console.log 'inputNormalHeight: ', @inputNormalHeight
-			console.log 'maxHeight: ', @maxHeight
-			if t.scrollHeight > @inputNormalHeight and t.scrollHeight < @maxHeight
-				e.scrollTop = 0
-				a = t.scrollHeight
-			else if t.scrollHeight >= @maxHeight
-				a = @maxHeight
-				e.scrollTop = t.scrollHeight
-			else
-				a = @inputNormalHeight
-				e.style.height = a + 'px'
-			# setTimeout ->
-				# globalChatHandle.scrollHistoryToBottom(!0)
-			# , 250
+		# Event: 消息发送事件
+		eventSend: ->
+			console.log event.keyCode
 
-		# Event: 消息发送点击事件
-		eventSend: (event) ->
+
+
+
+			return
 			input = @$refs.input
 			btn = @$refs.btnSend
 			val = input.value
@@ -104,3 +88,15 @@ export default
 
 		# Event: 选择并发送图片
 		eventChoosePicture: (event) ->
+			# 弹出提示
+			vm.$notify
+				type: 'info'
+				title: '开发中'
+				message: '正在开发中，敬请期待'
+
+		# 向输入框插入表情，并关闭表情选择面板
+		insertEmoji: (emoji) ->
+			# 向输入框追加表情
+			@input += emoji
+			# 关闭表情选择面板
+			@$refs.emojiPicker.hide()

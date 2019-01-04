@@ -18,22 +18,40 @@
 					v-for="(item, i) in list"
 					:key="item.id"
 				)
-					.clear(:class="getSideClass(item.sendType)")
+					.clear(:class="item.sendType | sideClass")
 						.msg-bubble
 							.msg-content {{ item.message || '&nbsp;' }}
 						.msg-arrow
+
+
+
+
+
+				.chat-content
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+				.chat-content
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+
+
+
+
+
 		.chat-toolbar
-			//- button(@click="eventToggleFacePanel")
-			//- 	i.icon.icon-face
-			emoji-picker(@emoji="insert" class="emoji-picker")
+			emoji-picker(@emoji="insert" class="emoji-picker" ref="emojiPicker")
 				button(slot="emoji-invoker" slot-scope="{ events }" v-on="events")
 					i.icon.icon-face
-				div(class="face-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert, display }")
+				div(class="face-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert }")
 					span.box-bubble
 						i
 					div.face-box
 						div
-							span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insert(emoji)") {{ emoji }}
+							span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insertEmoji(emoji)") {{ emoji }}
 			button(@click="eventChoosePicture")
 				i.icon.icon-picture
 
@@ -41,13 +59,12 @@
 			textarea(
 				ref="input"
 				placeholder="请输入消息..."
-				@input="eventInputSendBox"
-				@click.enter="eventSend"
+				@keyup.enter.exact="eventSend"
 				@focus="isReadyToType = 1"
 				@blur="isReadyToType = 0"
-				v-model="input"
+				v-model="inputText"
+				spellcheck="false"
 			)
-			textarea.input-copy(readonly ref="inputCopy")
-			el-button.send(type="primary" ref="btnSend" :disabled="0" @click="eventSend") 发送
+			el-button.send(type="primary" :disabled="!inputText.trim()" @click="eventSend") 发送
 </template>
 <script lang="coffee" src="./index.coffee"></script>

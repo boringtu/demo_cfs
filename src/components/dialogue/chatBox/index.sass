@@ -58,7 +58,7 @@
 				.msg-bubble
 					box-shadow: 0 0 10px 0 rgba(102, 102, 102, .06)
 					border-radius: 6px
-					padding: 8px
+					padding: 8px 12px
 				// 气泡箭头
 				.msg-arrow
 					position: absolute
@@ -87,11 +87,11 @@
 					padding: 9px 0 9px 3px
 					.msg-bubble
 						float: right
-						background-color: #1ca2fe
+						background-color: #329dff
 						color: #fff
 					.msg-arrow
 						right: -5px
-						border-left: 6px solid #1ca2fe
+						border-left: 6px solid #329dff
 				// 时间
 				.msg-time
 				// （新消息）分隔线
@@ -116,9 +116,9 @@
 					position: absolute
 					z-index: 2
 					bottom: 28px
-					left: 17px
-					width: 26px
-					height: 14px
+					left: 12px
+					width: 36px
+					height: 16px
 					overflow: hidden
 					display: block
 					i
@@ -128,28 +128,37 @@
 						background-color: #fff
 						transform: rotate(45deg)
 						position: relative
-						bottom: 8px
-						left: 4px
+						bottom: 9px
+						left: 9px
 						box-shadow: 0 0 10px 0 rgba(102, 102, 102, .6)
 				.face-box
 					position: absolute
 					z-index: 1
-					bottom: 40px
+					bottom: 44px
 					width: 100%
 					padding: 0 10px
-					font-size: 24px
 					> div
 						display: flex
 						flex-wrap: wrap
 						border-radius: 5px
 						background-color: #fff
-						overflow: auto
+						overflow: scroll
 						height: 200px
 						box-shadow: 0 0 10px 0 rgba(102, 102, 102, .6)
-						padding: 4px 0 4px 9px
+						padding: 4px
 					.face
 						cursor: pointer
-						padding: 0 3px
+						padding: 2px
+						font-size: 24px
+						width: 29px
+						height: 29px
+						line-height: 29px
+						display: block
+						border-radius: 5px
+						background-color: #fff
+						transition: background-color .1s linear 0s
+						&:hover
+							background-color: #ccc
 			// TODO
 			> button
 				margin-left: 14px
@@ -171,16 +180,12 @@
 				resize: none
 				width: 100%
 				outline: 0
-				font-size: 16px
-				line-height: 1.5
+				font-size: 14px
+				line-height: 16px
 				height: 100%
 				padding: 0 5px 0 15px
 				background-color: #fbfbfb
 				overflow-y: visible
-				&.input-copy
-					position: absolute
-					left: -9999px
-					visibility: hidden
 			button.send
 				position: absolute
 				z-index: 1
