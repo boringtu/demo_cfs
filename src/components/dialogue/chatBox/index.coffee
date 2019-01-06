@@ -42,6 +42,8 @@ export default
 		@fetchHistory()
 
 	mounted: ->
+		window.x = @
+		window.u = Utils
 
 	methods:
 		# 获取数据
@@ -97,6 +99,24 @@ export default
 		# 向输入框插入表情，并关闭表情选择面板
 		insertEmoji: (emoji) ->
 			# 向输入框追加表情
-			@input += emoji
+			@inputText += emoji
 			# 关闭表情选择面板
 			@$refs.emojiPicker.hide()
+			# 使输入框获取焦点
+			@$nextTick =>
+				@$refs.input.focus()
+
+		# 初始化/重置 历史消息列表的位置（到最底部）
+		resetHistoryPosition: ->
+			wrap = @$refs.historyWrap
+			box = wrap.children[0]
+			# window height
+			wh = wrap.offsetHeight
+			# content height
+			ch = box.offsetHeight
+			return if wh > ch
+			wrap.scrollTop = ch - wh
+
+		# Event: 历史消息列表滚动事件
+		eventScrollHistory: ->
+			console.log @$refs.historyWrap

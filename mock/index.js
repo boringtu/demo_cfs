@@ -4,10 +4,10 @@ var path = require('path');
 var Mock = require('mockjs');
 
 var apiMap = {
-	// '/api/dialog/user/init': 'visitorList.json',
-	// '/api/common/timestamp': 'timestamp.json',
-	// '/api/dialog/user/chatting': 'chatList.json',
-	// '/api/dialog/user/closed': 'chatList.json'
+	'/api/dialog/user/init': 'visitorList.json',
+	'/api/common/timestamp': 'timestamp.json',
+	'/api/dialog/user/chatting': 'chatList.json',
+	'/api/dialog/user/closed': 'chatList.json'
 };
 
 var getJsonFile = function(filePath) {

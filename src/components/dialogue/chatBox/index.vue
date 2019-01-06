@@ -7,36 +7,236 @@
 		button.close(v-if="dialogInfo")
 			i.icon.icon-close
 	.content-box(:class="{active: isReadyToType}")
-		.chat-history
-			scrollBox(
-				ref="scrollBox"
-				mouseWheel=true
-				:pullDownRefresh=false
-				@pullingDown="onPullingDown"
-			)
+		.chat-history(
+			ref="historyWrap"
+			@scroll="eventScrollHistory"
+		)
+			div
 				.chat-content(
 					v-for="(item, i) in list"
 					:key="item.id"
 				)
+					.time-line 19:02:43
 					.clear(:class="item.sendType | sideClass")
 						.msg-bubble
 							.msg-content {{ item.message || '&nbsp;' }}
 						.msg-arrow
+							i
 
 
 
 
 
 				.chat-content
+					.time-line 19:02:43
 					.clear(class="msg-opposite")
 						.msg-bubble
 							.msg-content 额额额
 						.msg-arrow
+							i
 				.chat-content
+					.time-line 19:02:43
 					.clear(class="msg-self")
 						.msg-bubble
 							.msg-content 啊啊啊
 						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-opposite")
+						.msg-bubble
+							.msg-content 额额额
+						.msg-arrow
+							i
+				.chat-content
+					.time-line 19:02:43
+					.clear(class="msg-self")
+						.msg-bubble
+							.msg-content 啊啊啊
+						.msg-arrow
+							i
 
 
 
@@ -47,7 +247,7 @@
 				button(slot="emoji-invoker" slot-scope="{ events }" v-on="events")
 					i.icon.icon-face
 				div(class="face-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert }")
-					span.box-bubble
+					span.box-arrow
 						i
 					div.face-box
 						div

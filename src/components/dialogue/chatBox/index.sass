@@ -51,23 +51,40 @@
 			overflow: auto
 			border-bottom: 1px solid #ebebeb
 			.chat-content
-				padding: 0 15px
+				padding: 0 18px
 				font-size: 13px
 				text-align: left
+				&:first-child
+					padding-top: 12px
+				.time-line
+					text-align: center
+					font-size: 14px
+					line-height: 14px
+					color: #666
 				// 气泡
 				.msg-bubble
-					box-shadow: 0 0 10px 0 rgba(102, 102, 102, .06)
-					border-radius: 6px
+					// box-shadow: 0 0 10px 0 rgba(102, 102, 102, .06)
+					border: 1px solid
+					border-radius: 5px
 					padding: 8px 12px
+					position: relative
 				// 气泡箭头
 				.msg-arrow
 					position: absolute
-					top: 20px
-					display: inline-block
-					width: 0
-					height: 0
-					border-top: 5px solid transparent
-					border-bottom: 5px solid transparent
+					z-index: 1
+					top: 18px
+					width: 9px
+					height: 18px
+					overflow: hidden
+					display: block
+					i
+						display: block
+						width: 12px
+						height: 12px
+						transform: rotate(45deg)
+						position: relative
+						bottom: -3px
+						border: 1px solid
 				// 消息
 				.msg-content
 				// 对方的消息
@@ -77,26 +94,35 @@
 					.msg-bubble
 						float: left
 						background-color: #fff
-						color: #333
+						border-color: #e2e2e2
+						color: #666
 					.msg-arrow
-						left: -5px
-						border-right: 6px solid #fff
+						left: -8px
+						i
+							background-color: #fff
+							border-color: #e2e2e2
+							left: 4px
 				// 自己消息
 				.msg-self
 					position: relative
 					padding: 9px 0 9px 3px
 					.msg-bubble
 						float: right
+						border-color: #329dff
 						background-color: #329dff
 						color: #fff
 					.msg-arrow
-						right: -5px
-						border-left: 6px solid #329dff
+						right: -8px
+						i
+							background-color: #329dff
+							border-color: #329dff
+							right: 7px
 				// 时间
 				.msg-time
 				// （新消息）分隔线
 				.separator
 		.chat-toolbar
+			flex-shrink: 0
 			position: relative
 			height: 36px
 			background-color: #fafafa
@@ -112,7 +138,7 @@
 						font-size: 20px
 					&:hover
 						color: #333
-				.box-bubble
+				.box-arrow
 					position: absolute
 					z-index: 2
 					bottom: 28px
