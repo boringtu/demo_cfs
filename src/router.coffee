@@ -33,6 +33,10 @@ export default new Router
 			name: 'synergy'
 			component: (resolve) => require ["@/views/synergy"], resolve
 		,
+			path: '/synergy/addService'
+			name: 'addService'
+			component:(resolve) => require ["@/views/synergy/addService"],resolve
+		,
 			# 配置管理
 			path: '/configuration'
 			name: 'configuration'
