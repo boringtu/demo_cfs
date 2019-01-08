@@ -8,32 +8,49 @@
 			i.icon.icon-close
 	.content-box(:class="{active: isReadyToType}")
 		.chat-history
-			scrollBox(
-				ref="scrollBox"
-				mouseWheel=true
-				:pullDownRefresh=false
-				@pullingDown="onPullingDown"
+			//- 未读消息提醒（顶部）
+			.unreadCount(data-type="up" v-if="unreadCount")
+				a(href="javascript:;" @click="eventShowUpperUnread") 
+					strong {{ unreadCount | calcUnReadCount }} 条新消息
+				button.icon.icon-close(@click="clearUnread")
+			//- 未读消息提醒（底部）
+			.unreadCount(data-type="down" v-if="newUnreadCount")
+				a(href="javascript:;" @click="eventShowLowerUnread") 
+					strong {{ newUnreadCount | calcUnReadCount }} 条新消息
+				button.icon.icon-close(@click="clearNewUnread")
+			//- 消息滚动窗口
+			.chat-window(
+				ref="chatWindow"
+				@scroll="eventScrollHistory"
 			)
-				.chat-content(
-					v-for="(item, i) in list"
-					:key="item.id"
-				)
-					.clear(:class="getSideClass(item.sendType)")
-						.msg-bubble
-							.msg-content {{ item.message || '&nbsp;' }}
-						.msg-arrow
+				//- 历史消息加载中
+				.loading-history(v-if="isLoadingHistory")
+					i.icon.icon-loading.icon-spin.icon-fast
+				div(ref="chatWrapper")
+					//- 每一条消息
+					.chat-content(
+						v-for="item in list"
+						:key="item.id"
+					)
+						//- 时间线
+						.time-line(v-if="item.hasTimeline") {{ item.timeStamp | timeline }}
+						//- 消息体
+						.clear(:class="item.sendType | sideClass")
+							.msg-bubble
+								.msg-content {{ item.message || '&nbsp;' }}
+							.msg-arrow
+								i
+
 		.chat-toolbar
-			//- button(@click="eventToggleFacePanel")
-			//- 	i.icon.icon-face
-			emoji-picker(@emoji="insert" class="emoji-picker")
+			emoji-picker(@emoji="insert" class="emoji-picker" ref="emojiPicker")
 				button(slot="emoji-invoker" slot-scope="{ events }" v-on="events")
 					i.icon.icon-face
-				div(class="face-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert, display }")
-					span.box-bubble
+				div(class="face-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert }")
+					span.box-arrow
 						i
 					div.face-box
 						div
-							span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insert(emoji)") {{ emoji }}
+							span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insertEmoji(emoji)") {{ emoji }}
 			button(@click="eventChoosePicture")
 				i.icon.icon-picture
 
@@ -41,13 +58,12 @@
 			textarea(
 				ref="input"
 				placeholder="请输入消息..."
-				@input="eventInputSendBox"
-				@click.enter="eventSend"
+				@keyup.enter.exact="eventSend"
 				@focus="isReadyToType = 1"
 				@blur="isReadyToType = 0"
-				v-model="input"
+				v-model="inputText"
+				spellcheck="false"
 			)
-			textarea.input-copy(readonly ref="inputCopy")
-			el-button.send(type="primary" ref="btnSend" :disabled="0" @click="eventSend") 发送
+			el-button.send(type="primary" :disabled="!inputText.trim()" @click="eventSend") 发送
 </template>
 <script lang="coffee" src="./index.coffee"></script>

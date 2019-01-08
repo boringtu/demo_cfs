@@ -15,14 +15,6 @@ class Utils
 		data
 
 	###
-	 # 获取完整 api 路径
-	###
-	@getApiName: (path) ->
-		# TODO 目前是通过 nginx 转发的方式做的
-		#"#{ ALPHA.PROTOCOL }//#{ ALPHA.API_HOST }#{ path }"
-		"#{ path }"
-
-	###
 	# 判断 url 参数中是否有指定参数
 	###
 	@hasUrlParams: (key) -> this.getUrlParams().hasOwnProperty key
@@ -71,6 +63,14 @@ class Utils
 		tmp.sort()
 		str += key + data[key] for key in tmp
 		"#{ ALPHA.SALT }#{ str }#{ token }#{ timestamp }".md5().toLocaleUpperCase()
+
+	# 计算 element offset top
+	@calcOffsetTop = (element) =>
+		actualTop = 0
+		loop
+			actualTop += element.offsetTop
+			break unless element = element.offsetParent
+		actualTop
 
 #****************************** 内部函数 ******************************#
 
@@ -194,6 +194,35 @@ String::trim = -> @replace /(^\s*)|(\s*$)/g, ''
  # 处理md5库
 ###
 String::md5 = -> md5.apply null, [@].concat [].slice.apply arguments
+
+###
+ # 将 $、<、>、"、'，与 / 转义成 HTML 字符
+ # 用于防 xss 攻击
+###
+String::encodeHTML = (encodeAll) ->
+	return @ unless @
+	encodeHTMLRules =
+		"&": "&#38;"
+		"<": "&#60;"
+		">": "&#62;"
+		'"': '&#34;'
+		"'": '&#39;'
+		"/": '&#47;'
+	unless encodeAll
+		matchHTML = /<\/?\s*(script|iframe)[\s\S]*?>/gi
+		str	= @replace matchHTML, (m) ->
+			switch true
+				when /script/i.test m
+					s	= 'script'
+				when /iframe/i.test m
+					s	= 'iframe'
+				else
+					s	= ''
+			"#{ encodeHTMLRules['<'] }#{ if -1 is m.indexOf '/' then '' else encodeHTMLRules['/'] }#{ s }#{ encodeHTMLRules['>'] }"
+		return str.replace /on[\w]+\s*=/gi, ''
+	else
+		matchHTML = /&(?!#?\w+;)|<|>|"|'|\//g
+		return @replace matchHTML, (m) -> encodeHTMLRules[m] or m
 
 ###
  # Array: 判断当前 array 中是否存在指定元素

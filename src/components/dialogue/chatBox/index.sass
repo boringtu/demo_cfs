@@ -48,55 +48,119 @@
 		.chat-history
 			flex-grow: 1
 			position: relative
-			overflow: auto
 			border-bottom: 1px solid #ebebeb
+			text-align: center
+			.loading-history
+				padding: 10px 0
+				.icon
+					font-size: 16px
+					line-height: 16px
+			.unreadCount
+				position: absolute
+				z-index: 10
+				right: 12px
+				font-size: 14px
+				line-height: 24px
+				color: #7acc96
+				border: 1px solid #7acc96
+				border-radius: 5px
+				padding: 0 8px 0 12px
+				background-color: #fff
+				transition: background-color .1s linear 0s
+				&:hover
+					background-color: #fafafa
+				a
+					color: #7acc96
+				.icon
+					color: #7acc96
+					font-size: 12px
+					border: 0
+					background-color: transparent
+					margin-left: 10px
+				&[data-type="up"]
+					top: 10px
+				&[data-type="down"]
+					bottom: 10px
+		.chat-window
+			overflow: auto
+			position: absolute
+			top: 0
+			right: 0
+			bottom: 0
+			left: 0
 			.chat-content
-				padding: 0 15px
+				padding: 0 18px
 				font-size: 13px
 				text-align: left
+				&:first-child
+					padding-top: 12px
+				.time-line
+					text-align: center
+					font-size: 14px
+					line-height: 14px
+					color: #666
 				// 气泡
 				.msg-bubble
-					box-shadow: 0 0 10px 0 rgba(102, 102, 102, .06)
-					border-radius: 6px
-					padding: 8px
+					// box-shadow: 0 0 10px 0 rgba(102, 102, 102, .06)
+					border: 1px solid
+					border-radius: 5px
+					padding: 8px 12px
+					position: relative
 				// 气泡箭头
 				.msg-arrow
 					position: absolute
-					top: 20px
-					display: inline-block
-					width: 0
-					height: 0
-					border-top: 5px solid transparent
-					border-bottom: 5px solid transparent
+					z-index: 1
+					top: 18px
+					width: 9px
+					height: 18px
+					overflow: hidden
+					display: block
+					i
+						display: block
+						width: 12px
+						height: 12px
+						transform: rotate(45deg)
+						position: relative
+						bottom: -3px
+						border: 1px solid
 				// 消息
 				.msg-content
 				// 对方的消息
 				.msg-opposite
 					position: relative
-					padding: 9px 30px 9px 0
+					padding: 9px 40px 9px 0
 					.msg-bubble
 						float: left
 						background-color: #fff
-						color: #333
+						border-color: #e2e2e2
+						color: #666
 					.msg-arrow
-						left: -5px
-						border-right: 6px solid #fff
+						left: -8px
+						i
+							background-color: #fff
+							border-color: #e2e2e2
+							left: 4px
 				// 自己消息
 				.msg-self
 					position: relative
-					padding: 9px 0 9px 3px
+					padding: 9px 0 9px 40px
 					.msg-bubble
 						float: right
-						background-color: #1ca2fe
+						border-color: #329dff
+						background-color: #329dff
 						color: #fff
 					.msg-arrow
-						right: -5px
-						border-left: 6px solid #1ca2fe
+						right: -8px
+						i
+							background-color: #329dff
+							border-color: #329dff
+							right: 7px
 				// 时间
 				.msg-time
 				// （新消息）分隔线
 				.separator
 		.chat-toolbar
+			flex-shrink: 0
 			position: relative
 			height: 36px
 			background-color: #fafafa
@@ -112,13 +176,13 @@
 						font-size: 20px
 					&:hover
 						color: #333
-				.box-bubble
+				.box-arrow
 					position: absolute
 					z-index: 2
 					bottom: 28px
-					left: 17px
-					width: 26px
-					height: 14px
+					left: 12px
+					width: 36px
+					height: 16px
 					overflow: hidden
 					display: block
 					i
@@ -128,28 +192,37 @@
 						background-color: #fff
 						transform: rotate(45deg)
 						position: relative
-						bottom: 8px
-						left: 4px
+						bottom: 9px
+						left: 9px
 						box-shadow: 0 0 10px 0 rgba(102, 102, 102, .6)
 				.face-box
 					position: absolute
 					z-index: 1
-					bottom: 40px
+					bottom: 44px
 					width: 100%
 					padding: 0 10px
-					font-size: 24px
 					> div
 						display: flex
 						flex-wrap: wrap
 						border-radius: 5px
 						background-color: #fff
-						overflow: auto
+						overflow: scroll
 						height: 200px
 						box-shadow: 0 0 10px 0 rgba(102, 102, 102, .6)
-						padding: 4px 0 4px 9px
+						padding: 4px
 					.face
 						cursor: pointer
-						padding: 0 3px
+						padding: 2px
+						font-size: 24px
+						width: 29px
+						height: 29px
+						line-height: 29px
+						display: block
+						border-radius: 5px
+						background-color: #fff
+						transition: background-color .1s linear 0s
+						&:hover
+							background-color: #ccc
 			// TODO
 			> button
 				margin-left: 14px
@@ -171,16 +244,12 @@
 				resize: none
 				width: 100%
 				outline: 0
-				font-size: 16px
-				line-height: 1.5
+				font-size: 14px
+				line-height: 16px
 				height: 100%
 				padding: 0 5px 0 15px
 				background-color: #fbfbfb
 				overflow-y: visible
-				&.input-copy
-					position: absolute
-					left: -9999px
-					visibility: hidden
 			button.send
 				position: absolute
 				z-index: 1

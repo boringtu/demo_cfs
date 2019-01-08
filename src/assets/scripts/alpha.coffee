@@ -39,8 +39,29 @@ export default do ->
 					# 用户信息
 					user: '/api/dialog/user'
 					# 今日访问量
-					todayVisits: '/dialog/todayVisits'
+					todayVisits: '/api/dialog/todayVisits'
+					# 历史消息数据列表
+					history: '/api/dialog/history'
 				## 内部协同 ##
+				synergy:
+					# 客服列表
+					all: '/api/teamwork/all'
+					# 编辑分组
+					edit: '/api/teamwork/group'
+					# 添加客服
+					addadmin: '/api/teamwork/admin'
+					# 添加分组
+					deleted : '/api/teamwork/group'
+					# 删除分组
+					group: '/api/teamwork/group'
+					# 删除客服
+					deletedServe: '/api/teamwork/admin'
+					# 禁用客服
+					disabledServe: '/api/teamwork/admin/ban'
+					# 编辑客服
+					editServe: '/api/teamwork/admin'
+					# 所有权限
+					permission: '/api/teamwork/permission'
 				## 配置管理 ##
 		PROTOCOL:
 			writable: off, value: location.protocol
