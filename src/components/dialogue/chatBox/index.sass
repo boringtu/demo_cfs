@@ -48,8 +48,46 @@
 		.chat-history
 			flex-grow: 1
 			position: relative
-			overflow: auto
 			border-bottom: 1px solid #ebebeb
+			text-align: center
+			.loading-history
+				padding: 10px 0
+				.icon
+					font-size: 16px
+					line-height: 16px
+			.unreadCount
+				position: absolute
+				z-index: 10
+				right: 12px
+				font-size: 14px
+				line-height: 24px
+				color: #7acc96
+				border: 1px solid #7acc96
+				border-radius: 5px
+				padding: 0 8px 0 12px
+				background-color: #fff
+				transition: background-color .1s linear 0s
+				&:hover
+					background-color: #fafafa
+				a
+					color: #7acc96
+				.icon
+					color: #7acc96
+					font-size: 12px
+					border: 0
+					background-color: transparent
+					margin-left: 10px
+				&[data-type="up"]
+					top: 10px
+				&[data-type="down"]
+					bottom: 10px
+		.chat-window
+			overflow: auto
+			position: absolute
+			top: 0
+			right: 0
+			bottom: 0
+			left: 0
 			.chat-content
 				padding: 0 18px
 				font-size: 13px
@@ -90,7 +128,7 @@
 				// 对方的消息
 				.msg-opposite
 					position: relative
-					padding: 9px 30px 9px 0
+					padding: 9px 40px 9px 0
 					.msg-bubble
 						float: left
 						background-color: #fff
@@ -105,7 +143,7 @@
 				// 自己消息
 				.msg-self
 					position: relative
-					padding: 9px 0 9px 3px
+					padding: 9px 0 9px 40px
 					.msg-bubble
 						float: right
 						border-color: #329dff

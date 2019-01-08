@@ -21,7 +21,7 @@
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")
 						span.time {{ item.message.timeStamp | formatTime }}
-						span.count {{ item.unreadCount | unreadCount }}
+						span.count(v-if="item.unreadCount") {{ item.unreadCount | unreadCount }}
 						h3 {{ item.name }}
 						p {{ item.message.message  }}
 		div(v-show="tabIndex === 1")
@@ -34,7 +34,6 @@
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")
 						span.time {{ item.message.timeStamp | formatTime }}
-						span.count {{ item.unreadCount | unreadCount }}
 						h3 {{ item.name }}
 						p {{ item.message.message  }}
 </template>

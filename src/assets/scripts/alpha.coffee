@@ -39,7 +39,9 @@ export default do ->
 					# 用户信息
 					user: '/api/dialog/user'
 					# 今日访问量
-					todayVisits: '/dialog/todayVisits'
+					todayVisits: '/api/dialog/todayVisits'
+					# 历史消息数据列表
+					history: '/api/dialog/history'
 				## 内部协同 ##
 				## 配置管理 ##
 		PROTOCOL:
