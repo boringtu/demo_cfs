@@ -20,7 +20,7 @@ export default
 		# 未读消息 element 引用列表（新消息在前）
 		unreadElList: []
 		# 新推送的未读消息 element 引用列表（顺序无所谓）
-		newUnReadElList: []
+		newUnreadElList: []
 		# 历史消息列表中第一条数据的timeStamp
 		referTimeStamp: 0
 
@@ -30,7 +30,7 @@ export default
 		# 未读消息条数
 		unreadCount: -> @unreadElList.length
 		# 新推送的未读消息条数
-		newUnReadCount: -> @newUnReadElList.length
+		newUnreadCount: -> @newUnreadElList.length
 
 	filters:
 		# 历史消息区 消息 class 类名（区分己方/对方）
@@ -86,10 +86,10 @@ export default
 		clearData: ->
 			# 清空 历史消息数据列表
 			@list.length = 0
-			# 清空 未读消息 element 引用列表
-			@unreadElList.length = 0
-			# 清空 新推送的未读消息 element 引用列表
-			@newUnReadElList.length = 0
+			# 清空 未读消息
+			@clearUnread()
+			# 清空 新推送的未读消息
+			@clearNewUnread()
 			# 重置 是否无更多历史消息的状态
 			@noMoreHistory = 0
 
@@ -110,7 +110,6 @@ export default
 				params.size = @dialogInfo.unreadCount if @dialogInfo.unreadCount > params.size
 			else
 				params.size = @msgAppendCount
-			# TODO 目前还没有历史消息接口，也许字段名不对
 			# 目前最前面的那条消息的 timestamp（非首屏）
 			params.timestamp = @referTimeStamp unless isReset
 			
@@ -150,20 +149,19 @@ export default
 				@isLoadingHistory = 0
 				# 刷新数据
 				@list = list
-				# TODO 也许要考虑数据加载后会有闪屏的情况
 				if isReset
 					# 首屏时，滚动到最底部
-					@$nextTick => @scrollToBottom()
+					@$nextTick => @scrollToBottom 0
 				else
 					# 非首屏时，保持当前窗口中的可视消息位置
 			return
 
 		# 历史消息滚动到最顶部
-		scrollToTop: (duration = 1500) ->
+		scrollToTop: (duration = 200) ->
 			@$refs.chatWindow.velocity scrollTop: 0, {duration: duration}
 
 		# 历史消息滚动到最底部
-		scrollToBottom: (duration = 0) ->
+		scrollToBottom: (duration = 200) ->
 			# window element
 			win = @$refs.chatWindow
 			# window height
@@ -233,17 +231,25 @@ export default
 			@fetchHistory() if @$refs.chatWindow.scrollTop < 12 + 14 + 9 + 34 / 2
 
 		# Event: 显示上面的未读消息点击事件
-		eventShowUpperUnRead: ->
-			# 触发加载数据事件
-			@fetchHistory()
+		eventShowUpperUnread: ->
+			# 清空 未读消息
+			@clearUnread()
 			# 滚动到顶部
-			@$refs.chatWindow.velocity scrollTop: 0
-
-
-			# 清空 未读消息 element 引用列表
-			# @unreadElList.length = 0
+			@scrollToTop()
 
 		# Event: 显示下面的未读消息点击事件
-		eventShowLowerUnRead: ->
+		eventShowLowerUnread: ->
+			# 清空 新推送的未读消息
+			@clearNewUnread()
+			# 滚动到底部
+			@scrollToBottom()
+
+		# 清空 未读消息
+		clearUnread: ->
+			# 清空 未读消息 element 引用列表
+			@unreadElList = []
+
+		# 清空 新推送的未读消息
+		clearNewUnread: ->
 			# 清空 新推送的未读消息 element 引用列表
-			@newUnReadElList.length = 0
+			@newUnreadElList = []

@@ -10,14 +10,14 @@
 		.chat-history
 			//- 未读消息提醒（顶部）
 			.unreadCount(data-type="up" v-if="unreadCount")
-				a(href="javascript:;" @click="eventShowUpperUnRead") 
+				a(href="javascript:;" @click="eventShowUpperUnread") 
 					strong {{ unreadCount | calcUnReadCount }} 条新消息
-				button.icon.icon-close
+				button.icon.icon-close(@click="clearUnread")
 			//- 未读消息提醒（底部）
-			.unreadCount(data-type="down" v-if="newUnReadCount")
-				a(href="javascript:;" @click="eventShowLowerUnRead") 
-					strong {{ unreadCount | calcUnReadCount }} 条新消息
-				button.icon.icon-close
+			.unreadCount(data-type="down" v-if="newUnreadCount")
+				a(href="javascript:;" @click="eventShowLowerUnread") 
+					strong {{ newUnreadCount | calcUnReadCount }} 条新消息
+				button.icon.icon-close(@click="clearNewUnread")
 			//- 消息滚动窗口
 			.chat-window(
 				ref="chatWindow"
