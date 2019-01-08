@@ -20,6 +20,8 @@ export default do ->
 		# 枚举: 接口地址
 		API_PATH:
 			writable: off, value:
+				## WebSocket ##
+				WS: {}
 				## 通用 ##
 				common:
 					# 登录
@@ -165,5 +167,38 @@ export default do ->
 				3: icon: 'icon-configuration', url: '/configuration'
 				# 配置管理 - 设置样式
 				20: url: '/configuration/setStyle'
+
+	Object.defineProperties window.ALPHA.API_PATH.WS,
+		# 用于建立 WebSocket 连接
+		url:
+			writable: off, value: '/api/chat'
+		# 枚举：发送 ws 数据的类型
+		SEND_CODE:
+			writable: off, value:
+				# 发送消息
+				MESSAGE: 1
+				# 客服接单
+				RECEIVING: 2
+				# 消息已读
+				READING: 3
+		# 枚举：接收 ws 数据的类型
+		RECEIVE_CODE:
+			writable: off, value:
+				broadcast:
+					# 指定用户已被接单
+					RECEIVING: 2
+				p2p:
+					# 通知当前客服已开始接待该用户
+					RECEIVING: 1
+		## 以下用于用以建立的 ws 监听和发送
+		# 点对点
+		p2p:
+			writable: off, value: '/cs/waitingUser'
+		# 广播
+		broadcast:
+			get: -> "/user/#{ ALPHA.admin.adminId }/cs/chatting"
+		# 发送
+		send:
+			writable: off, value: '/cs/chatting'
 	
 	window.ALPHA

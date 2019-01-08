@@ -10,13 +10,11 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "D": "^1.0.0",
     "axios": "^0.18.0",
     "better-scroll": "^1.13.2",
     "element-ui": "^2.4.11",
     "md5": "^2.2.1",
     "mockjs": "^1.0.1-beta3",
-    "stompjs": "^2.3.3",
     "velocity-animate": "^2.0.5",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",

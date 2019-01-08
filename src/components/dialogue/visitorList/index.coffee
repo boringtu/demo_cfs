@@ -67,3 +67,7 @@ export default
 		# 结束计数器
 		stopCount: ->
 			clearInterval @handleCount
+
+		# Event: 接待指定用户
+		eventReceiveCustomer: ->
+			console.log 'emmm', arguments

@@ -3,6 +3,8 @@ import Utils from '@/assets/scripts/utils'
 
 export default
 	data: ->
+		# view 对象
+		view: @$parent
 		# 输入的文本
 		inputText: ''
 		# 是否准备输入（输入框是否获取焦点）
@@ -85,7 +87,7 @@ export default
 		# 清空数据
 		clearData: ->
 			# 清空 历史消息数据列表
-			@list.length = 0
+			@list = []
 			# 清空 未读消息
 			@clearUnread()
 			# 清空 新推送的未读消息
@@ -175,15 +177,14 @@ export default
 
 		# Event: 消息发送事件
 		eventSend: ->
-			console.log event.keyCode
-
 			# 转义（防xss）
 			text = @inputText.encodeHTML()
-
-			# 清空输入框
+			# 发送消息体（messageType 1: 文字 2: 图片）
+			sendBody = messageType: 1, message: text
+			# 发送消息
+			@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, JSON.stringify sendBody
+			# 清空消息框
 			@inputText = ''
-
-
 
 		# Event: 选择并发送图片
 		eventChoosePicture: (event) ->
