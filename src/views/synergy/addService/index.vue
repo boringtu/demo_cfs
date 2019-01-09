@@ -29,9 +29,9 @@
 						label
 							i *
 							span 角色
-						el-select(v-model="roleId")
-							el-option(label="管理员",value="1")
-							el-option(label="客服",value="2")
+						el-select(v-model="roleId",@change="changselect")
+							el-option(label="客服",value=2)
+							el-option(label="管理员",value=1)
 
 					.lable_box
 						label
@@ -60,10 +60,15 @@
 						el-button.saveBtn(@click="saveF") 保存
 			.right_box
 				.title_details.tl.f18.marb18 权限设置
-				.citeBox
-					.div(v-for="items,index in newarrList")
+				.citeBox(v-if="inittype == 1")
+					.div(v-for="items,index in servicedata")
 						.title {{items.name}}
-						el-checkbox(@change="ckeckval",v-for="permissionsitem in items.permissions",:key="permissionsitem.id",:true-label="permissionsitem.id",:checked="permissionsitem.id == 12") {{permissionsitem.name}}
+						el-checkbox(@change="ckeckval",v-for="permissionsitem in items.permissions",:key="permissionsitem.id",:false-label ="permissionsitem.name",:true-label="permissionsitem.id",:checked="true") {{permissionsitem.name}} {{permissionsitem.id}}
+				.citeBox(v-if="inittype == 2")
+					.div(v-for="items,index in Customerservice")
+						.title {{items.name}}
+						//- :false-label ="permissionsitem.id"
+						el-checkbox(@change="ckeckval",v-for="permissionsitem in items.permissions",:key="permissionsitem.id",:false-label="permissionsitem.name",:true-label="permissionsitem.id",:checked="true") {{permissionsitem.name}} {{permissionsitem.id}}
 			
 </template>
 <script lang="coffee" src="./index.coffee"></script>
