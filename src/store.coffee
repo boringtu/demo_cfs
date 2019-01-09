@@ -16,6 +16,8 @@ export default new Vuex.Store
 		chattingList: []
 		# 已关闭的会话列表
 		closedList: []
+		# 历史消息列表
+		chatHistoryList: []
 		# 当前会话ID
 		dialogID: null
 		# 当前会话数据
@@ -58,5 +60,12 @@ export default new Vuex.Store
 			# 将该用户添加到 closed list 中
 			list = state.closedList
 			state.closedList = [user, ...list]
+
+		# 消息已读处理成功
+		readed: (state, userId) ->
+			list = state.chatHistoryList
+			for user in list when user.id is userId
+				user.unreadCount = 0
+				break
 
 	actions: {}

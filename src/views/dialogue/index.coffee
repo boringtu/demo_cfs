@@ -82,9 +82,14 @@ export default
 					## 1: 消息推送
 					## 1|userId|message Object
 					msg = body.toJSON()
+					# TODO
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.RECEIVED
 					## 2: 开始接待用户
 					## 2|userId|user Object
 					user = body.toJSON()
 					# 向正在对话的访客列表中推送访客
 					@$store.commit 'addToChattingList', user
+				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.READED
+					## 3: 消息已读处理成功
+					## 3|userId|
+					@$store.commit 'readed', userId

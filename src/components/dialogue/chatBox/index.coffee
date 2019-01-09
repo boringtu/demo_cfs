@@ -16,11 +16,9 @@ export default
 		# 是否无更多历史消息的状态
 		noMoreHistory: 0
 		# 首屏消息条数
-		msgInitCount: 20
+		msgInitCount: 5
 		# 非首屏消息条数
-		msgAppendCount: 20
-		# 历史消息数据列表（新数据在后）
-		list: []
+		msgAppendCount: 5
 		# 未读消息 element 引用列表（新消息在前）
 		unreadElList: []
 		# 新推送的未读消息 element 引用列表（顺序无所谓）
@@ -35,6 +33,8 @@ export default
 		unreadCount: -> @unreadElList.length
 		# 新推送的未读消息条数
 		newUnreadCount: -> @newUnreadElList.length
+		# 历史消息数据列表（新数据在后）
+		chatHistoryList: -> @$store.state.chatHistoryList
 
 	filters:
 		# 历史消息区 消息 class 类名（区分己方/对方）
@@ -89,7 +89,7 @@ export default
 		# 清空数据
 		clearData: ->
 			# 清空 历史消息数据列表
-			@list = []
+			@$store.state.chatHistoryList = []
 			# 清空 未读消息
 			@clearUnread()
 			# 清空 新推送的未读消息
@@ -112,6 +112,7 @@ export default
 			if isReset
 				params.size = @msgInitCount
 				params.size = @dialogInfo.unreadCount if @dialogInfo.unreadCount > params.size
+				# params.size = 5
 			else
 				params.size = @msgAppendCount
 			# 目前最前面的那条消息的 timestamp（非首屏）
@@ -134,7 +135,8 @@ export default
 				@referTimeStamp = list[0].timeStamp if isReset
 				multiple = 0
 				# 追加数据（包含首屏数据的情况）
-				list = list.concat @list
+				# list = list.concat @chatHistoryList
+				list = [...list, ...@chatHistoryList]
 				for item, i in list
 					unless i
 						item.hasTimeline = 1
@@ -144,17 +146,21 @@ export default
 					if tempMultiple > multiple
 						item.hasTimeline = 1
 						multiple = tempMultiple
-				# 记录当前 chatWindow scrollTop
-				sT = @$refs.chatWindow.scrollTop
 				# 更改是否正在加载历史数据的状态
 				@isLoadingHistory = 0
 				# 刷新数据
-				@list = list
+				@$store.state.chatHistoryList = list
 				if isReset
-					# 首屏时，滚动到最底部
-					@$nextTick => @scrollToBottom 0
+					## 首屏时，滚动到最底部
+					@$nextTick =>
+						# 滚动到最底部
+						@scrollToBottom 0
+						# 处理未读消息
+						@setUnreadList()
 				else
-					# 非首屏时，保持当前窗口中的可视消息位置
+					## 非首屏时，保持当前窗口中的可视消息位置
+					# 记录当前 chatWindow scrollTop
+					# sT = @$refs.chatWindow.scrollTop
 			return
 
 		# 历史消息滚动到最顶部
@@ -261,3 +267,33 @@ export default
 		# 结束当前对话
 		closingTheChat: ->
 			@$store.commit 'removeFromChattingList', @dialogInfo
+
+		# 处理未读消息（只会在首屏时被执行
+		setUnreadList: ->
+			info = @dialogInfo
+			return unless info
+			return unless info.unreadCount
+			# 推送给服务器端清空未读消息
+			@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.READING, info.id
+			# unread count
+			count = info.unreadCount
+			# window element
+			win = @$refs.chatWindow
+			# window height
+			wh = win.offsetHeight
+			# result height
+			rh = 0
+			# window element's children elements
+			els = win.children
+			# 计算窗口可见消息条数
+			for i in [els.length - 1...0]
+				rh += els[i].offsetHeight
+				break if rh > wh
+				--count
+			# 计算刨除可见的消息以外的未读消息
+			# TODO
+			
+			# @unreadElList
+
+		# 处理新推送的未读消息（只会在非首屏时被执行
+		setNewUnreadList: ->

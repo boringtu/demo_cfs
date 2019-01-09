@@ -207,6 +207,8 @@ export default do ->
 					MESSAGE: 1
 					# 通知当前客服已开始接待该用户
 					RECEIVED: 2
+					# 消息已读处理成功
+					READED: 3
 		## 以下用于用以建立的 ws 监听和发送
 		# 点对点
 		p2p:

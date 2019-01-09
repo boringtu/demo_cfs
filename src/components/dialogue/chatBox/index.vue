@@ -36,7 +36,7 @@
 				div(ref="chatWrapper")
 					//- 每一条消息
 					.chat-content(
-						v-for="item in list"
+						v-for="item in chatHistoryList"
 						:key="item.id"
 					)
 						//- 时间线
