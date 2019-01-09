@@ -185,18 +185,22 @@ export default do ->
 		RECEIVE_CODE:
 			writable: off, value:
 				broadcast:
-					# 指定用户已被接单
-					RECEIVING: 2
+					# 推送新用户至所有客服端的访客列表
+					PUSHING: 1
+					# 通知所有客服，指定用户已被接单
+					RECEIVED: 2
 				p2p:
+					# 推送消息
+					MESSAGE: 1
 					# 通知当前客服已开始接待该用户
-					RECEIVING: 1
+					RECEIVED: 2
 		## 以下用于用以建立的 ws 监听和发送
 		# 点对点
 		p2p:
-			writable: off, value: '/cs/waitingUser'
+			get: -> "/user/#{ ALPHA.admin.adminId }/cs/chatting"
 		# 广播
 		broadcast:
-			get: -> "/user/#{ ALPHA.admin.adminId }/cs/chatting"
+			writable: off, value: '/cs/waitingUser'
 		# 发送
 		send:
 			writable: off, value: '/cs/chatting'

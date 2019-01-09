@@ -4,8 +4,15 @@
 	.tab-box
 		h2 当前对话
 		span.dialogCount(v-if="dialogInfo") 对话次数：{{ dialogInfo.num }}
-		button.close(v-if="dialogInfo")
+		button.close(v-if="dialogInfo" @click="eventCloseTheChat")
 			i.icon.icon-close
+		.closing-confirm-box(v-if="confirmToClose")
+			span.box-arrow
+				i
+			p 确定要结束对话吗？
+			div
+				el-button(type="default" @click="confirmToClose = 0") 取消
+				el-button(type="primary" @click="confirmToClose = 0, closingTheChat()") 确定
 	.content-box(:class="{active: isReadyToType}")
 		.chat-history
 			//- 未读消息提醒（顶部）

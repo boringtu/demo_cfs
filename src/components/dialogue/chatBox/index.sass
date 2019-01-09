@@ -39,6 +39,51 @@
 			&:hover
 				.icon
 					color: #333
+		.closing-confirm-box
+			position: absolute
+			z-index: 10
+			right: -85px
+			top: 55px
+			border: 1px solid #cecece
+			border-radius: 5px
+			background-color: #fff
+			width: 240px
+			text-align: center
+			p
+				font-size: 20px
+				line-height: 20px
+				padding: 20px 0
+				color: #333
+			> div
+				display: flex
+				justify-content: space-between
+				padding: 0 12px 20px
+			.el-button
+				border-radius: 5px
+				line-height: 34px
+				padding: 0 32px
+				font-size: 16px
+				~ button
+					margin-left: 0px
+			.box-arrow
+				position: absolute
+				z-index: 2
+				top: -10px
+				left: 102px
+				width: 36px
+				height: 10px
+				overflow: hidden
+				display: block
+				i
+					display: block
+					border: 1px solid #cecece
+					width: 18px
+					height: 18px
+					background-color: #fff
+					transform: rotate(45deg)
+					position: relative
+					top: 3px
+					left: 9px
 	.content-box
 		flex-grow: 1
 		position: relative

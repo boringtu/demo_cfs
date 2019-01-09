@@ -71,6 +71,7 @@
 			&[data-type="0"]
 				top: 30px
 			li
+				background-color: #fff
 				position: relative
 				&:hover,
 				&.active
@@ -81,9 +82,9 @@
 					justify-content: space-between
 					height: 80px
 					border-top: 1px solid #e6e6e6
-					padding: 18px 65px
+					padding: 14px 65px
 					font-size: 14px
-					line-height: 14px
+					line-height: 18px
 					.icon-wrap
 						position: absolute
 						z-index: 1
@@ -125,4 +126,13 @@
 				&:first-child
 					a
 						border-top: 0
-						
+		/deep/
+			.list-item
+				transition: all .2s
+			.list-enter,
+			.list-leave-to
+				opacify: 0
+			.list-leave-active
+				position: absolute
+				width: 100%
+				z-index: -1

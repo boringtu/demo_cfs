@@ -17,7 +17,11 @@ export default
 		next()
 
 	computed:
+		# Stomp 连接（WebSocket
 		ws: -> @$store.state.ws
+
+		# 待接待访客列表
+		visitorList: -> @$store.state.visitorList
 
 	created: ->
 		window.p = @
@@ -31,29 +35,56 @@ export default
 			ws.subscribe ALPHA.API_PATH.WS.p2p, @monitorP2P
 
 		# 如页面被关闭，关闭 WebSocket 连接
-		window.addEventListener 'unload', => @wsDisconnect()
+		window.addEventListener 'unload', => @ws?.disconnect()
 
 	methods:
-		wsDisconnect: ->
-			@ws.disconnect() if @ws?
-
 		###
-		 # @params SEND_CODE <int> 发送消息类型。严禁直接传值，要用枚举：ALPHA.API_CODE.WS.SEND_CODE（备注：1: 发送消息，2: 客服接单，3: 消息已读
+		 # @params SEND_CODE <int> 发送消息类型。严禁直接传值，要用枚举：ALPHA.API_PATH.WS.SEND_CODE（备注：1: 发送消息，2: 客服接单，3: 消息已读
 		 # @params message <JSON String> 消息体。只在 SEND_CODE 为 1 时存在
 		###
-		wsSend: (SEND_CODE, message) ->
-			@ws.send ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ ALPHA.admin.adminId }|#{ message or '' }"
+		wsSend: (SEND_CODE, userId, message) ->
+			@ws.send ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"
 
 		# 监听 广播
 		monitorBroadcast: (res) ->
-			# 指定用户已被接单
-			ALPHA.API_CODE.WS.RECEIVE_CODE.broadcast.RECEIVING
-			console.log 'boardcast: ', res
-			console.log @
+			body = res.body
+			console.log 'boardcast: ', body
+			# 消息类型
+			type = +body.match(/^(\d+)\|/)[1]
+			body = body.replace /^\d+\|/, ''
+			switch type
+				when ALPHA.API_PATH.WS.RECEIVE_CODE.broadcast.PUSHING
+					## 1: 新访客推送
+					## 1|user Object
+					user = body.toJSON()
+					# 将该访客追加到待接待访客列表中
+					@$store.commit 'addToVisitorList', user
+					# @$store.state.visitorList.push user
+				when ALPHA.API_PATH.WS.RECEIVE_CODE.broadcast.RECEIVED
+					## 2: 指定访客已被接待
+					## 2|userId
+					userId = +body.match(/^(\d+)/)[1]
+					# 从待接待访客列表中移除该用户
+					@$store.commit 'removeFromVisitorList', userId
 
 		# 监听 点对点
 		monitorP2P: (res) ->
-			# 通知当前客服已开始接待该用户
-			ALPHA.API_CODE.WS.RECEIVE_CODE.p2p.RECEIVING
-			console.log 'p2p: ', res
-			console.log @
+			body = res.body
+			console.log 'p2p: ', body
+			# 消息类型
+			type = +body.match(/^(\d+)\|/)[1]
+			body = body.replace /^\d+\|/, ''
+			# 用户ID
+			userId = +body.match(/^(\d+)\|/)[1]
+			body = body.replace /^\d+\|/, ''
+			switch type
+				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.MESSAGE
+					## 1: 消息推送
+					## 1|userId|message Object
+					msg = body.toJSON()
+				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.RECEIVED
+					## 2: 开始接待用户
+					## 2|userId|user Object
+					user = body.toJSON()
+					# 向正在对话的访客列表中推送访客
+					@$store.commit 'addToChattingList', user

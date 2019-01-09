@@ -66,7 +66,6 @@ export default
 						info = item
 						break
 			@$store.state.dialogInfo = info
-			console.log id, info
 
 		# 获取正在进行中的会话列表
 		fetchChattingData: ->

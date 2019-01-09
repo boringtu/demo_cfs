@@ -10,8 +10,8 @@ import ALPHA from '@/assets/scripts/alpha'
 import Utils from '@/assets/scripts/utils'
 import Velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
-# import SockJS from '@/assets/scripts/sockjs.min'
-# import Stomp from '@/assets/scripts/stomp'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 # import ElementUI from 'element-ui'
 import {
 	Input
@@ -31,8 +31,8 @@ Vue.prototype.$notify = Notification
 
 Vue.config.productionTip = false
 
-# window.SockJS = SockJS
-# window.Stomp = Stomp
+window.SockJS = SockJS
+window.Stomp = Stomp
 
 # 响应拦截器
 axiosInterceptor = axios.interceptors.response.use (res) ->

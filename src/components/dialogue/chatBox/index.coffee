@@ -11,6 +11,8 @@ export default
 		isReadyToType: 0
 		# 是否正在加载历史数据的状态
 		isLoadingHistory: 0
+		# 是否需要确认结束当前对话
+		confirmToClose: 0
 		# 是否无更多历史消息的状态
 		noMoreHistory: 0
 		# 首屏消息条数
@@ -39,9 +41,9 @@ export default
 		sideClass: (side) ->
 			switch side
 				when 1
-					'msg-opposite'
-				when 2
 					'msg-self'
+				when 2
+					'msg-opposite'
 
 		# 计算未读消息个数（超过99，则显示99+）
 		calcUnReadCount: (n) ->
@@ -120,7 +122,6 @@ export default
 				params: params
 			promise.then (data) =>
 				list = data.data
-				console.log list
 				unless list.length
 					## 无更多数据
 					# 更改是否正在加载历史数据的状态
@@ -143,8 +144,6 @@ export default
 					if tempMultiple > multiple
 						item.hasTimeline = 1
 						multiple = tempMultiple
-				# TEST CODE
-				console.log 'history: ', list
 				# 记录当前 chatWindow scrollTop
 				sT = @$refs.chatWindow.scrollTop
 				# 更改是否正在加载历史数据的状态
@@ -182,7 +181,7 @@ export default
 			# 发送消息体（messageType 1: 文字 2: 图片）
 			sendBody = messageType: 1, message: text
 			# 发送消息
-			@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, JSON.stringify sendBody
+			@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, @dialogInfo.id, JSON.stringify sendBody
 			# 清空消息框
 			@inputText = ''
 
@@ -254,3 +253,11 @@ export default
 		clearNewUnread: ->
 			# 清空 新推送的未读消息 element 引用列表
 			@newUnreadElList = []
+
+		# Event: 结束当前对话
+		eventCloseTheChat: ->
+			@confirmToClose = 1
+
+		# 结束当前对话
+		closingTheChat: ->
+			@$store.commit 'removeFromChattingList', @dialogInfo

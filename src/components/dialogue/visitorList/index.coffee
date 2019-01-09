@@ -3,7 +3,8 @@ import Utils from '@/assets/scripts/utils'
 
 export default
 	data: ->
-		list: []
+		# view 对象
+		view: @$parent
 	created: ->
 		# 获取列表数据
 		@fetchData()
@@ -13,6 +14,10 @@ export default
 	beforeDestroy: ->
 		# 结束计数器
 		@stopCount()
+
+	computed:
+		# 待接待访客列表
+		list: -> @$store.state.visitorList
 
 	filters:
 		# 渠道图标
@@ -45,7 +50,9 @@ export default
 			s = if (s + '').length > 1 then s else '0' + s
 			"#{ m }分#{ s }秒"
 
-	mounted: ->
+	watch:
+		list: (newList, oldList) ->
+			console.log newList.length, oldList.length
 
 	methods:
 		# 获取数据
@@ -56,7 +63,7 @@ export default
 				now = +ALPHA.serverTime
 				# 初始化等待时间
 				item.conversation.waitingTime = now - item.conversation.addTime for item in data
-				@list = data
+				@$store.state.visitorList = data
 
 		# 启动计数器（每秒刷新一次
 		startCount: ->
@@ -69,5 +76,9 @@ export default
 			clearInterval @handleCount
 
 		# Event: 接待指定用户
-		eventReceiveCustomer: ->
-			console.log 'emmm', arguments
+		eventReceiveCustomer: (row) ->
+			return if row.processing
+			row.processing = 1
+			id = row.id
+			# 通知服务器要接待此用户
+			@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.RECEIVING, id

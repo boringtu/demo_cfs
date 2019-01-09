@@ -15,8 +15,9 @@
 				p 暂无对话记录
 			p.count-box(v-if="chattingList.length").
 				进行中的会话：{{ chattingList.length }}
-			ul(data-type="0" v-if="chattingList.length")
-				router-link(tag="li" replace :to="item.id | createChatRoute" v-for="item in chattingList" :key="item.id" :class="{active: dialogID === item.id}")
+			//- ul(data-type="0" v-if="chattingList.length")
+			transition-group(tag="ul" name="list" data-type="0" v-if="chattingList.length")
+				router-link(tag="li" replace :to="item.id | createChatRoute" v-for="item in chattingList" :key="item.id" class="list-item" :class="{active: dialogID === item.id}")
 					a
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")
@@ -28,8 +29,9 @@
 			div.no-data(v-if="!closedList.length")
 				i.icon.icon-empty-box
 				p 暂无对话记录
-			ul(data-type="1" v-if="closedList.length")
-				router-link(tag="li" replace :to="item.id | createChatRoute" v-for="item in closedList" :key="item.id" :class="{active: dialogID === item.id}")
+			//- ul(data-type="1" v-if="closedList.length")
+			transition-group(tag="ul" name="list" data-type="1" v-if="closedList.length")
+				router-link(tag="li" replace :to="item.id | createChatRoute" v-for="item in closedList" :key="item.id" class="list-item" :class="{active: dialogID === item.id}")
 					a
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")

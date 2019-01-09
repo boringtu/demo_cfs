@@ -21,8 +21,8 @@ export default
 		,
 			value: '女', label: '女'
 		]
-		# 对话信息 默认数据
-		info:
+		# 默认对话信息对象
+		defInfo:
 			# 姓名
 			name: ''
 			# 性别
@@ -46,6 +46,9 @@ export default
 			browser: ''
 			# IP地址
 			ip: ''
+		# 对话信息 默认数据
+		info: null
+
 	computed:
 		# 是否无数据
 		nodata: -> not @info.id
@@ -53,9 +56,16 @@ export default
 		dialogInfo: -> @$store.state.dialogInfo
 		# 对话主题列表
 		topicOptions: -> @$store.state.topics
+
+	created: ->
+		console.log @info
+		@info = Utils.clone @defInfo
 	
 	watch:
 		dialogInfo: (info) ->
+			unless info
+				@info = Utils.clone @defInfo
+				return
 			@info =
 				# ID
 				id: info.id

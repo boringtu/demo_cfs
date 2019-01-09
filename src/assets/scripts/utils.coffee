@@ -2,22 +2,22 @@ import md5 from 'md5'
 class Utils
 	'use strict'
 	###
-	# 获取 url 参数
+	 # clone 对象
+	 # @param obj [Object] 必填。将要 clone 的对象
 	###
-	@getUrlParams: ->
-		params = location.search
-		data = {}
-		params = params.slice(1).split '&'
-		for temp in params
-			temp = temp.split '='
-			[key, val] = [temp[0], temp[1]]
-			data[key] = val if key
-		data
-
-	###
-	# 判断 url 参数中是否有指定参数
-	###
-	@hasUrlParams: (key) -> this.getUrlParams().hasOwnProperty key
+	@clone: (obj, isDeep = 0) ->
+		return obj unless typeof obj is 'object' and obj?
+		if obj instanceof Date
+			re	= new Date()
+			re.setTime obj.getTime()
+			return re
+		re	= if obj instanceof Array then [] else {}
+		for own o, val of obj
+			if isDeep and typeof val is 'object'
+				re[o]	= @clone val
+			else
+				re[o]	= val
+		re
 
 	###
 	 # 封装的 axios
@@ -239,6 +239,7 @@ Array::last = -> @[@length - 1]
 Array::remove = (obj) ->
 	i	= @.indexOf obj
 	return null if i is -1
-	return @.splice(i, 1)[0]
+	@.splice(i, 1)[0]
+	return @length
 
 export default Utils
