@@ -4,8 +4,8 @@ import axios from 'axios'
 export default
 	data: ->
 		logoImgUrl: ''
-		isShowLogoImg: false
-		isShowAdImg: false
+		# isShowLogoImg: false
+		# isShowAdImg: false
 		adImgUrl: ''
 		logoImgId: ''
 		adImgId: ''
@@ -26,7 +26,7 @@ export default
 			.then (response) =>
 				console.log(response.data)
 				if response.msg == 'success'
-					@isShowLogoImg = true
+					# @isShowLogoImg = true
 					@logoImgUrl = "http://172.16.10.122/" + response.data.fileUrl 
 					@logoImgId = response.data.id
 		# 广告图片点击上传
@@ -38,8 +38,7 @@ export default
 			.then (res) =>
 				console.log res.data
 				if res.msg == 'success'
-					console.log "aa"
-					@isShowAdImg = true
+					# @isShowAdImg = true
 					@adImgUrl = "http://172.16.10.122/" + res.data.fileUrl 
 					@adImgId = res.data.id
 		# 获取默认配置
@@ -51,9 +50,7 @@ export default
 			Utils.ajax ALPHA.API_PATH.configManagement.getDefaultSet,
 				params: data
 			.then (res) =>
-				console.log res.data.sys_conf
 				resData = res.data.sys_conf
-				# @adImgUrl = resData
 				if resData
 					@logoUrlText = item.value for item in resData when item.key == 'logo_href'
 					@adUrlText = item.value for item in resData when item.key == 'right_ad_href'
@@ -62,18 +59,11 @@ export default
 					@logoImgId = item.value for item in resData when item.key == 'logo_media_id'
 					@adImgId = item.value for item in resData when item.key == 'right_ad_media_id'
 					if logoUrl
-						@isShowLogoImg = true
+						# @isShowLogoImg = true
 						@logoImgUrl = "http://172.16.10.122/" + logoUrl
-					else
-						@isShowLogoImg = false
 					if adUrl
-						@isShowAdImg = true
+						# @isShowAdImg = true
 						@adImgUrl = "http://172.16.10.122/" + adUrl
-					else
-						@isShowAdImg = false
-					
-					# @logoImgUrl = "http://172.16.10.122/" + item.other for item in resData when item.key == 'logo_media_id'
-					# @adImgUrl = "http://172.16.10.122/" + item.other for item in resData when item.key == 'right_ad_media_id'
 		# 保存设置对话框主题
 		saveSetTheme: ->
 			params =
@@ -101,6 +91,7 @@ export default
 					vm.$notify
 						type: 'success'
 						title: '已恢复默认设置'
+					@getDefaultSet()
 
 			
 

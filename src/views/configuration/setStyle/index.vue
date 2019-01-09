@@ -12,8 +12,8 @@
                         .upload_img_box
                             form(enctype="multipart/form-data" id="file")
                                 input(type="file" @change="getLogoImg")
-                            div(class="balckBg" v-if="!isShowLogoImg") 点击上传
-                            img(:src="logoImgUrl" v-if="isShowLogoImg")
+                            div(class="balckBg") 点击上传
+                            img(:src="logoImgUrl")
                         p 企业标志图片尺寸为180*50，图片格式为jpg，png    
                 .common_line.set_line2
                     .left_text 图片跳转链接
@@ -28,8 +28,8 @@
                         .upload_img_box
                             form(enctype="multipart/form-data")
                                 input(type="file" @change="getAdImg")
-                            div(class="balckBg" v-if="!isShowAdImg") 点击上传
-                            img(:src="adImgUrl" v-if="isShowAdImg")
+                            div(class="balckBg") 点击上传
+                            img(:src="adImgUrl")
                         p 企业标志图片尺寸为270px，图片格式为jpg，png
                 .common_line.set_line2
                     .left_text 图片跳转链接
