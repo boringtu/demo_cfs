@@ -1,5 +1,56 @@
 <style lang="sass" src="./index.sass" scoped></style>
 <template lang="pug">
 .root
+    .cont_wrap
+        h1 桌面对话窗口
+        .cont_box
+            .left_set_logo
+                h2 设置logo图片
+                .common_line
+                    .left_text logo图片
+                    .right_cont 
+                        .upload_img_box
+                            form(enctype="multipart/form-data" id="file")
+                                input(type="file" @change="getLogoImg")
+                            div(class="balckBg" v-if="!isShowLogoImg") 点击上传
+                            img(:src="logoImgUrl" v-if="isShowLogoImg")
+                        p 企业标志图片尺寸为180*50，图片格式为jpg，png    
+                .common_line.set_line2
+                    .left_text 图片跳转链接
+                    .right_cont
+                        .url_input
+                            span https://
+                            input(type="text" v-model="logoUrlText")
+                h2.set_adline 设置右侧广告栏
+                .common_line.ad_img_line
+                    .left_text 广告图
+                    .right_cont 
+                        .upload_img_box
+                            form(enctype="multipart/form-data")
+                                input(type="file" @change="getAdImg")
+                            div(class="balckBg" v-if="!isShowAdImg") 点击上传
+                            img(:src="adImgUrl" v-if="isShowAdImg")
+                        p 企业标志图片尺寸为270px，图片格式为jpg，png
+                .common_line.set_line2
+                    .left_text 图片跳转链接
+                    .right_cont
+                        .url_input
+                            span https://
+                            input(type="text" v-model="adUrlText")
+                .set_bths
+                    div(class="recover_default_btn" @click="recoverDefaultSet") 恢复默认设置
+                    div(class="save_btn" @click="saveSetTheme") 保存
+            .right_view_box
+                h2 预览
+                .view_cont_wrap
+                    .view_tlt
+                        img(:src="logoImgUrl")
+                        <i class="el-icon-close"></i>
+                    .view_cont
+                        .view_dialog_win
+                        img(:src="adImgUrl" class="ad_img")
+                    
+                
+
 </template>
 <script lang="coffee" src="./index.coffee"></script>

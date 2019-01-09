@@ -69,6 +69,15 @@ export default do ->
 					# 根据account查询单个客服
 					check:	'/api/teamwork/admin/check'
 				## 配置管理 ##
+				configManagement:
+					# 保存设置对话框主题
+					saveSetTheme: '/api/conf/pcDialog'
+					# 获取默认配置
+					getDefaultSet: '/api/conf/all'
+					# 恢复默认设置
+					recoverDefaultSet: '/api/conf/default'
+
+
 		PROTOCOL:
 			writable: off, value: location.protocol
 		HOSTNAME:
