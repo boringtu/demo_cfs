@@ -8,6 +8,10 @@ import VueAxios from 'vue-axios'
 import { EmojiPickerPlugin } from 'vue-emoji-picker'
 import ALPHA from '@/assets/scripts/alpha'
 import Utils from '@/assets/scripts/utils'
+import Velocity from 'velocity-animate'
+import 'velocity-animate/velocity.ui'
+# import SockJS from '@/assets/scripts/sockjs.min'
+# import Stomp from '@/assets/scripts/stomp'
 # import ElementUI from 'element-ui'
 import {
 	Input
@@ -26,6 +30,9 @@ Vue.use Button
 Vue.prototype.$notify = Notification
 
 Vue.config.productionTip = false
+
+# window.SockJS = SockJS
+# window.Stomp = Stomp
 
 # 响应拦截器
 axiosInterceptor = axios.interceptors.response.use (res) ->

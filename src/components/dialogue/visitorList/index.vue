@@ -1,6 +1,6 @@
 <style lang="sass" src="./index.sass" scoped></style>
 <template lang="pug">
-el-table.root(height="190" :data="list")
+el-table.root(height="190" :data="list" row-click="eventReceiveCustomer")
 	el-table-column(label="姓名" prop="name")
 	el-table-column(label="渠道" width="60")
 		template(slot-scope="scope")

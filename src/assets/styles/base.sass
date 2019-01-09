@@ -37,6 +37,23 @@ button
 		display: block
 		clear: both
 
+@keyframes icon-spin
+	0%
+		transform: rotate(0deg)
+	100%
+		transform: rotate(359deg)
+
+.icon
+	display: inline-block
+.icon-spin
+	animation: 2s linear 0s normal none infinite running icon-spin
+
+.icon-fast
+	animation-duration: 1s
+
+.icon-pulse
+	animation: 1s steps(8) 0s normal none infinite running icon-spin
+
 body
 	position: absolute
 	z-index: 1
