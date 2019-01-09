@@ -5,6 +5,8 @@ Vue.use Vuex
 
 export default new Vuex.Store {
 	state: {
+		# WebSocket 实例
+		ws: null
 		# 与服务器时间差值
 		timeDiff: null
 		# 正在进行中的会话列表

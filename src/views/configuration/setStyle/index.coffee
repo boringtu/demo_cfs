@@ -61,14 +61,16 @@ export default
 					adUrl = item.other for item in resData when item.key == 'right_ad_media_id'
 					if logoUrl
 						@isShowLogoImg = true
+						@logoImgUrl = "http://172.16.10.122/" + logoUrl
 					else
 						@isShowLogoImg = false
 					if adUrl
 						@isShowAdImg = true
+						@adImgUrl = "http://172.16.10.122/" + adUrl
 					else
 						@isShowAdImg = false
-					@logoImgUrl = "http://172.16.10.122/" + item.other for item in resData when item.key == 'logo_media_id'
-					@adImgUrl = "http://172.16.10.122/" + item.other for item in resData when item.key == 'right_ad_media_id'
+					# @logoImgUrl = "http://172.16.10.122/" + item.other for item in resData when item.key == 'logo_media_id'
+					# @adImgUrl = "http://172.16.10.122/" + item.other for item in resData when item.key == 'right_ad_media_id'
 		# 保存设置对话框主题
 		saveSetTheme: ->
 			params =
