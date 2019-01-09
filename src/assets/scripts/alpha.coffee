@@ -60,6 +60,10 @@ export default do ->
 					editServe: '/api/teamwork/admin'
 					# 所有权限
 					permission: '/api/teamwork/permission'
+					# 默认权限
+					onlypermission:	'/api/teamwork/role/permission'
+					# 根据account查询单个客服
+					check:	'/api/teamwork/admin/check'
 				## 配置管理 ##
 		PROTOCOL:
 			writable: off, value: location.protocol

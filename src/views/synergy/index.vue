@@ -17,23 +17,23 @@
 				ul.left_ul
 					li.tc.first_li
 						span.pointer.addspan(@click="addGrouping") + 添加分组
-					li.all_li.pointer 全部（{{peopleCount}}）
+					li.all_li.pointer(@click="loadRightData(0)") 全部（{{peopleCount}}）
 					
-					li.resDatali.pointer(@click="loadRightData" ,@mouseenter="bMouseEnterFun(index)" @mouseleave="bMouseLeaveFun",v-for="(items,index) in  resdata.groups",v-if="index>0") 
-						span {{items.name}} 
-						b(v-if = "items.count && items.count>=1")({{items.count}})
+					li.resDatali.pointer(@click="loadRightData(index)",@mouseenter="bMouseEnterFun(index)" @mouseleave="bMouseLeaveFun",v-for="(items,index) in  resdata.groups",v-if="index>0") 
+						span.nametitle {{items.name}}
+						span ( {{items.newVal.length}} )
 						cite.fr.clears.zindexBox(v-show="index == indexThis")
 							div.btn_gobal.edit_btn.pointer(@click.stop.prevent="editGround(items.name,items.id)") 编辑
 							div.btn_gobal.delete_btn.pointer(@click.stop.prevent="deleteGround(items.id)") 删除
 
 		
-			.right_box
+			.right_box(v-if="loadedData")
 				.clears.title_ul
 					ul.ul_li_fl
-						li 总人数：1 
-						li 管理员：1
-						li 客服：1
-						li 被禁用人数：1
+						li 总人数：{{groupsList[initIndex].newVal.length}}
+						li 管理员：{{servenumber}}
+						li 客服：{{kefnumber}}
+						li 被禁用人数：{{disablednumber}}
 					span.fr.addspan.pointer.addServe(@click="aHerf()") + 添加客服
 				ul.second_ul_box
 					li.fisrt_li.li_span_list
@@ -42,16 +42,16 @@
 						span 昵称
 						span 角色
 						span(style="flex:2")  操作
-					.overBox(v-if="loadedData")
-						//- li.li_span_list.center_li(v-for="items in arrylist")
-						li.li_span_list.center_li(v-for="items in groupsList[0].newVal")
+					.overBox
+						li.li_span_list.center_li(v-for="items,index in groupsList[initIndex].newVal")
 							span {{items.account}}
 							span {{items.name}}
 							span {{items.nickname}}
 							span {{items.roleId == 1 ?'管理员':'客服'}}
 							span(style="flex:2") 
 								b.btn_gobal.edit_btn.pointer 编辑
-								b.btn_gobal.disa_btn.pointer(@click="disabeldServe(items.id)") 禁用
+								b.btn_gobal.disa_btn.pointer(@click="disabeldServe($event,index,items.id)")
+									span {{items.status == 1 ?'启用':'禁用'}}
 								b.btn_gobal.delete_btn.pointer(@click="deletedServe(items.id)") 删除
 </template>
 <script lang="coffee" src="./index.coffee"></script>
