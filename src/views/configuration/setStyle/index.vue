@@ -20,7 +20,7 @@
                     .right_cont
                         .url_input
                             span https://
-                            input(type="text" v-model="logoUrlText")
+                            input(type="text" v-model="logoUrlText" @change="logoUrlChange")
                 h2.set_adline 设置右侧广告栏
                 .common_line.ad_img_line
                     .left_text 广告图
@@ -36,10 +36,10 @@
                     .right_cont
                         .url_input
                             span https://
-                            input(type="text" v-model="adUrlText")
+                            input(type="text" v-model="adUrlText" @change="adUrlChange")
                 .set_bths
                     div(class="recover_default_btn" @click="recoverDefaultSet") 恢复默认设置
-                    div(class="save_btn" @click="saveSetTheme") 保存
+                    <el-button type="primary" class="save_btn" @click="saveSetTheme" :loading="isloading" :disabled="isDisabled">保存</el-button>
             .right_view_box
                 h2 预览
                 .view_cont_wrap
