@@ -58,8 +58,6 @@ export default
 		 # @params message <JSON String> 消息体。只在 SEND_CODE 为 1 时存在
 		###
 		wsSend: (SEND_CODE, userId, message) ->
-			# @ws.send ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"
-			console.log '应该就一次'
 			new SendWS @ws, [ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"]
 
 		# 监听 广播

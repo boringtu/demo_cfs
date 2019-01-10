@@ -2,7 +2,7 @@
 <template lang="pug">
 .root
 	.tab-box
-		h2 当前对话
+		h2 {{ title }}
 		span.dialogCount(v-if="dialogInfo") 对话次数：{{ dialogInfo.num }}
 		button.close(v-if="dialogInfo" @click="eventCloseTheChat")
 			i.icon.icon-close
@@ -50,7 +50,7 @@
 							.msg-arrow
 								i
 
-		.chat-toolbar
+		.chat-toolbar(v-if="isChatting")
 			emoji-picker(@emoji="insert" class="emoji-picker" ref="emojiPicker")
 				button(slot="emoji-invoker" slot-scope="{ events }" v-on="events")
 					i.icon.icon-face
@@ -63,7 +63,7 @@
 			button(@click="eventChoosePicture")
 				i.icon.icon-picture
 
-		.chat-sendbox
+		.chat-sendbox(v-if="isChatting")
 			textarea(
 				ref="input"
 				placeholder="请输入消息..."
@@ -72,6 +72,7 @@
 				@blur="isReadyToType = 0"
 				v-model="inputText"
 				spellcheck="false"
+				:readonly="!dialogInfo"
 			)
 			el-button.send(type="primary" :disabled="!inputText.trim()" @click="eventSend") 发送
 </template>

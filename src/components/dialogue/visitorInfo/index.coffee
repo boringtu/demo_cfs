@@ -48,6 +48,8 @@ export default
 			ip: ''
 		# 对话信息 默认数据
 		info: null
+		# 数据待保存
+		dataChanged: 0
 
 	computed:
 		# 是否无数据
@@ -58,11 +60,11 @@ export default
 		topicOptions: -> @$store.state.topics
 
 	created: ->
-		console.log @info
 		@info = Utils.clone @defInfo
 	
 	watch:
 		dialogInfo: (info) ->
+			@dataChanged = 0
 			unless info
 				@info = Utils.clone @defInfo
 				return
@@ -130,3 +132,6 @@ export default
 					type: 'success'
 					title: '保存成功'
 					message: '客户信息保存成功'
+
+		eventInputChanged: ->
+			@dataChanged = 1

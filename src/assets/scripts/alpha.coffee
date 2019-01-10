@@ -44,6 +44,8 @@ export default do ->
 					todayVisits: '/api/dialog/todayVisits'
 					# 历史消息数据列表
 					history: '/api/dialog/history'
+					# 结束对话
+					close: '/api/dialog/conversation/close'
 				## 内部协同 ##
 				synergy:
 					# 客服列表

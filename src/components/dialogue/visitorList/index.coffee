@@ -50,10 +50,6 @@ export default
 			s = if (s + '').length > 1 then s else '0' + s
 			"#{ m }分#{ s }秒"
 
-	watch:
-		list: (newList, oldList) ->
-			console.log newList.length, oldList.length
-
 	methods:
 		# 获取数据
 		fetchData: ->

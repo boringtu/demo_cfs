@@ -27,6 +27,17 @@ export default
 		referTimeStamp: 0
 
 	computed:
+		isChatting: ->
+			info = @dialogInfo
+			info?.isChatting
+		title: ->
+			switch @isChatting
+				when 1
+					'当前对话'
+				when 0
+					'历史对话'
+				else
+					''
 		# 对话信息
 		dialogInfo: -> @$store.state.dialogInfo
 		# 未读消息条数
@@ -71,6 +82,7 @@ export default
 	watch:
 		# 切换用户
 		dialogInfo: (newInfo, oldInfo) ->
+			@inputText = ''
 			unless newInfo
 				## 理论上不会出现 newInfo 为 null 的情况，首次加载除外，所以应该不会进入这里
 				# 清空数据
@@ -130,8 +142,11 @@ export default
 					@noMoreHistory = 1
 					return
 
-				# 如果为首屏数据加载，初始化 referTimeStamp
-				@referTimeStamp = list[0].timeStamp if isReset
+				# 新请求来的消息条数
+				newMsgCount = list.length
+
+				# 刷新 referTimeStamp
+				@referTimeStamp = list[0].timeStamp
 				multiple = 0
 				# 追加数据（包含首屏数据的情况）
 				# list = list.concat @chatHistoryList
@@ -164,8 +179,13 @@ export default
 						@scrollToBottom 0
 				else
 					## 非首屏时，保持当前窗口中的可视消息位置
-					# 记录当前 chatWindow scrollTop
-					# sT = @$refs.chatWindow.scrollTop
+					els = [].slice.apply @$refs.chatWrapper.children
+					h = 0
+					for i in [0..newMsgCount]
+						el = els[i]
+						break unless el
+						h += el.offsetHeight
+					@$refs.chatWindow.scrollTop = h
 			return
 
 		# 历史消息滚动到指定位置
@@ -183,7 +203,7 @@ export default
 			# difference value
 			diff = conH - winH
 			return if diff < 0
-			win.velocity scrollTop: diff, {duration: duration}
+			win.velocity scrollTop: "#{ diff }px", {duration: duration}
 
 		# Event: 消息发送事件
 		eventSend: ->
@@ -214,20 +234,8 @@ export default
 			@$nextTick =>
 				@$refs.input.focus()
 
-		# 初始化/重置 历史消息列表的位置（到最底部）
-		resetHistoryPosition: ->
-			wrap = @$refs.historyWindow
-			box = wrap.children[0]
-			# window height
-			wh = wrap.offsetHeight
-			# content height
-			ch = box.offsetHeight
-			return if wh > ch
-			wrap.scrollTop = ch - wh
-
 		# Event: 历史消息列表滚动事件
 		eventScrollHistory: ->
-			console.log 'scrollTop: ', @$refs.chatWindow.scrollTop
 			return if @noMoreHistory
 
 			# 频率控制器
@@ -235,12 +243,38 @@ export default
 			@winScrollState = 1
 			setTimeout (=> @winScrollState = 0), 20
 
-			## 获取更多历史消息数据
+			## 处理 unreadElList
+			list = @unreadElList
+			# window element
+			win = @$refs.chatWindow
+			# window height
+			wT = win.offsetHeight
+			# 备注：
 			# 12:	.chat-content padding-top
 			# 14:	.time-line height
 			# 9:	.msg-self/.msg-opposite padding-top
 			# 34/2	.msg-bubble half height
-			@fetchHistory() if @$refs.chatWindow.scrollTop < 12 + 14 + 9 + 34 / 2
+			# 消息顶部距离文字中间的高度（不包含timeline）
+			cH = 12 + 9 + 34 / 2
+			# .time-line height
+			tT = 14
+			# window scrollTop
+			sT = win.scrollTop
+			loop
+				el = list[0]
+				break unless el
+				# 是否带有timeline
+				hasTL = ~~el.getAttribute 'data-timeline'
+				# 当前 element 距离顶部的距离
+				distance = el.offsetTop + cH
+				distance += tT if hasTL
+				break unless sT < distance
+				el.setAttribute 'data-unread', 0
+				list.shift()
+				
+
+			## 获取更多历史消息数据
+			@fetchHistory() if sT < cH + tT
 
 		# Event: 显示上面的未读消息点击事件
 		eventShowUpperUnread: ->
@@ -286,10 +320,27 @@ export default
 
 		# 结束当前对话
 		closingTheChat: ->
-			@$store.commit 'removeFromChattingList', @dialogInfo
+			name = @dialogInfo.name
+			promise = Utils.ajax ALPHA.API_PATH.dialogue.close,
+				method: 'POST'
+				data: userId: @dialogInfo.id
+			promise.then (res) =>
+				@$store.commit 'removeFromChattingList', @dialogInfo
+				# 弹出提示
+				vm.$notify
+					type: 'success'
+					title: '会话结束'
+					message: "已结束与 #{ name } 的会话"
 
 		# 服务器推送来的消息（包括己方发送的消息）
 		addMessage: (msg) ->
+			@$store.commit 'addToChatHistoryList', msg
+			if msg.sendType is 1
+				# 己方消息，滚动到底部
+				@$nextTick => @scrollToBottom 80
+			else
+				# 对方消息，追加到 newUnreadElList
+				@newUnreadElList.push msg
 
 		# 处理未读消息（只会在首屏时被执行
 		setUnreadList: ->
@@ -310,6 +361,3 @@ export default
 				isUnread = ~~el.getAttribute 'data-unread'
 				list.push el if isUnread
 			@unreadElList = list
-
-		# 处理新推送的未读消息（只会在非首屏时被执行
-		setNewUnreadList: ->

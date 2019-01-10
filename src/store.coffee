@@ -65,7 +65,7 @@ export default new Vuex.Store
 
 		# 消息已读处理成功
 		readed: (state, userId) ->
-			list = state.chatHistoryList
+			list = state.chattingList
 			for user in list when user.id is userId
 				user.unreadCount = 0
 				break
@@ -85,5 +85,10 @@ export default new Vuex.Store
 				break
 			# 更新最新 message
 			info.message = msg
+
+		# add message into chat history list
+		addToChatHistoryList: (state, msg) ->
+			list = state.chatHistoryList
+			state.chatHistoryList = [...list, msg]
 
 	actions: {}
