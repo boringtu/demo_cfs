@@ -5,7 +5,7 @@
         h1 桌面对话窗口
         .cont_box
             .left_set_logo
-                h2 设置logo图片
+                h2.top_tlt 设置logo图片
                 .common_line
                     .left_text logo图片
                     .right_cont 
@@ -41,7 +41,7 @@
                     div(class="recover_default_btn" @click="recoverDefaultSet") 恢复默认设置
                     <el-button type="primary" class="save_btn" @click="saveSetTheme" :loading="isloading" :disabled="isDisabled">保存</el-button>
             .right_view_box
-                h2 预览
+                h2.top_tlt 预览
                 .view_cont_wrap
                     .view_tlt
                         img(:src="logoImgUrl")
