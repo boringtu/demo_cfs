@@ -1,5 +1,4 @@
 .root
-	width: 1600px
 	text-align: left
 	.cont_wrap
 		width: 100%
@@ -21,10 +20,14 @@
 			font-size: 16px
 			color: #333333
 			font-weight: bold
+		.top_tlt
+			height: 96px
+			line-height: 96px
 		.left_set_logo
 			width: 594px
 			padding-left: 29px
 			box-sizing: border-box
+			flex-shrink: 0
 			.common_line
 				display: flex
 				.left_text
@@ -135,16 +138,21 @@
 					width: 100px
 					height: 36px
 					line-height: 36px
+					padding: 0
 					text-align: center
 					color: #ffffff
 					background: #0083FF	
 					font-size: 16px	
 					border-radius: 5px
 					cursor: pointer
+				.save_btn.is-disabled
+					background-color: #a0cfff
+    				border-color: #a0cfff
+					cursor: not-allowed
 		.right_view_box
 			flex: 1
 			.view_cont_wrap
-				width: 870px
+				width: 90%
 				height: 600px
 				border: 1px solid #EBEBEB
 				.view_tlt
@@ -167,9 +175,10 @@
 					height: 540px
 					display: flex
 					.view_dialog_win
-						width: 600px
+						flex: 1
 						height: 540px
 						background: url(../../../assets/images/dialog_bg.png) no-repeat center
+						background-size: 100% 100%
 					.ad_img
 						width: 270px
 						height: 540px
