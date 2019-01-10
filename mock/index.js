@@ -3,7 +3,7 @@ var path = require('path');
 var Mock = require('mockjs');
 
 var apiMap = {
-	'/api/dialog/user/init': 'visitorList',
+	// '/api/dialog/user/init': 'visitorList',
 	// '/api/common/timestamp': 'timestamp',
 	// '/api/dialog/user/chatting': 'chatList',
 	// '/api/dialog/user/closed': 'chatList',

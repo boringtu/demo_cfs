@@ -38,6 +38,8 @@
 					.chat-content(
 						v-for="item in chatHistoryList"
 						:key="item.id"
+						:data-unread="item.isUnread"
+						:data-timeline="item.hasTimeline"
 					)
 						//- 时间线
 						.time-line(v-if="item.hasTimeline") {{ item.timeStamp | timeline }}

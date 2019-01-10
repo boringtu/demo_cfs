@@ -72,6 +72,8 @@ export default
 			Utils.ajax ALPHA.API_PATH.dialogue.chatting
 			.then (res) =>
 				data = res.data
+				# TODO TEST CODE
+				item.unreadCount = 8 for item in data when item.id is 341
 				@$store.state.chattingList = data
 
 		# 获取已结束的会话列表（目前不提供刷新功能，感觉没必要）

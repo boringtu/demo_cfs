@@ -16,9 +16,9 @@ export default
 		# 是否无更多历史消息的状态
 		noMoreHistory: 0
 		# 首屏消息条数
-		msgInitCount: 5
+		msgInitCount: 20
 		# 非首屏消息条数
-		msgAppendCount: 5
+		msgAppendCount: 20
 		# 未读消息 element 引用列表（新消息在前）
 		unreadElList: []
 		# 新推送的未读消息 element 引用列表（顺序无所谓）
@@ -112,7 +112,6 @@ export default
 			if isReset
 				params.size = @msgInitCount
 				params.size = @dialogInfo.unreadCount if @dialogInfo.unreadCount > params.size
-				# params.size = 5
 			else
 				params.size = @msgAppendCount
 			# 目前最前面的那条消息的 timestamp（非首屏）
@@ -148,24 +147,30 @@ export default
 						multiple = tempMultiple
 				# 更改是否正在加载历史数据的状态
 				@isLoadingHistory = 0
+				# 添加未读标记
+				count = @dialogInfo.unreadCount
+				for i in [list.length - 1...0]
+					break unless count--
+					item = list[i]
+					item.isUnread = 1
 				# 刷新数据
 				@$store.state.chatHistoryList = list
 				if isReset
 					## 首屏时，滚动到最底部
 					@$nextTick =>
-						# 滚动到最底部
-						@scrollToBottom 0
 						# 处理未读消息
 						@setUnreadList()
+						# 滚动到最底部
+						@scrollToBottom 0
 				else
 					## 非首屏时，保持当前窗口中的可视消息位置
 					# 记录当前 chatWindow scrollTop
 					# sT = @$refs.chatWindow.scrollTop
 			return
 
-		# 历史消息滚动到最顶部
-		scrollToTop: (duration = 200) ->
-			@$refs.chatWindow.velocity scrollTop: 0, {duration: duration}
+		# 历史消息滚动到指定位置
+		scrollTo: (targetY = 0, duration = 200) ->
+			@$refs.chatWindow.velocity scrollTop: "#{ targetY }px", {duration: duration}
 
 		# 历史消息滚动到最底部
 		scrollToBottom: (duration = 200) ->
@@ -222,6 +227,7 @@ export default
 
 		# Event: 历史消息列表滚动事件
 		eventScrollHistory: ->
+			console.log 'scrollTop: ', @$refs.chatWindow.scrollTop
 			return if @noMoreHistory
 
 			# 频率控制器
@@ -238,10 +244,24 @@ export default
 
 		# Event: 显示上面的未读消息点击事件
 		eventShowUpperUnread: ->
+			# window element
+			win = @$refs.chatWindow
+			# all chat element list
+			allEls = [].slice.apply @$refs.chatWrapper.children
+			# readed count
+			rCount = 0
+			# 时间最久的未读消息 element
+			lastUnreadEl = @unreadElList.last()
+			return unless lastUnreadEl
+			for item in allEls
+				break if item is lastUnreadEl
+				++rCount
+			# 目标 Y 坐标
+			targetY = 0
+			targetY += allEls[i].offsetHeight for i in [0...rCount]
+			@scrollTo targetY
 			# 清空 未读消息
 			@clearUnread()
-			# 滚动到顶部
-			@scrollToTop()
 
 		# Event: 显示下面的未读消息点击事件
 		eventShowLowerUnread: ->
@@ -268,32 +288,28 @@ export default
 		closingTheChat: ->
 			@$store.commit 'removeFromChattingList', @dialogInfo
 
+		# 服务器推送来的消息（包括己方发送的消息）
+		addMessage: (msg) ->
+
 		# 处理未读消息（只会在首屏时被执行
 		setUnreadList: ->
 			info = @dialogInfo
 			return unless info
 			return unless info.unreadCount
-			# 推送给服务器端清空未读消息
-			@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.READING, info.id
-			# unread count
-			count = info.unreadCount
-			# window element
-			win = @$refs.chatWindow
-			# window height
-			wh = win.offsetHeight
-			# result height
-			rh = 0
-			# window element's children elements
-			els = win.children
-			# 计算窗口可见消息条数
+			# 通知服务器端清空未读消息
+			setTimeout =>
+				@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.READING, info.id
+			, 100
+
+			# chat elements
+			els = @$refs.chatWrapper.children
+			# unread element list
+			list = []
 			for i in [els.length - 1...0]
-				rh += els[i].offsetHeight
-				break if rh > wh
-				--count
-			# 计算刨除可见的消息以外的未读消息
-			# TODO
-			
-			# @unreadElList
+				el = els[i]
+				isUnread = ~~el.getAttribute 'data-unread'
+				list.push el if isUnread
+			@unreadElList = list
 
 		# 处理新推送的未读消息（只会在非首屏时被执行
 		setNewUnreadList: ->

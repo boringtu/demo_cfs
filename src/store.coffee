@@ -6,6 +6,8 @@ Vue.use Vuex
 
 export default new Vuex.Store
 	state:
+		# Socket 连接（WebSocket
+		socket: null
 		# Stomp 连接（WebSocket
 		ws: null
 		# 与服务器时间差值
@@ -67,5 +69,21 @@ export default new Vuex.Store
 			for user in list when user.id is userId
 				user.unreadCount = 0
 				break
+
+		# 刷新 chatting list
+		refreshChattingList: (state, msg) ->
+			# 用户ID
+			id = msg.userId
+			# 从正在进行中的会话列表中匹配该用户对象
+			# 注：不可能出现在 closedList 中
+			list = Utils.clone state.chattingList
+			for item in list when item.id is id
+				info = item
+				# 排序
+				list.remove info
+				state.chattingList = [info, ...list]
+				break
+			# 更新最新 message
+			info.message = msg
 
 	actions: {}

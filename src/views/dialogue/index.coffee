@@ -4,6 +4,19 @@ import ComponentDialogList from '@/components/dialogue/dialogList'
 import ComponentChatBox from '@/components/dialogue/chatBox'
 import ComponentVisitorInfo from '@/components/dialogue/visitorInfo'
 
+class SendWS
+	constructor: (@ws, data) ->
+		unless @send data
+			@handle = setInterval (=> @send data), 20
+	send: (data) ->
+		socket = vm.$store.state.socket
+		return 0 unless socket?.readyState is 1
+		clearInterval @handle
+		# 发送数据
+		@ws.send.apply @ws, data
+		@ws = null
+		return 1
+
 export default
 	components:
 		'CPNT-visitorList': ComponentVisitorList
@@ -22,11 +35,13 @@ export default
 
 		# 待接待访客列表
 		visitorList: -> @$store.state.visitorList
+		# 当前会话ID
+		dialogID: -> @$store.state.dialogID
 
 	created: ->
 		window.p = @
 		# 建立 WebSocket 连接
-		socket = new SockJS ALPHA.API_PATH.WS.url
+		@$store.state.socket = socket = new SockJS ALPHA.API_PATH.WS.url
 		@$store.state.ws = ws = Stomp.over socket
 		ws.connect {}, (frame) =>
 			# console.log 'Connected:' + frame
@@ -43,7 +58,9 @@ export default
 		 # @params message <JSON String> 消息体。只在 SEND_CODE 为 1 时存在
 		###
 		wsSend: (SEND_CODE, userId, message) ->
-			@ws.send ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"
+			# @ws.send ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"
+			console.log '应该就一次'
+			new SendWS @ws, [ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"]
 
 		# 监听 广播
 		monitorBroadcast: (res) ->
@@ -82,7 +99,14 @@ export default
 					## 1: 消息推送
 					## 1|userId|message Object
 					msg = body.toJSON()
-					# TODO
+					# 刷新 chatting list
+					@$store.commit 'refreshChattingList', msg
+					# 当前会话为此用户时
+					if userId is @dialogID
+						# 追加消息
+						@$refs.cpnt_chatBox.addMessage msg
+						# 通知服务器端清空未读消息
+						@wsSend ALPHA.API_PATH.WS.SEND_CODE.READING, userId
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.RECEIVED
 					## 2: 开始接待用户
 					## 2|userId|user Object
