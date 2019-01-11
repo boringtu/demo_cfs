@@ -64,7 +64,7 @@
 						div
 							span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insertEmoji(emoji)") {{ emoji }}
 			form(enctype="multipart/form-data")
-				input(type="file" @change="eventSendPic")
+				input(type="file" accept="image/gif, image/jpeg, image/png" @change="eventSendPic")
 				i.icon.icon-picture
 
 		.chat-sendbox(v-if="isChatting")

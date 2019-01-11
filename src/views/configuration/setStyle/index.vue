@@ -11,7 +11,7 @@
                     .right_cont 
                         .upload_img_box
                             form(enctype="multipart/form-data" id="file")
-                                input(type="file" @change="getLogoImg")
+                                input(type="file" accept="image/gif, image/jpeg, image/png" @change="getLogoImg")
                             div(class="balckBg") 点击上传
                             img(:src="logoImgUrl")
                         p 企业标志图片尺寸为180*50，图片格式为jpg，png    
@@ -27,7 +27,7 @@
                     .right_cont 
                         .upload_img_box
                             form(enctype="multipart/form-data")
-                                input(type="file" @change="getAdImg")
+                                input(type="file" accept="image/gif, image/jpeg, image/png" @change="getAdImg")
                             div(class="balckBg") 点击上传
                             img(:src="adImgUrl")
                         p 企业标志图片尺寸为270px，图片格式为jpg，png

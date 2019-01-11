@@ -387,7 +387,6 @@ export default
 					@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, @dialogInfo.id, JSON.stringify sendBody
 		# 渲染消息
 		renderMessage: (msg) ->
-			console.log msg
 			return '' unless msg and msg.message
 			switch msg.messageType
 				when 1
