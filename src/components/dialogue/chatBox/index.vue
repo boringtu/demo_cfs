@@ -4,7 +4,7 @@
 	.tab-box
 		h2 {{ title }}
 		span.dialogCount(v-if="dialogInfo") 对话次数：{{ dialogInfo.num }}
-		button.close(v-if="dialogInfo" @click="eventCloseTheChat")
+		button.close(v-if="isChatting" @click="eventCloseTheChat")
 			i.icon.icon-close
 		.closing-confirm-box(v-if="confirmToClose")
 			span.box-arrow
@@ -33,6 +33,9 @@
 				//- 历史消息加载中
 				.loading-history(v-if="isLoadingHistory")
 					i.icon.icon-loading.icon-spin.icon-fast
+				div(v-if="!dialogInfo" class="no-chat")
+					div.icon.icon-dialogue-attention
+					p 请在左侧打开对话
 				div(ref="chatWrapper")
 					//- 每一条消息
 					.chat-content(

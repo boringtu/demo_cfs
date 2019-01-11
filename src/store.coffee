@@ -49,6 +49,7 @@ export default new Vuex.Store
 		# remove visitor from chatting list
 		removeFromChattingList: (state, user) ->
 			return unless user
+			user.isChatting = 0
 			list = state.chattingList
 			# 从 chatting list 中移除该用户
 			i = list.indexOf user
