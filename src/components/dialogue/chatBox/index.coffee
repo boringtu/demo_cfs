@@ -216,14 +216,6 @@ export default
 			# 清空消息框
 			@inputText = ''
 
-		# Event: 选择并发送图片
-		eventChoosePicture: (event) ->
-			# 弹出提示
-			vm.$notify
-				type: 'info'
-				title: '开发中'
-				message: '正在开发中，敬请期待'
-
 		# 向输入框插入表情，并关闭表情选择面板
 		insertEmoji: (emoji) ->
 			# 向输入框追加表情
@@ -361,3 +353,46 @@ export default
 				isUnread = ~~el.getAttribute 'data-unread'
 				list.push el if isUnread
 			@unreadElList = list
+
+		# Event: 发送图片
+		eventSendPic: (event) ->
+			file = event.target.files[0]
+
+			###
+			# 此段注释代码是不依赖网络，将图片直接显示在历史消息里，并方便加上 loading 状态的功能
+			reader = new FileReader()
+			reader.addEventListener 'load', (event) ->
+				data = event.target.result
+				image = new Image()
+				# 加载图片获取图片的宽高
+				image.addEventListener 'load', (event) ->
+					w = image.width
+					h = image.height
+				image.src = data
+			reader.readAsDataURL file
+			###
+
+			formData = new FormData()
+			formData.append 'multipartFile', file
+			# 发起请求
+			@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
+			.then (res) =>
+				console.log res.data
+				if res.msg is 'success'
+					fileUrl = res.data.fileUrl
+
+					# 发送消息体（messageType 1: 文字 2: 图片）
+					sendBody = messageType: 2, message: fileUrl
+					# 发送消息
+					@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, @dialogInfo.id, JSON.stringify sendBody
+		# 渲染消息
+		renderMessage: (msg) ->
+			console.log msg
+			return '' unless msg and msg.message
+			switch msg.messageType
+				when 1
+					# 文本消息
+					msg.message.encodeHTML()
+				when 2
+					# 图片
+					"""<img src="/#{ msg.message.encodeHTML() }" />"""

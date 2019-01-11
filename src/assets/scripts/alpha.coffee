@@ -30,6 +30,8 @@ export default do ->
 					logout: '/api/common/logout'
 					# 服务器时间戳
 					timestamp: '/api/common/timestamp'
+					# 上传文件
+					upload: '/api/common/upload'
 				## 访客对话 ##
 				dialogue:
 					# 访客列表

@@ -1,6 +1,5 @@
 'use strict'
 import Utils from '@/assets/scripts/utils'
-import axios from 'axios'
 export default
 	data: ->
 		logoImgUrl: ''
@@ -15,87 +14,70 @@ export default
 		defaultAdUrlText: ''
 		isloading: false
 		isDisabled: true
-	watch: -> 
-		logoUrlText () =>
-			console.log logoUrlText
 	computed:
 		admin: -> ALPHA.admin or {}
 	created: ->
 		@getDefaultSet()
-	mounted: ->
-		
 	methods: 
 		logoUrlChange: ->
-			if @logoUrlText != @defaultLogoUrlText
-				@isDisabled = false
-			else
-				@isDisabled = true
+			@isDisabled = @logoUrlText is @defaultLogoUrlText
 		adUrlChange: ->
-			if @adUrlText != @defaultAdUrlText
-				@isDisabled = false
-			else
-				@isDisabled = true
+			@isDisabled = @adUrlText is @defaultAdUrlText
 		# logo图片点击上传
 		getLogoImg: ->
 			img1 = event.target.files[0]
 			formData = new FormData()
-			formData.append('multipartFile', img1)
+			formData.append 'multipartFile', img1
 			# 发起请求
-			axios.post('/api/common/upload',formData,headers:{'Content-Type':'multipart/form-data'})
-			.then (response) =>
-				console.log(response.data)
-				if response.msg == 'success'
-					@logoImgUrl = "http://172.16.10.122/" + response.data.fileUrl 
-					@logoImgId = response.data.id
-					if @logoImgId != @defaultLogoImgId
-						@isDisabled = false
-					else
-						@isDisabled = true
+			@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
+			.then (res) =>
+				console.log(res.data)
+				if res.msg is 'success'
+					@logoImgUrl = "/#{ res.data.fileUrl }"
+					@logoImgId = res.data.id
+					@isDisabled = @logoImgId is @defaultLogoImgId
 		# 广告图片点击上传
 		getAdImg: ->
 			adImg = event.target.files[0]
 			formData = new FormData()
-			formData.append('multipartFile', adImg)
-			axios.post('/api/common/upload',formData,headers:{'Content-Type':'multipart/form-data'})
+			formData.append 'multipartFile', adImg
+			@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
 			.then (res) =>
 				console.log res.data
-				if res.msg == 'success'
-					@adImgUrl = "http://172.16.10.122/" + res.data.fileUrl 
+				if res.msg is 'success'
+					@adImgUrl = "/#{ res.data.fileUrl }"
 					@adImgId = res.data.id
-					if @adImgId != @defaultAdImgId
-						@isDisabled = false
-					else
-						@isDisabled = true
+					@isDisabled = @adImgId is @defaultAdImgId
 		# 获取默认配置
 		getDefaultSet: ->
 			console.log @admin
 			data =
 				adminId: @admin.adminId
 				type: 'pc_dialog'
-			Utils.ajax ALPHA.API_PATH.configManagement.getDefaultSet,
-				params: data
+			Utils.ajax ALPHA.API_PATH.configManagement.getDefaultSet, params: data
 			.then (res) =>
 				resData = res.data.sys_conf
 				if resData
-					@logoUrlText = item.value for item in resData when item.key == 'logo_href'
-					@defaultLogoUrlText = @logoUrlText
-					@adUrlText = item.value for item in resData when item.key == 'right_ad_href'
-					@defaultAdUrlText = @adUrlText
-					logoUrl = item.other for item in resData when item.key == 'logo_media_id'
-					adUrl = item.other for item in resData when item.key == 'right_ad_media_id'
-					@logoImgId = item.value for item in resData when item.key == 'logo_media_id'
-					@defaultLogoImgId = @logoImgId
-					@adImgId = item.value for item in resData when item.key == 'right_ad_media_id'
-					@defaultAdImgId = @adImgId
+					for item in resData
+						switch item.key
+							when 'logo_href'
+								@defaultLogoUrlText = @logoUrlText = item.value
+							when 'right_ad_href'
+								@defaultAdUrlText = @adUrlText = item.value
+							when 'logo_media_id'
+								logoUrl = item.other
+								@defaultLogoImgId = @logoImgId = item.value
+							when 'right_ad_media_id'
+								adUrl = item.other
+								@defaultAdImgId = @adImgId = item.value
+
 					if logoUrl
-						@logoImgUrl = "http://172.16.10.122/" + logoUrl
+						@logoImgUrl = "/#{ logoUrl }"
 					if adUrl
-						@adImgUrl = "http://172.16.10.122/" + adUrl
+						@adImgUrl = "/#{ adUrl }"
 			
 		# 保存设置对话框主题
 		saveSetTheme: ->
-			console.log @logoImgId
-			console.log @dafaultLogoImgId 
 			isloading = true
 			params =
 				logoHref: @logoUrlText
@@ -107,7 +89,7 @@ export default
 				data: params
 			.then (res) =>
 				isloading = false
-				if res.msg == 'success'
+				if res.msg is 'success'
 					vm.$notify
 						type: 'success'
 						title: '保存成功'
@@ -119,7 +101,7 @@ export default
 				method: 'put'
 				data: params
 			.then (res) =>
-				if res.msg == 'success'
+				if res.msg is 'success'
 					vm.$notify
 						type: 'success'
 						title: '已恢复默认设置'

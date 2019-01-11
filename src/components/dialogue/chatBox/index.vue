@@ -49,7 +49,7 @@
 						//- 消息体
 						.clear(:class="item.sendType | sideClass")
 							.msg-bubble
-								.msg-content {{ item.message || '&nbsp;' }}
+								.msg-content(v-html="renderMessage(item)")
 							.msg-arrow
 								i
 
@@ -63,7 +63,8 @@
 					div.face-box
 						div
 							span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insertEmoji(emoji)") {{ emoji }}
-			button(@click="eventChoosePicture")
+			form(enctype="multipart/form-data")
+				input(type="file" @change="eventSendPic")
 				i.icon.icon-picture
 
 		.chat-sendbox(v-if="isChatting")
