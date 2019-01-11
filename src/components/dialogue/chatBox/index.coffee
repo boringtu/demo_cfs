@@ -358,6 +358,15 @@ export default
 		eventSendPic: (event) ->
 			file = event.target.files[0]
 
+			# 限制图片大小 小于 10Mb
+			if file.size / 1024 / 1024 > 10
+				# 弹出提示
+				vm.$notify
+					type: 'warning'
+					title: '图片发送失败'
+					message: "图片大小不可超过10Mb"
+				return
+
 			###
 			# 此段注释代码是不依赖网络，将图片直接显示在历史消息里，并方便加上 loading 状态的功能
 			reader = new FileReader()

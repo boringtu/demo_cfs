@@ -26,6 +26,16 @@ export default
 		# logo图片点击上传
 		getLogoImg: ->
 			img1 = event.target.files[0]
+
+			# 限制图片大小 小于 10Mb
+			if img1.size / 1024 / 1024 > 10
+				# 弹出提示
+				vm.$notify
+					type: 'warning'
+					title: '图片上传失败'
+					message: "图片大小不可超过10Mb"
+				return
+
 			formData = new FormData()
 			formData.append 'multipartFile', img1
 			# 发起请求
@@ -39,6 +49,16 @@ export default
 		# 广告图片点击上传
 		getAdImg: ->
 			adImg = event.target.files[0]
+
+			# 限制图片大小 小于 10Mb
+			if adImg.size / 1024 / 1024 > 10
+				# 弹出提示
+				vm.$notify
+					type: 'warning'
+					title: '图片上传失败'
+					message: "图片大小不可超过10Mb"
+				return
+
 			formData = new FormData()
 			formData.append 'multipartFile', adImg
 			@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
