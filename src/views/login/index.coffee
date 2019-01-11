@@ -29,10 +29,20 @@ export default
 				console.error '服务器时间获取失败'
 
 	mounted: ->
+		elUsername = document.getElementById 'username'
+		elPassword = document.getElementById 'password'
+		elSubmitBtn = document.getElementById 'submitBtn'
+		elUsername.addEventListener 'keyup', (event) =>
+			return unless event.keyCode is 13
+			elPassword.focus()
+		elPassword.addEventListener 'keyup', (event) =>
+			return unless event.keyCode is 13
+			elSubmitBtn.click()
 
 	methods:
 		# Event: submit for login
 		eventSubmit: (event) ->
+			console.log 123
 			event.preventDefault()
 			@login_loading = true
 			data =

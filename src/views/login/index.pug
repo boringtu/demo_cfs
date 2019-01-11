@@ -3,8 +3,8 @@
 		.logo
 			i.icon.icon-logo
 		form#loginBox
-			el-input(v-model="username" placeholder="客服ID" :disabled="login_loading")
+			el-input(v-model="username" id="username" placeholder="客服ID" :disabled="login_loading")
 				.icon.icon-service(slot="prefix")
-			el-input(v-model="password" placeholder="密码" :disabled="login_loading" type="password")
+			el-input(v-model="password" id="password" placeholder="密码" :disabled="login_loading" type="password")
 				.icon.icon-password(slot="prefix")
-			el-button(type="primary" @click="eventSubmit" class="btn-submit" :loading="login_loading") 登录
+			el-button(type="primary" id="submitBtn" @click="eventSubmit" class="btn-submit" :loading="login_loading") 登录
