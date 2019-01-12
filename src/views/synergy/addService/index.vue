@@ -69,7 +69,7 @@
 								label.rel.label_check(v-if="permissionsitem.id" )
 									i.icon(:class="checkedData[permissionsitem.id] ? 'icon-checkbox-1 ':'icon-checkbox-0'")
 										input.inputCheck(type="checkbox"  @click="checkboxFs(permissionsitem.id)"  v-model="checkedData[permissionsitem.id]" )
-										span.checkboxInfo {{permissionsitem.name}} -{{permissionsitem.id}}
+										span.checkboxInfo {{permissionsitem.name}}
 					template(v-if="inittype == 1")
 						.citeBox(v-for="items,index in servicedata")
 							.title {{items.name}}
@@ -77,7 +77,7 @@
 								label.rel.label_check(v-if="permissionsitem.id" )
 									i.icon(:class="checkedData[permissionsitem.id] ? 'icon-checkbox-1 ':'icon-checkbox-0'")
 										input.inputCheck(type="checkbox"  @click="checkboxFs(permissionsitem.id)" v-model="checkedData[permissionsitem.id]" )
-										span.checkboxInfo {{permissionsitem.name}} -{{permissionsitem.id}}
+										span.checkboxInfo {{permissionsitem.name}}
 				//- 新添加客服
 				template(v-if="!hasparams")
 					.citeBox(v-show="inittype == 1 ")
