@@ -226,7 +226,7 @@ export default
 				method: 'put'
 				data:
 					# 提交代码前需要把 account 字段 去掉
-					account:@account
+					# account:@account
 					id:@uesrid
 					menuIds:menuIdslist or ''
 					name:@name
