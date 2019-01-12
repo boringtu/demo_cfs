@@ -8,6 +8,7 @@
 			tag="li"
 			active-class="active"
 			v-for="m1 in permissions"
+			v-if="hasMenu(m1)"
 			:key="m1.id"
 			:to="m1.id | getUrl"
 		)
@@ -21,6 +22,7 @@
 					tag="li"
 					exact-active-class="active"
 					v-for="m2 in m1.children"
+					v-if="hasMenu(m2)"
 					:key="m2.id"
 					:to="m2.id | getUrl"
 				)
