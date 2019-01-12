@@ -13,6 +13,7 @@ export default
 		grouplist: ''
 		confirmpassword: ''
 		uesrid: ''
+		overData: false,
 		# 客服权限列表
 		servicedata: []
 		# 管理员权限列表
@@ -43,6 +44,9 @@ export default
 	watch:
 		$route:(to)->
 			@getgrounds() if to.name is 'addService'
+			@checkedData = {}
+			@permissionF()
+			@getParams()
 	methods:
 		# 初始化分组数据
 		getgrounds:->
@@ -57,8 +61,19 @@ export default
 				@changselect(@roleId)
 				@hasparams = true
 			else
+				@account = ''
+				@name = ''
+				@nickname = ''
+				@roleId = ''
+				@groupId = ''
+				@password = ''
+				@grouplist = ''
+				@confirmpassword = ''
+				@uesrid = ''
 				@roleId = "2"
 				@inittype =  2
+				@hasparams = false
+				@isedit = false
 		# 需要编辑的客服ID对应信息
 		getAcountData:(account)->
 			for item in @adminslist
@@ -113,6 +128,7 @@ export default
 						newarr_second = []
 						@administratortype = 1
 						@formaData(newarr_second,res.data[index].menus)
+				this.overData = true
 		# 格式化数据
 		formaData:(newarr,permissionList)->
 			id = 0
@@ -226,7 +242,7 @@ export default
 				method: 'put'
 				data:
 					# 提交代码前需要把 account 字段 去掉
-					# account:@account
+					account:@account
 					id:@uesrid
 					menuIds:menuIdslist or ''
 					name:@name

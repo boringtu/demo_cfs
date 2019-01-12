@@ -63,12 +63,12 @@ export default
 			htmldom =  event.target.innerHTML
 			this.operatingId = id
 			if htmldom is '禁用'
-				this.titleinfo = "确定启用该客服？"
+				this.titleinfo = "确定禁用该客服？"
 				this.status_init = 1
 				this.dsialogFormVisible = true
 			else if htmldom is '启用'
 				this.status_init = 2
-				this.titleinfo = "确定禁用该客服？"
+				this.titleinfo = "确定启用该客服？"
 				this.dsialogFormVisible = true
 			
 		# 初始化数据
@@ -103,6 +103,8 @@ export default
 			this.dsialogFormVisible = true
 		# 关闭窗口
 		canleAlert:->
+			this.isxhr = false
+			this.isclick = false
 			this.hasInput = true
 			this.errorTipbox = false
 			this.inputmsg = '请输入分组名称'
@@ -123,12 +125,22 @@ export default
 					params: id:this.operatingId
 				.then (res) =>
 					this.isclick = false
+					this.loadAll()
+					vm.$notify
+						type: 'success'
+						title: '提示'
+						message: '删除成功'
 			else if msg.indexOf('删除该客服') >= 1
 				Utils.ajax ALPHA.API_PATH.synergy.deletedServe,
 					method: 'delete'
 					params: id:this.operatingId
 				.then (res) =>
 					this.isclick = false
+					this.loadAll()
+					vm.$notify
+						type: 'success'
+						title: '提示'
+						message: '删除成功'
 			else if msg.indexOf("启用") >= 1 or msg.indexOf("禁用") >= 1
 				Utils.ajax ALPHA.API_PATH.synergy.disabledServe,
 					method: 'put'
@@ -137,15 +149,15 @@ export default
 						status:this.status_init
 				.then (res) =>
 					this.isclick = false
+					this.loadAll()
+					vm.$notify
+						type: 'success'
+						title: '提示'
+						message: '操作成功'
 			this.canleAlert()
-			this.loadAll()
 		# 弹窗数据保存
 		saveGround:->
 			unless this.initModel
-				this.errorTipbox=true
-				this.inputmsg = ''
-				return no
-			else if this.gobaleReg.test(this.initModel)
 				this.errorTipbox=true
 				this.inputmsg = ''
 				return no
@@ -158,6 +170,10 @@ export default
 					this.canleAlert()
 					this.loadAll()
 					this.isxhr = false
+					vm.$notify
+						type: 'success'
+						title: '提示'
+						message: '添加成功'
 			else if this.alertType is 2
 				Utils.ajax ALPHA.API_PATH.synergy.edit,
 					method: 'PUT'
@@ -168,7 +184,10 @@ export default
 					this.canleAlert()
 					this.loadAll()
 					this.isxhr = false
-
+					vm.$notify
+						type: 'success'
+						title: '提示'
+						message: '编辑成功'
 		# css样式切换
 		bMouseEnterFun:(index)->
 			this.indexThis = index

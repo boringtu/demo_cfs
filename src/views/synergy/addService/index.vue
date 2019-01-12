@@ -7,7 +7,7 @@
 		.center_box
 			.left_box 
 				.title_details.f18 账户信息
-				form(ref="form")
+				form(ref="fromline")
 					.lable_box
 						label
 							i *
@@ -61,7 +61,7 @@
 			.right_box
 				.title_details.tl.f18.marb18 权限设置
 				//- 编辑客服 initMenIds => 原始权限
-				template(v-if="hasparams && initMenIds ")
+				template(v-if="hasparams  && initMenIds && overData")
 					template(v-if="inittype == 2")
 						.citeBox(v-for="items,index in Customerservice")
 							.title {{items.name}}
@@ -92,7 +92,7 @@
 								:checked="true")  {{permissionsitem.name}}
 					.citeBox(v-show="inittype == 2")
 						.div(v-for="items,index in Customerservice")
-							.title {{items.name}} 
+							.title {{items.name}}
 							el-checkbox(
 								@change="ckeckval"
 								v-for="permissionsitem in items.permissions"
