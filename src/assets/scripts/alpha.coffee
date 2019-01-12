@@ -81,6 +81,22 @@ export default do ->
 					# 恢复默认设置
 					recoverDefaultSet: '/api/conf/default'
 
+		# PERMISSIONS:
+		# 	writable: off, value:
+		# 		## 访客对话 ##
+		# 		dialogue:
+		# 			# 查看客户信息
+		# 			# 修改客户信息
+		# 		## 内部协同 ##
+		# 		synergy:
+		# 			# 查看客服列表
+		# 			# 添加分组
+		# 			# 添加客服
+		# 		## 配置管理 ##
+		# 		configManagement:
+		# 			# 查看风格设置
+		# 			# 修改风格设置
+
 
 		PROTOCOL:
 			writable: off, value: location.protocol
