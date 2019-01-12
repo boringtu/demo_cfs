@@ -164,6 +164,14 @@ export default
 			this.isxhr = true
 			# 添加分组
 			if this.alertType is 1
+				for item in @resdata.groups
+					if this.initModel is item['name']
+						vm.$notify
+							type: 'error'
+							title: '提示'
+							message: '列表已存在该分组名称，请勿重复添加'
+						this.isxhr = false
+						return no
 				Utils.ajax ALPHA.API_PATH.synergy.group,
 					method: 'POST'
 					data: name:this.initModel
