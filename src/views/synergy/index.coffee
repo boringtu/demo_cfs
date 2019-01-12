@@ -162,7 +162,8 @@ export default
 				this.inputmsg = ''
 				return no
 			this.isxhr = true
-			if this.alertType is 1 
+			# 添加分组
+			if this.alertType is 1
 				Utils.ajax ALPHA.API_PATH.synergy.group,
 					method: 'POST'
 					data: name:this.initModel
@@ -174,6 +175,7 @@ export default
 						type: 'success'
 						title: '提示'
 						message: '添加成功'
+			# 编辑分组
 			else if this.alertType is 2
 				Utils.ajax ALPHA.API_PATH.synergy.edit,
 					method: 'PUT'
