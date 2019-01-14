@@ -39,26 +39,51 @@ export default
 		# 启动或禁用 1 => 禁用 2 => 启动
 		status_init: ''
 		# 分组输入框正则
-		gobaleReg: /^[\u4e00-\u9fa5_a-zA-Z0-9`~!@#$%^&*()_\-+=?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]{1,20}$/
+		gobaleeg: /^[\u4e00-\u9fa5_a-zA-Z0-9`~!@#$%^&*()_\-+=?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]{1,20}$/
+		# 当前用户是否有点击按钮的权限
+		haspermissions:[]
 	created:->
 		this.loadAll()
 	watch:
 		$route:(to)->
 			this.loadAll() if to.name is 'synergy'
+	mounted:->
+		for item in vm.$store.state.permissions
+			if item.name is '内部协同'
+				this.haspermissions = item.permissions
 	methods:
+		# 判断是否有权限点击
+		buttonClick:(permissionsId)->
+			arr = []
+			res = true
+			for items,i in this.haspermissions
+				arr.push items.id
+			if arr.indexOf(permissionsId) is -1
+				vm.$notify
+					type: 'error'
+					title: '提示'
+					message: '暂无权限点击'
+				res = false
+			else
+				res = true
+			return res
 		# 点击隐藏错误提示
 		hiddentip:()->
-			this.errorTipbox=false
+			this.errorTipbox = false
 			this.$refs.inputBox.focus()
 			this.inputmsg = '请输入分组名称'
 		# 删除客服
 		deletedServe:(id)->
+			resulte_ = this.buttonClick(40)
+			return no if resulte_ is no
 			this.hasInput = false
 			this.dsialogFormVisible = true
 			this.titleinfo = "确定删除该客服？"
 			this.operatingId = id
 		# 禁用or启用客服
 		disabeldServe:(event,index,id)->
+			resulte_ = this.buttonClick(39)
+			return no if resulte_ is no
 			this.hasInput = false
 			htmldom =  event.target.innerHTML
 			this.operatingId = id
@@ -82,6 +107,8 @@ export default
 				this.groundList(this.adminsList,this.resdata.groups)
 		# 跳转到添加客服
 		aHerf:(id)->
+			resulte_ = this.buttonClick(38)
+			return no if resulte_ is no
 			this.$router.push({path:'/synergy/addService',query:{account:id}}) if id 
 			this.$router.push({path:'/synergy/addService'}) unless id 
 		groundList:(adminsList,groupsList)->
@@ -97,6 +124,8 @@ export default
 			this.loadedData = true
 		# 添加分组
 		addGrouping: ->
+			resulte_ = this.buttonClick(34)
+			return no if resulte_ is no
 			this.initModel = ''
 			this.alertType = 1
 			this.alertTitle = "添加分组"
@@ -111,6 +140,8 @@ export default
 			this.dsialogFormVisible = false
 		# 删除分组
 		deleteGround:(id)->
+			resulte_ = this.buttonClick(36)
+			return no if resulte_ is no
 			this.hasInput = false
 			this.dsialogFormVisible = true
 			this.titleinfo = "确定删除该分组？"
@@ -221,6 +252,8 @@ export default
 					this.disablednumber += 1
 		# 修改分组名称
 		editGround:(itemsName,id)->
+			resulte_ = this.buttonClick(35)
+			return no if resulte_ is no
 			this.initModel = itemsName
 			this.initId = id
 			this.alertType = 2

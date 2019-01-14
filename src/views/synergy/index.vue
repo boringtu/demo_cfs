@@ -6,7 +6,7 @@
 			h1.tc.addground_title(v-if="hasInput") {{alertTitle}}
 			template(v-if="hasInput")
 				.alertCenter
-					el-input(:placeholder="inputmsg",v-model="initModel",maxlength="20",@focus="hiddentip",ref="inputBox",:class="errorTipbox?'errorInput':''")
+					el-input( :placeholder="inputmsg",v-model="initModel",maxlength="20",@focus="hiddentip",ref="inputBox",:class="errorTipbox?'errorInput':''")
 					cite.errortip
 						span(@click="hiddentip",v-if="errorTipbox") 分组名称不能为空
 						i.icon.el-icon-warning(v-if="errorTipbox")

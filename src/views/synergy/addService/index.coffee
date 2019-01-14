@@ -13,20 +13,14 @@ export default
 		grouplist: ''
 		confirmpassword: ''
 		uesrid: ''
-		overData: false,
-		# 客服权限列表
-		servicedata: []
 		# 管理员权限列表
 		Customerservice: []
-		administratortype: ''
 		# 初始化类型 => 1 ? 管理员 : 客服
 		inittype: ''
 		# 切换checkbox数组对比
-		initArray_first: []
-		initArray_second: []
-		initArray_first_post: []
-		initArray_second_post: []
 		adminslist: ''
+		# 所有checkbox
+		allCheckBox: []
 		# 是否编辑页面
 		isedit: false
 		hasparams: false
@@ -36,17 +30,25 @@ export default
 		# 表单字段正则
 		acountIdReg: /^[0-9a-zA-Z_]+$/
 		nameReg: /^[\u4e00-\u9fa5_a-zA-Z0-9`~!@#$%^&*()_\-+=?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]{1,20}$/
+		# 默认选中 客服 和 管理员
+		initkfarr: []
+		initAdmin: []
+		# 数组重新组成 => 默认选中的客服
+		checkedKf:[]
+		checkArrlist:[]
+		overdata: false
+		# 数组重新组成 => 默认选中的管理员
+		checkedAdmin: []
+		checkArrlist_admin:[]
+		overdata_admin:false
 	created:->
 		await @getgrounds()
-		await @getParams()
-	mounted:->
-		@permissionF()
+		await @permissionF()
+		@checkedDataFun()
 	watch:
 		$route:(to)->
 			@getgrounds() if to.name is 'addService'
 			@checkedData = {}
-			@permissionF()
-			@getParams()
 	methods:
 		# 初始化分组数据
 		getgrounds:->
@@ -54,6 +56,7 @@ export default
 			.then (res) =>
 				@adminslist =  res.data.admins
 				@grouplist = res.data.groups
+				@getParams()
 		# 判断是否编辑页面 or 新添加页面
 		getParams:->
 			if @$route.query.account
@@ -61,20 +64,20 @@ export default
 				@changselect(@roleId)
 				@hasparams = true
 			else
+				# 清空表单数据
 				@account = ''
 				@name = ''
 				@nickname = ''
 				@roleId = ''
 				@groupId = ''
 				@password = ''
-				@grouplist = ''
 				@confirmpassword = ''
 				@uesrid = ''
 				@roleId = "2"
 				@inittype =  2
 				@hasparams = false
 				@isedit = false
-		# 需要编辑的客服ID对应信息
+		# 编辑按钮 对应的客服id信息
 		getAcountData:(account)->
 			for item in @adminslist
 				if item.id is Number(account)
@@ -87,13 +90,52 @@ export default
 					@password = item.password
 					@confirmpassword = item.password
 					@groupId = item.groupId
+					# 默认的权限
 					initMenIds = item.menuIds.split ','
-					initMenIds[i] = +item for item, i in initMenIds
-					@initMenIds = initMenIds
-					for item in  @initMenIds
-						@checkedData[item] = true
-		checkboxFs:(val)->
-			@$forceUpdate()
+					@initMenIds = initMenIds.map(Number)
+		# checkedbox点击事件
+		checkboxFs:(event,val,index)->
+			# val == 14 (查看客服列表) , val == 44 (查看风格设置)
+			# index == 2 (客服checkbox列表) index == 1 (管理员checkbox列表)
+			# 如果没有选中 val == 14 或者 44 则所包含的子集 不可点击
+			if @inittype is 2 and index is 2
+				if val is 14
+					if event.target.checked is no
+						# 内部协同所包含的子Id数组
+						for item,i in @allCheckBox
+							if item['name'] is '内部协同'
+								for perId,i in item.permissions
+									unless perId.id is 14 
+										@checkArrlist.remove perId.id
+										@initMenIds.remove perId.id
+				if val is 44
+					if event.target.checked is no
+						# 配置管理所包含的子Id数组 
+						for item,i in @allCheckBox
+							if item['name'] is '配置管理'
+								for chilId in item.children[0].permissions
+									unless chilId.id is 44 
+										@checkArrlist.remove chilId.id
+										@initMenIds.remove chilId.id
+			else if @inittype is 1 and index is 1
+				if val is 14
+					if event.target.checked is no
+						# 内部协同所包含的子Id数组
+						for item,i in @allCheckBox
+							if item['name'] is '内部协同'
+								for perId,i in item.permissions
+									unless perId.id is 14 
+										@checkArrlist_admin.remove perId.id
+										@initMenIds.remove perId.id
+				if val is 44
+					if event.target.checked is no
+						# 配置管理所包含的子Id数组 
+						for item,i in @allCheckBox
+							if item['name'] is '配置管理'
+								for chilId in item.children[0].permissions
+									unless chilId.id is 44 
+										@initMenIds.remove chilId.id
+										@checkArrlist_admin.remove chilId.id
 		# 检测客服id是否存在
 		blurcheck:->
 			Utils.ajax ALPHA.API_PATH.synergy.check,
@@ -104,7 +146,7 @@ export default
 					return !1
 				else
 					@postForm()
-		# select切换
+		# 角色选择
 		changselect:(val)->
 			# inittype=1 ? 管理员 : 客服
 			@inittype = 1  if Number(val) is 1
@@ -112,25 +154,33 @@ export default
 		# 取消按钮返回上一层
 		cancleBtn:->
 			@$router.push path:'/synergy'
-		# 初始化数据
+		# 初始化复选框的类别
 		permissionF:->
+			Utils.ajax ALPHA.API_PATH.synergy.permission
+			.then (res) =>
+				allpermission = []
+				@formaData(allpermission,res.data,3)
+		# 初始化 客服 与 管理员 分别默认选中的checkbox		
+		checkedDataFun:()->
 			Utils.ajax ALPHA.API_PATH.synergy.onlypermission
 			.then (res) =>
 				# 默认选中客服 => 2
 				for item,index in res.data
 					# 管理员权限
 					if item.name is '管理员'
-						newarr = []
-						@administratortype = 0
-						@formaData(newarr,res.data[index].menus)
+						newarr_first = []
+						@initAdmin =  res.data[index].menus
+						@formaRes(newarr_first,@initAdmin,1)
 					# 客服权限
 					else if item.name is '客服'
+						@initkfarr = res.data[index].menus
 						newarr_second = []
-						@administratortype = 1
-						@formaData(newarr_second,res.data[index].menus)
-				this.overData = true
+						@formaRes(newarr_second,@initkfarr,2)
+		formaRes:(newarr,data,type)->
+			@formaData(newarr,data,type)
 		# 格式化数据
-		formaData:(newarr,permissionList)->
+		formaData:(newarr,permissionList,type)->
+		# type 1 (管理员) ,2(客服) 3(默认所有的复选框)
 			id = 0
 			i = 0
 			id = newarr.id unless newarr instanceof Array
@@ -146,50 +196,27 @@ export default
 					# and item.pid is 0
 					newarr[key] ?= []
 					newarr[key].push item
-					if @administratortype is 0 
-						# 管理员 => initArray_first
-						@initArray_first.push(item.name+"-"+item.id)
-						@initArray_first_post.push(item.id)
-					else if @administratortype is 1
-						# 客服 => initArray_second
-						@initArray_second.push(item.name+"-"+item.id)
-						@initArray_second_post.push(item.id)
 					permissionList.remove item
 					continue
 				i++
 			newarr = newarr.children if id
 			@formaData item, permissionList for item in newarr if newarr
-			if @administratortype is 0 
-				@servicedata = newarr
-			else if @administratortype is 1
-				@Customerservice = newarr
-		# 重新组合数组
-		restArr:(data,postarr,type,event)->
-			if type is 'add'
-				for item,index in data
-					if item.indexOf(event) >= 0
-						selectval = data[index].split('-')[1]
-						if Number(selectval) in postarr
-							return !1
-						else
-							postarr.push(Number(selectval))
-			else if type is 'less'
-				for item,index in data
-					if item.indexOf(event) >= 0
-						onselectv = data[index].split('-')[1]
-						postarr.remove(Number(onselectv))
-		ckeckval:(val)->
-			# inittype=1 ? 管理员 : 客服
-			if /^\d+$/.test(val)
-				if @inittype is 1
-					@restArr(@initArray_first,@initArray_first_post,'add',val)
-				else if @inittype is 2
-					@restArr(@initArray_second,@initArray_second_post,'add',val)
-			else
-				if @inittype is 1
-					@restArr(@initArray_first,@initArray_first_post,'less',val)
-				else if @inittype is 2
-					@restArr(@initArray_second,@initArray_second_post,'less',val)
+			if type is 1
+				@checkedAdmin = newarr
+				for item,i in @checkedAdmin
+					if item.permissions
+						for items,i in item.permissions
+							@checkArrlist_admin.push items.id
+				@overdata_admin = true
+			else if type is 2
+				@checkedKf = newarr
+				for item,i in @checkedKf
+					if item.permissions
+						for items,i in item.permissions
+							@checkArrlist.push items.id
+				@overdata = true
+			else if type is 3
+				@allCheckBox = newarr
 		# 提示框
 		alertTip:(msg,msgtype)->
 			vm.$notify
@@ -198,46 +225,42 @@ export default
 				message: msg
 		# 保存按钮提交数据
 		saveF:->
-			unless @account
-				@alertTip("客服ID不能为空")
-				return !1
-			else if(!@acountIdReg.test(@account))
-				@alertTip("客服ID格式为数字、字母或下划线")
-				return !1
-			unless @name 
-				@alertTip("姓名不能为空")
-				return !1
-			else if(!@nameReg.test(@name))
-				@alertTip("姓名包含中文、字母、数字、特殊符号")
-				return !1
-			unless @nickname 
-				@alertTip("昵称不能为空")
-				return !1
-			else if(!@nameReg.test(@name))
-				@alertTip("昵称包含中文、字母、数字、特殊符号")
-				return !1
-			unless @groupId 
-				@alertTip("请选择分组")
-				return !1
-			unless @password 
-				@alertTip("密码格式错误")
-				return !1
-			if !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/.test(@password)
-				@alertTip("密码长度为8-20个字符，且至少包含数字和字母")
-				return !1
-			if @password isnt @confirmpassword
-				@alertTip("确认密码不一样")
-				return !1
+			# unless @account
+			# 	@alertTip("客服ID不能为空")
+			# 	return !1
+			# else if(!@acountIdReg.test(@account))
+			# 	@alertTip("客服ID格式为数字、字母或下划线")
+			# 	return !1
+			# unless @name 
+			# 	@alertTip("姓名不能为空")
+			# 	return !1
+			# else if(!@nameReg.test(@name))
+			# 	@alertTip("姓名包含中文、字母、数字、特殊符号")
+			# 	return !1
+			# unless @nickname 
+			# 	@alertTip("昵称不能为空")
+			# 	return !1
+			# else if(!@nameReg.test(@name))
+			# 	@alertTip("昵称包含中文、字母、数字、特殊符号")
+			# 	return !1
+			# unless @groupId 
+			# 	@alertTip("请选择分组")
+			# 	return !1
+			# unless @password 
+			# 	@alertTip("密码格式错误")
+			# 	return !1
+			# if !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/.test(@password)
+			# 	@alertTip("密码长度为8-20个字符，且至少包含数字和字母")
+			# 	return !1
+			# if @password isnt @confirmpassword
+			# 	@alertTip("确认密码不一样")
+			# 	return !1
 			# 编辑 or 新增
 			@blurcheck() if @isedit is no
 			@formEdit() if @isedit is yes
 		# 编辑提交
 		formEdit:->
-			arrlist= []
-			for i in Object.keys(@checkedData)
-				if @checkedData[i] is true
-					arrlist.push(i)
-			menuIdslist = arrlist.join(',')
+			menuIdslist = @initMenIds.join(',')
 			Utils.ajax ALPHA.API_PATH.synergy.addadmin,
 				method: 'put'
 				data:
@@ -258,10 +281,12 @@ export default
 				@$router.push({path:'/synergy'})
 		# 新增提交
 		postForm:->
+			# 客服
 			if @inittype is 2 
-				menuIdslist = @initArray_second_post.join(',')
+				menuIdslist = @checkArrlist.join(',')
+			# 管理员
 			else if @inittype is 1
-				menuIdslist = @initArray_first_post.join(',')
+				menuIdslist = @checkArrlist_admin.join(',')
 			Utils.ajax ALPHA.API_PATH.synergy.addadmin,
 				method: 'post'
 				data:
