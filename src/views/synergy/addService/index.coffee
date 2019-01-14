@@ -8,7 +8,7 @@ export default
 		name: ''
 		nickname: ''
 		roleId: ''
-		groupId: ''
+		groupId: 0
 		password: ''
 		grouplist: ''
 		confirmpassword: ''
@@ -69,7 +69,7 @@ export default
 				@name = ''
 				@nickname = ''
 				@roleId = ''
-				@groupId = ''
+				@groupId = 0
 				@password = ''
 				@confirmpassword = ''
 				@uesrid = ''
@@ -225,36 +225,36 @@ export default
 				message: msg
 		# 保存按钮提交数据
 		saveF:->
-			# unless @account
-			# 	@alertTip("客服ID不能为空")
-			# 	return !1
-			# else if(!@acountIdReg.test(@account))
-			# 	@alertTip("客服ID格式为数字、字母或下划线")
-			# 	return !1
-			# unless @name 
-			# 	@alertTip("姓名不能为空")
-			# 	return !1
-			# else if(!@nameReg.test(@name))
-			# 	@alertTip("姓名包含中文、字母、数字、特殊符号")
-			# 	return !1
-			# unless @nickname 
-			# 	@alertTip("昵称不能为空")
-			# 	return !1
-			# else if(!@nameReg.test(@name))
-			# 	@alertTip("昵称包含中文、字母、数字、特殊符号")
-			# 	return !1
+			unless @account
+				@alertTip("客服ID不能为空")
+				return !1
+			else if(!@acountIdReg.test(@account))
+				@alertTip("客服ID格式为数字、字母或下划线")
+				return !1
+			unless @name 
+				@alertTip("姓名不能为空")
+				return !1
+			else if(!@nameReg.test(@name))
+				@alertTip("姓名包含中文、字母、数字、特殊符号")
+				return !1
+			unless @nickname 
+				@alertTip("昵称不能为空")
+				return !1
+			else if(!@nameReg.test(@name))
+				@alertTip("昵称包含中文、字母、数字、特殊符号")
+				return !1
 			# unless @groupId 
 			# 	@alertTip("请选择分组")
 			# 	return !1
-			# unless @password 
-			# 	@alertTip("密码格式错误")
-			# 	return !1
-			# if !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/.test(@password)
-			# 	@alertTip("密码长度为8-20个字符，且至少包含数字和字母")
-			# 	return !1
-			# if @password isnt @confirmpassword
-			# 	@alertTip("确认密码不一样")
-			# 	return !1
+			unless @password 
+				@alertTip("密码格式错误")
+				return !1
+			if !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/.test(@password)
+				@alertTip("密码长度为8-20个字符，且至少包含数字和字母")
+				return !1
+			if @password isnt @confirmpassword
+				@alertTip("确认密码不一样")
+				return !1
 			# 编辑 or 新增
 			@blurcheck() if @isedit is no
 			@formEdit() if @isedit is yes
