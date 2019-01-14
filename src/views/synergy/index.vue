@@ -2,14 +2,23 @@
 <template lang="pug">
 	.root
 		.popus(v-if="dsialogFormVisible")
-		.alertBox(v-if="dsialogFormVisible")
-			h1.tc.addground_title {{alertTitle}}
-			.alertCenter
-				el-input(placeholder="请输入分组名称",v-model="initModel")
-				.tc.btnBox
-					el-button(type="plain",size ="medium ",@click="canleAlert") 取消
-					el-button(type="primary",size ="medium ",@click="saveGround") 保存
-
+		.alertBox(v-if="dsialogFormVisible",:style="{'width':!hasInput ? '280px':''}")
+			h1.tc.addground_title(v-if="hasInput") {{alertTitle}}
+			template(v-if="hasInput")
+				.alertCenter
+					el-input( :placeholder="inputmsg",v-model="initModel",maxlength="20",@focus="hiddentip",ref="inputBox",:class="errorTipbox?'errorInput':''")
+					cite.errortip
+						span(@click="hiddentip",v-if="errorTipbox") 分组名称不能为空
+						i.icon.el-icon-warning(v-if="errorTipbox")
+					.tc.btnBox
+						el-button.cancle_btn(type="plain",size ="medium ",@click="canleAlert") 取消
+						el-button.save_btn(type="primary",size ="medium ",@click="saveGround",:disabled="isxhr") 保存
+			template(v-if="!hasInput")
+				.titleinfo {{titleinfo}}
+				.noInputBox
+					.btnBox
+						el-button.cancle_btn(type="plain",size ="medium ",@click="canleAlert") 取消
+						el-button.save_btn(type="primary",size ="medium ",@click="determine(titleinfo)",:disabled="isxhr") 确定
 		el-row
 			el-col.tl.f18 客服管理
 		.center_box
@@ -29,10 +38,10 @@
 			.right_box(v-if="loadedData")
 				.clears.title_ul
 					ul.ul_li_fl
-						li 总人数：{{groupsList[initIndex].newVal.length}}
-						li 管理员：{{servenumber}}
-						li 客服：{{kefnumber}}
-						li 被禁用人数：{{disablednumber}}
+						li 总人数： {{groupsList[initIndex].newVal.length}}
+						li 管理员： {{servenumber}}
+						li 客服： {{kefnumber}}
+						li 被禁用人数： {{disablednumber}}
 					span.fr.addspan.pointer.addServe(@click="aHerf()") + 添加客服
 				ul.second_ul_box
 					li.fisrt_li.li_span_list
@@ -48,7 +57,7 @@
 							span {{items.nickname}}
 							span {{items.roleId == 1 ?'管理员':'客服'}}
 							span(style="flex:2") 
-								b.btn_gobal.edit_btn.pointer 编辑
+								b.btn_gobal.edit_btn.pointer(@click="aHerf(items.id)") 编辑
 								b.btn_gobal.disa_btn.pointer(@click="disabeldServe($event,index,items.id)")
 									span {{items.status == 1 ?'启用':'禁用'}}
 								b.btn_gobal.delete_btn.pointer(@click="deletedServe(items.id)") 删除

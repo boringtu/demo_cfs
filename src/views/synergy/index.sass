@@ -1,3 +1,4 @@
+$f18: 18px
 .root
 	text-align: left
 
@@ -5,7 +6,7 @@
 	cursor: pointer
 
 .f18
-	font-size: 18px
+	font-size: $f18
 	margin-bottom: 20px
 
 .ul_li_fl
@@ -22,6 +23,7 @@
 	padding: 0 13px
 	display: inline-block
 	border-radius: 5px
+	color: #595959
 	border: 1px solid #595959
 	&:hover
 		background: #e8e8e8
@@ -38,15 +40,40 @@
 .alertBox
 	z-index: 12
 	width: 360px
-	height: 200px
 	background: #fff
 	position: absolute
 	top: 50%
 	left: 50%
 	border-radius: 5px
-	margin-top: -100px
-	margin-left: -180px
+	transform: translate(-50%, -50%)
+	.addground_title
+		position: relative
+		width: 100%
+		left: 0
+		line-height: 55px
+		font-weight: normal
+		margin-bottom: 30px
+		font-size: 20px
+		color:#333333
+		border-bottom: 1px solid #F5F5F5
+	.errortip
+		color: #FF4040
+		span
+			position: absolute
+			top: 5px
+			left: 15px
+		i
+			position: absolute
+			top: 7px
+			right: -22px
+	.titleinfo
+		font-size: 20px
+		margin: 35px 0 40px
+		text-align: center
 
+.noInputBox
+	text-align: center
+	margin-bottom: 13px
 .zindexBox
 	position: relative
 	z-index: 5
@@ -54,23 +81,39 @@
 	content: ''
 	display: block
 	clear: both
-.addground_title
-	position: relative
-	width: 100%
-	left: 0
-	padding: 10px
-	font-weight: normal
-	margin-bottom: 20px
-	font-size: 20px
-	color:#333333
-	border-bottom: 1px solid #F5F5F5
+
+
 
 
 .alertCenter
-	padding: 0 60px
+	position: relative
+	margin: 0 60px
+	/deep/
+		.errorInput .el-input__inner
+			border: 1px solid #FF4040
 	.btnBox
-		margin: 20px 0 
-			
+		margin: 35px 0 0
+		padding-bottom: 15px
+
+/deep/
+	.el-input__inner
+		color: #333333
+		height: 30px
+	.el-button--medium
+		width: 100px
+		height: 36px
+	.cancle_btn 
+		font-size: 16px
+		color: #0083FF
+		border: 1px solid #0083FF
+		margin-right: 20px
+	.save_btn
+		font-size: 16px
+		background: #0083FF
+		border: 1px solid #0083FF
+		&:hover
+			background-color: #50a8ff
+			border-color: #50a8ff
 .center_box
 	display: flex
 	font-size: 16px
@@ -82,12 +125,16 @@
 		border: 1px solid #EBEBEB
 		height: 800px
 		width: 360px
+		overflow: hidden
 		border-radius: 5px
 		li
 			height: 60px
+			color: #666666
 			padding: 0 40px
 			line-height: 60px
 			border-bottom: 1px solid #E6E6E6
+		.all_li 
+			color: #1A1A1A
 		.nametitle
 			margin-right: 10px
 		.resDatali
@@ -96,6 +143,7 @@
 				background: #fbfbfb
 		.first_li
 			background: #F5F5F5
+			border-bottom: 0
 			
 		.all_li
 			background: #FAFAFA
@@ -108,7 +156,7 @@
 		border-radius: 5px
 		display: inline-block
 		font-weight: normal
-		margin-right: 10px
+		margin-right: 20px
 	.edit_btn
 		color:#0083FF
 		border: 1px solid #0083FF
@@ -140,11 +188,14 @@
 			line-height: 60px
 			li
 				margin-right: 60px
+				font-size: 18px
+				color: #595959
 		.second_ul_box
 			li
-				padding: 10px 0
+				padding: 9px 0
 				border-bottom: 1px solid #E6E6E6
 			li.fisrt_li
+				color: #333333
 				background: #FAFAFA
 				// border-bottom: 1px solid #EBEBEB
 			.li_span_list
@@ -158,9 +209,9 @@
 			li span
 				text-align: center
 				display: inline-block
-				
-.overBox
-	height: 580px
-	max-height: 580px
-	overflow-y: auto
-	overflow-x: hidden
+		.overBox
+			height: 680px
+			max-height: 680px
+			overflow-y: auto
+			overflow-x: hidden
+			font-size: 14px

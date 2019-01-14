@@ -1,5 +1,8 @@
 .f18
 	font-size: 18px
+.pointer
+	cursor: pointer
+
 .center_box
 	display: flex
 .center
@@ -57,6 +60,8 @@
 		background: #fff
 		color: #0080FF
 		border: 1px solid #0080FF
+		&:hover
+			background-color: #ecf5ff
 	.el-button.saveBtn
 		line-height: 36px
 		width: 100px
@@ -64,15 +69,33 @@
 		background: #0080FF
 		color: #fff
 		border: 1px solid #0080FF
+		&:hover
+			background-color: #50a8ff
+			border-color: #50a8ff
 .right_box
-	flex: 1
 	border: 1px solid #EBEBEB
 	width: 600px
 	border-radius: 5px 
+	.label_chidren
+		color: #666666
+		margin-bottom: 20px
+		display: inline-block
+		margin-right: 60px
+		font-size: 16px
+	.childrenName
+		color: #999999
+		font-size: 16px
+		margin-bottom: 5px
 	.citeBox
-		margin: 40px 60px
+		margin: 40px 0px 40px  40px
+		.label_check
+			color: #666666
+			margin-bottom: 20px
+			display: inline-block
+			margin-right: 40px
+			margin-left: 20px
 		.title
-			color: #999999
+			color: #333333
 			font-size: 16px
 			margin: 40px 0 20px
 		.cite
@@ -87,7 +110,45 @@
 				font-size: 16px
 			.el-checkbox
 				margin-right: 40px
+			.el-checkbox__input.is-checked+.el-checkbox__label
+				color: #666666
+.icon-checkbox-1:before
+	color: #0783FF
+.noallowed
+	cursor: not-allowed
+	.icon-checkbox-1:before,.icon-checkbox-0:before
+		color: #ccc
 .inputBox
 	width: 200px
 	height: 30px
 	margin-left: 35px
+
+.rel
+	position: relative
+
+.checkboxInfo
+	display: inline-block
+	margin-left: 10px
+.inputCheck
+	position: absolute
+	opacity: 0
+	left: 0
+	right: 0
+/deep/
+	.el-checkbox
+		font-family: "icon" !important
+		.el-checkbox__inner
+			border: 0
+			vertical-align: super
+			background-color: transparent
+			position: relative
+		.el-checkbox__inner:after
+			content: "\E620"
+			transform: rotate(0)
+		.is-checked
+			color: #0783FF
+			.el-checkbox__inner:after
+				content: "\E621"
+				transform: rotate(0)
+
+
