@@ -38,7 +38,7 @@
 							i *
 							span 所属分组
 						el-select(v-model="groupId")
-							el-option(v-for="items,index in grouplist",:label="items.name",v-if="index>=1",:value="items.id")
+							el-option(v-for="items,index in grouplist",:label="items.name",:value="items.id")
 
 					.lable_box
 						label
@@ -94,7 +94,7 @@
 											pan.checkboxInfo {{permissionsitem.name}} 
 							//- 配置管理 (包含子集)
 							template(v-for="perChildren,i in items.children")
-								label.rel.label_check(v-if="index == 2")
+								.rel.label_check(v-if="index == 2")
 									.childrenName {{perChildren.name}} 
 									template(v-for="item in perChildren.permissions")
 										label.label_chidren(:class="item.id != 44  && initMenIds.indexOf(44) <= 0 ? 'noallowed':'pointer'")
@@ -139,7 +139,7 @@
 											span.checkboxInfo {{permissionsitem.name}} 
 							//- 配置管理 (包含子集)
 							template(v-for="perChildren,i in items.children")
-								label.rel.label_check(v-if="index == 2")
+								.rel.label_check(v-if="index == 2")
 									.childrenName {{perChildren.name}} 
 									template(v-for="item in perChildren.permissions")
 										label.label_chidren(:class="item.id != 44  && initMenIds.indexOf(44) <= 0 ? 'noallowed':'pointer'")
@@ -185,7 +185,7 @@
 											span.checkboxInfo {{permissionsitem.name}}
 							//- 配置管理 (包含子集)
 							template(v-for="perChildren,i in items.children")
-								label.rel.label_check(v-if="index == 2")
+								.rel.label_check(v-if="index == 2")
 									.childrenName {{perChildren.name}} 
 									template(v-for="item in perChildren.permissions")
 										label.label_chidren(:class="item.id != 44  && checkArrlist.indexOf(44) <= 0 ? 'noallowed':'pointer'")
@@ -229,7 +229,7 @@
 											span.checkboxInfo {{permissionsitem.name}}
 							//- 配置管理 (包含子集)
 							template(v-for="perChildren,i in items.children")
-								label.rel.label_check(v-if="index == 2")
+								.rel.label_check(v-if="index == 2")
 									.childrenName {{perChildren.name}} 
 									template(v-for="item in perChildren.permissions")
 										label.label_chidren(:class="item.id != 44  && checkArrlist_admin.indexOf(44) <= 0 ? 'noallowed':'pointer'")
@@ -241,6 +241,6 @@
 												:disabled = "item.id != 44  && checkArrlist_admin.indexOf(44) <= 0"
 												@click = "checkboxFs($event,item.id,1)"
 												)
-											span.checkboxInfo {{item.name}}
+											span.checkboxInfo {{item.name}} 
 </template>
 <script lang="coffee" src="./index.coffee"></script>

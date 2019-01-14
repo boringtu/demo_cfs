@@ -33,7 +33,7 @@
 						span ( {{items.newVal.length}} )
 						cite.fr.clears.zindexBox(v-show="index == indexThis")
 							div.btn_gobal.edit_btn.pointer(@click.stop.prevent="editGround(items.name,items.id)") 编辑
-							div.btn_gobal.delete_btn.pointer(@click.stop.prevent="deleteGround(items.id)") 删除
+							div.btn_gobal.delete_btn.pointer(@click.stop.prevent="deleteGround(items.id , items.newVal)") 删除
 
 			.right_box(v-if="loadedData")
 				.clears.title_ul
