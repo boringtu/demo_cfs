@@ -72,7 +72,7 @@ export default
 		getDefaultSet: ->
 			console.log @admin
 			data =
-				adminId: @admin.adminId
+				adminId: ALPHA.admin.adminId
 				type: 'pc_dialog'
 			Utils.ajax ALPHA.API_PATH.configManagement.getDefaultSet, params: data
 			.then (res) =>
