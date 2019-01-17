@@ -5,19 +5,27 @@ import ComponentChatBox from '@/components/dialogue/chatBox'
 import ComponentVisitorInfo from '@/components/dialogue/visitorInfo'
 
 class SendWS
-	constructor: (@ws, data) ->
+	constructor: (...data) ->
 		unless @send data
 			@handle = setInterval (=> @send data), 20
 	send: (data) ->
 		socket = vm.$store.state.socket
+		ws = vm.$store.state.ws
 		return 0 unless socket?.readyState is 1
 		clearInterval @handle
 		# 发送数据
-		@ws.send.apply @ws, data
-		@ws = null
+		ws.send.apply ws, data
+		ws = null
+		socket = null
 		return 1
 
 export default
+	data: ->
+		# 是否主动关闭 WS
+		closingActively: 0
+		# 重连次数
+		reconnectCount: -1
+
 	components:
 		'CPNT-visitorList': ComponentVisitorList
 		'CPNT-dialogList': ComponentDialogList
@@ -41,24 +49,45 @@ export default
 	created: ->
 		window.p = @
 		# 建立 WebSocket 连接
-		@$store.state.socket = socket = new SockJS ALPHA.API_PATH.WS.url
-		@$store.state.ws = ws = Stomp.over socket
-		ws.connect {}, (frame) =>
-			# console.log 'Connected:' + frame
-			# 添加监听
-			ws.subscribe ALPHA.API_PATH.WS.broadcast, @monitorBroadcast
-			ws.subscribe ALPHA.API_PATH.WS.p2p, @monitorP2P
+		@connectWSLink()
 
 		# 如页面被关闭，关闭 WebSocket 连接
-		window.addEventListener 'unload', => @ws?.disconnect()
+		window.addEventListener 'unload', =>
+			@closingActively = 1
+			@socket?.close()
+			@ws?.disconnect()
 
 	methods:
+		# 建立 WebSocket 连接
+		connectWSLink: ->
+			@$store.state.socket?.close()
+			@$store.state.ws?.disconnect()
+			@$store.state.socket = socket = new SockJS ALPHA.API_PATH.WS.url
+			@$store.state.ws = ws = Stomp.over socket
+			# 断线重连机制
+			socket.addEventListener 'close', =>
+				if ++@reconnectCount > 10
+					# 弹出提示
+					vm.$notify
+						type: 'error'
+						title: '网络已断开'
+						message: '网络连接失败，请刷新重试'
+						duration: 0
+						showClose: false
+				else
+					@connectWSLink() unless @closingActively
+			ws.connect {}, (frame) =>
+				# 添加监听
+				ws.subscribe ALPHA.API_PATH.WS.broadcast, @monitorBroadcast
+				ws.subscribe ALPHA.API_PATH.WS.p2p, @monitorP2P
+
+
 		###
 		 # @params SEND_CODE <int> 发送消息类型。严禁直接传值，要用枚举：ALPHA.API_PATH.WS.SEND_CODE（备注：1: 发送消息，2: 客服接单，3: 消息已读
 		 # @params message <JSON String> 消息体。只在 SEND_CODE 为 1 时存在
 		###
 		wsSend: (SEND_CODE, userId, message) ->
-			new SendWS @ws, [ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"]
+			new SendWS ALPHA.API_PATH.WS.send, {}, "#{ SEND_CODE }|#{ userId }|#{ message or '' }"
 
 		# 监听 广播
 		monitorBroadcast: (res) ->
@@ -70,14 +99,16 @@ export default
 			switch type
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.broadcast.PUSHING
 					## 1: 新访客推送
-					## 1|user Object
+					## 1|user Object|
+					body = body.replace /\|$/, ''
 					user = body.toJSON()
 					# 将该访客追加到待接待访客列表中
 					@$store.commit 'addToVisitorList', user
 					# @$store.state.visitorList.push user
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.broadcast.RECEIVED
 					## 2: 指定访客已被接待
-					## 2|userId
+					## 2|userId|
+					body = body.replace /\|$/, ''
 					userId = +body.match(/^(\d+)/)[1]
 					# 从待接待访客列表中移除该用户
 					@$store.commit 'removeFromVisitorList', userId
@@ -109,6 +140,7 @@ export default
 					## 2: 开始接待用户
 					## 2|userId|user Object
 					user = body.toJSON()
+					user.isChatting = 1
 					# 向正在对话的访客列表中推送访客
 					@$store.commit 'addToChattingList', user
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.READED

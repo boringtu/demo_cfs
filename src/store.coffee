@@ -42,7 +42,12 @@ export default new Vuex.Store
 		# add visitor into chatting list
 		addToChattingList: (state, user) ->
 			list = state.chattingList
+			# 在 正在对话中的用户列表中追加用户
 			state.chattingList = [user, ...list]
+			# 从 已结束对话的用户列表中移除该用户（如果有
+			for item in state.closedList when item.id is user.id
+				state.closedList.remove item
+				break
 			# 切换到当前访客对话状态
 			vm.$router.replace "/dialogue/#{ user.id }"
 

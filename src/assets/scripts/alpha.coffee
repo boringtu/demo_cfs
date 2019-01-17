@@ -98,19 +98,12 @@ export default do ->
 		# 			# 修改风格设置
 
 
-		PROTOCOL:
-			writable: off, value: location.protocol
-		HOSTNAME:
-			writable: off, value: location.hostname
-		PORT:
-			writable: off, value: location.port
-		WS_PROTOCOL:
-			writable: off, value: /^https/.test(location.protocol) ? 'wss' : 'ws'
-		API_HOST:
-			writable: off, value: '172.16.10.122:8090'
 		# 签名私盐
 		SALT:
 			writable: off, value: 'chat@alpha'
+		# 登录密码后缀
+		SUFFIX:
+			writable: off, value: 'chatting is awesome!'
 		# 系统时间
 		serverTime:
 			get: ->

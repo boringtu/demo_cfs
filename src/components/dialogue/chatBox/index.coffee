@@ -403,4 +403,8 @@ export default
 					msg.message.encodeHTML()
 				when 2
 					# 图片
-					"""<img src="/#{ msg.message.encodeHTML() }" />"""
+					"""
+						<a href="/#{ msg.message.encodeHTML() }" target="_blank">
+							<img src="/#{ msg.message.encodeHTML() }" />
+						</a>
+					"""

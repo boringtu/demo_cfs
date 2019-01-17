@@ -42,12 +42,11 @@ export default
 	methods:
 		# Event: submit for login
 		eventSubmit: (event) ->
-			console.log 123
 			event.preventDefault()
 			@login_loading = true
 			data =
 				account: @username
-				password: @password
+				password: "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 			# 发起登录请求
 			Utils.ajax ALPHA.API_PATH.common.login,
 				method: 'POST'

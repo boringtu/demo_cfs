@@ -33,7 +33,9 @@ export default
 				when 0
 					tmp + 'mobile'
 		# 格式化时间（用于最新消息的时钟和分钟
-		formatTime: (stamp) ->
+		formatTime: (message) ->
+			return '' unless message
+			stamp = message.timeStamp
 			date = new Date stamp
 			H = date.getHours()
 			H = if (H + '').length > 1 then H else '0' + H

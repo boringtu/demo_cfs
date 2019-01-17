@@ -21,10 +21,10 @@
 					a
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")
-						span.time {{ item.message.timeStamp | formatTime }}
+						span.time {{ item.message | formatTime }}
 						span.count(v-if="item.unreadCount") {{ item.unreadCount | unreadCount }}
 						h3 {{ item.name }}
-						p {{ item.message.message  }}
+						p {{ item.message ? item.message.message : '' }}
 		div(v-show="tabIndex === 1")
 			div.no-data(v-if="!closedList.length")
 				i.icon.icon-empty-box
@@ -35,8 +35,8 @@
 					a
 						span.icon-wrap
 							i.icon(:class="item.conversation.channel | channelIcon")
-						span.time {{ item.message.timeStamp | formatTime }}
+						span.time {{ item.message | formatTime }}
 						h3 {{ item.name }}
-						p {{ item.message.message  }}
+						p {{ item.message ? item.message.message : '' }}
 </template>
 <script lang="coffee" src="./index.coffee"></script>

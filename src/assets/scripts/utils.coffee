@@ -64,14 +64,6 @@ class Utils
 		str += key + data[key] for key in tmp
 		"#{ ALPHA.SALT }#{ str }#{ token }#{ timestamp }".md5().toLocaleUpperCase()
 
-	# 计算 element offset top
-	@calcOffsetTop = (element) =>
-		actualTop = 0
-		loop
-			actualTop += element.offsetTop
-			break unless element = element.offsetParent
-		actualTop
-
 #****************************** 内部函数 ******************************#
 
 ###

@@ -17,6 +17,8 @@ export default
 			label: '很有价值'
 		]
 		genderOptions: [
+			value: '', label: '未知'
+		,
 			value: '男', label: '男'
 		,
 			value: '女', label: '女'
