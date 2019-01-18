@@ -1,65 +1,62 @@
 <style lang="sass" src="./index.sass" scoped></style>
 <template lang="pug">
-	.root
-		.popus(v-if="dsialogFormVisible")
-		.alertBox(v-if="dsialogFormVisible",:style="{'width':!hasInput ? '280px':''}")
-			h1.tc.addground_title(v-if="hasInput") {{alertTitle}}
-			template(v-if="hasInput")
-				.alertCenter
-					el-input( :placeholder="inputmsg",v-model="initModel",maxlength="20",@focus="hiddentip",ref="inputBox",:class="errorTipbox?'errorInput':''")
-					cite.errortip
-						span(@click="hiddentip",v-if="errorTipbox") 分组名称不能为空
-						i.icon.el-icon-warning(v-if="errorTipbox")
-					.tc.btnBox
-						el-button.cancle_btn(type="plain",size ="medium ",@click="canleAlert") 取消
-						el-button.save_btn(type="primary",size ="medium ",@click="saveGround",:disabled="isxhr") 保存
-			template(v-if="!hasInput")
-				.titleinfo {{titleinfo}}
-				.noInputBox
-					.btnBox
-						el-button.cancle_btn(type="plain",size ="medium ",@click="canleAlert") 取消
-						el-button.save_btn(type="primary",size ="medium ",@click="determine(titleinfo)",:disabled="isxhr") 确定
-		el-row
-			el-col.tl.f18 客服管理
-		.center_box
-			.left_box 
-				ul.left_ul
-					li.tc.first_li
-						span.pointer.addspan(@click="addGrouping") + 添加分组
-					li.all_li.pointer(@click="loadRightData(0)") 全部（{{peopleCount}}）
-					
-					li.resDatali.pointer(@click="loadRightData(index)",@mouseenter="bMouseEnterFun(index)" @mouseleave="bMouseLeaveFun",v-for="(items,index) in  resdata.groups",v-if="index>0") 
-						span.nametitle {{items.name}}
-						span ( {{items.newVal.length}} )
-						cite.fr.clears.zindexBox(v-show="index == indexThis")
-							div.btn_gobal.edit_btn.pointer(@click.stop.prevent="editGround(items.name,items.id)") 编辑
-							div.btn_gobal.delete_btn.pointer(@click.stop.prevent="deleteGround(items.id , items.newVal)") 删除
+    .root
+        h1.title 客服管理
+        .cont_wrap
+            .left_cont_box
+                .title_line.add_group_line
+                    div(class="add_group_btn" @click="addNewGroup") + 添加分组
+                ul.group_list
+                    //- li(class="list_item") 全部（1）
+                    li(class="list_item" v-for="item,index in allGroupList") 
+                        .left_txt_name  {{item.name}}
+                        div(class="right_btns" v-if="index > 0")
+                            el-button(type="primary" plain class="btn edit_btn" @click="editGroup(item)") 编辑
+                            el-button(type="danger" plain class="btn delete_btn" @click="deleteGroup(item)") 删除
+            .right_cont_box
+                .title_line.list_cont_tlt
+                    .left
+                        span.item 总人数：{{sumPersonNum}}																																																																																																					
+                        span.item 管理员：1																																																																																																																																														
+                        span.item 客服：1
+                        span.item 被禁用人数：0
+                    .right
+                        div(class="add_serve_btn" @click="addNewServer") + 添加客服
+                .serve_list_cont
+                    ul.line_tlt
+                        li 客服ID
+                        li 姓名
+                        li 昵称
+                        li 角色
+                        li 操作
+                    ul(class="cont_detail" v-for ="item,index in serveListDetail")
+                        li {{item.account}}
+                        li {{item.name}}
+                        li {{item.nickname}}
+                        li {{item.roleId === 1 ?'管理员':'客服'}}
+                        li 
+                            el-button(type="primary" plain class="btn edit_btn" @click="editServer(item)") 编辑
+                            el-button(type="warning" plain class="btn not_allowed_btn" @click="userServer(item)") {{item.status === 1 ? '启用' : '禁用'}}
+                            el-button(type="danger" plain class="btn delete_btn" @click="deleteServer(item)") 删除
+        //- 添加及修改分组弹框
+        div(class="popup" v-if="isShowAddNewPop")
+            .pop_cont
+                h2.title {{popTitle}}
+                .center_cont                 
+                    input(v-model="addGroupName" @focus="saveBlock = false" class="add_group_input" :class="{'save_block': saveBlock}")
+                    p(class="block_warn_msg" v-if="saveBlock") 分组名称不能为空
+                    i(class="el-icon-warning warn_icon" v-if="saveBlock")
+                .btn_line
+                    div(class="popBtn cancel_btn" @click="cancelAddNew") 取消
+                    div(class="popBtn save_btn" @click="saveAddNew") 保存
+        div(class="confirmPop" v-if="isShowConfirmPop")
+            .pop_cont
+                h2.title {{confirmTitle}}
+                .btn_line
+                    div(class="popBtn cancel_btn" @click="cancelConfirmPop") 取消
+                    div(class="popBtn save_btn" @click="sureConfirmPop") 确定
+                           																																																																																																																																																																																																																							
 
-			.right_box(v-if="loadedData")
-				.clears.title_ul
-					ul.ul_li_fl
-						li 总人数： {{groupsList[initIndex].newVal.length}}
-						li 管理员： {{servenumber}}
-						li 客服： {{kefnumber}}
-						li 被禁用人数： {{disablednumber}}
-					span.fr.addspan.pointer.addServe(@click="aHerf()") + 添加客服
-				ul.second_ul_box
-					li.fisrt_li.li_span_list
-						span 客服ID
-						span 姓名
-						span 昵称
-						span 角色
-						span(style="flex:2")  操作
-					.overBox
-						li.li_span_list.center_li(v-for="items,index in groupsList[initIndex].newVal")
-							span {{items.account}}
-							span {{items.name}}
-							span {{items.nickname}}
-							span {{items.roleId == 1 ?'管理员':'客服'}}
-							span(style="flex:2") 
-								b.btn_gobal.edit_btn.pointer(@click="aHerf(items.id)") 编辑
-								b.btn_gobal.disa_btn.pointer(@click="disabeldServe($event,index,items.id)")
-									span {{items.status == 1 ?'启用':'禁用'}}
-								b.btn_gobal.delete_btn.pointer(@click="deletedServe(items.id)") 删除
 </template>
 <script lang="coffee" src="./index.coffee"></script>
+    

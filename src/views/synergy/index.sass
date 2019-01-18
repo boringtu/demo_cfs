@@ -1,217 +1,247 @@
-$f18: 18px
 .root
-	text-align: left
+    padding-right: 70px
+    .title
+        font-size: 18px
+        color: #333
+        padding-bottom: 21px
+        text-align: left
+        font-weight: 400
+    .cont_wrap
+        width: 100%
+        height: 800px
+        display: flex
+        font-size: 16px
+        .title_line
+            width: 100%
+            height: 59px
+            background: #F5F5F5
+        .left_cont_box
+            width: 360px
+            height: 800px
+            border: 1px solid #EBEBEB
+            border-radius: 5px
+            margin-right: 20px
+            .add_group_line
+                padding-top: 11px
+                box-sizing: border-box
+                .add_group_btn
+                    width: 100px
+                    height: 36px
+                    line-height: 35px
+                    border: 1px solid #595959
+                    border-radius: 5px
+                    margin: 0 auto
+                    cursor: pointer
+            ul.group_list
+                li:first-child
+                    background: #FAFAFA 
+                li.list_item
+                    width: 100%
+                    height: 60px
+                    line-height: 60px
+                    border-bottom: 1px solid #E6E6E6
+                    padding: 0 20px 0 39px
+                    display: flex
+                    justify-content: space-between
+                    
+        .right_cont_box
+            flex: 1
+            height: 100%
+            border: 1px solid #EBEBEB
+            border-radius: 5px
+            .list_cont_tlt
+                padding: 0 59px
+                box-sizing: border-box
+                display: flex
+                justify-content: space-between
+                color: #595959
+                .left
+                    // width: 55%
+                    height: 100%
+                    line-height: 59px
+                    display: flex
+                    .item
+                        margin-right: 60px
+                        font-size: 18px
+				.right
+					height: 100%
+					padding-top: 11px
+					.add_serve_btn
+						width: 100px
+						height: 36px
+						line-height: 35px
+						border: 1px solid #595959
+						border-radius: 5px
+						margin: 0 auto
+						cursor: pointer
+				.serve_list_cont
+					width: 100%
+					ul
+						width: 100%
+						height: 42px
+						line-height: 42px
+						display: flex
+						border-bottom: 1px solid #EBEBEB
+						li
+							flex: 1
+						li:last-child
+							flex: 2
+					.line_tlt
+						background: #FAFAFA
+    .popup
+        position: fixed
+        width: 100%
+        height: 100%
+        background: rgba(0, 0, 0, 0.5)
+        top: 0
+        left: 0
+        z-index: 2
+        .pop_cont
+            width: 360px
+            height: 200px
+            background: #ffffff
+            border-radius: 5px
+            z-index: 3
+            position: fixed
+            top: 50%
+            left: 50%
+            margin-top: -100px
+            margin-left: -180px
+            .title
+                width: 100%
+                height: 55px
+                line-height: 55px
+                border-bottom: 1px solid #F5F5F5
+                text-align: center
+                font-size: 20px
+                color: #333333
+            .center_cont
+                width: 100%
+                height: 94px
+                position: relative
+                .add_group_input
+                    width: 240px
+                    height: 30px
+                    border: 1px solid #E6E6E6
+                    border-radius: 5px
+                    font-size: 14px
+                    color: #333333
+                    appearance: none
+                    outline: none
+                    padding-left: 16px
+                    // margin: 30px auto 34px auto
+                    position: absolute
+                    top: 30px
+                    left: 60px
+                    z-index: 5
+                    background: transparent
+                .block_warn_msg
+                    color: #FF4040
+                    position: absolute
+                    top: 35px
+                    left: 76px
+                    z-index: 4
+                .warn_icon
+                    color: #FF4040
+                    margin-left: 6px
+                    font-size: 16px
+                    position: absolute
+                    top: 36px
+                    right: 38px
+                .save_block
+                    border: 1px solid #FF4040
+                    color: #FF4040
+            .btn_line
+                padding: 0 70px
+                display: flex
+                justify-content: space-between
+    .confirmPop
+        position: fixed
+        width: 100%
+        height: 100%
+        background: rgba(0, 0, 0, 0.5)
+        top: 0
+        left: 0
+        z-index: 2
+        .pop_cont
+            width: 280px
+            height: 144px
+            background: #ffffff
+            border-radius: 5px
+            z-index: 3
+            position: fixed
+            top: 50%
+            left: 50%
+            margin-top: -72px
+            margin-left: -140px
+            .title
+                width: 100%
+                padding: 35px 0 36px 0
+                text-align: center
+                font-size: 20px
+                color: #333333
+            .btn_line
+                padding: 0 30px
+                display: flex
+                justify-content: space-between
 
-.pointer
-	cursor: pointer
+    .popBtn
+        width: 100px
+        height: 36px
+        line-height: 36px
+        text-align: center
+        border-radius: 5px
+        font-size: 16px
+        cursor: pointer
+    .cancel_btn
+        border: 1px solid #0083FF
+        color: #0083FF
+    .save_btn
+        background: #0083FF
+        color: #ffffff
 
-.f18
-	font-size: $f18
-	margin-bottom: 20px
 
-.ul_li_fl
-	li
-		float: left
-.fr
-	float: right
 
-.addServe
-	margin-top: 10px
 
-.addspan
-	line-height: 35px
-	padding: 0 13px
-	display: inline-block
-	border-radius: 5px
-	color: #595959
-	border: 1px solid #595959
-	&:hover
-		background: #e8e8e8
-.popus
-	z-index: 10
-	position: fixed
-	width: 100%
-	height: 100%
-	top: 0
-	left: 0
-	background: #000
-	opacity: .5
 
-.alertBox
-	z-index: 12
-	width: 360px
-	background: #fff
-	position: absolute
-	top: 50%
-	left: 50%
-	border-radius: 5px
-	transform: translate(-50%, -50%)
-	.addground_title
-		position: relative
-		width: 100%
-		left: 0
-		line-height: 55px
-		font-weight: normal
-		margin-bottom: 30px
-		font-size: 20px
-		color:#333333
-		border-bottom: 1px solid #F5F5F5
-	.errortip
-		color: #FF4040
-		span
-			position: absolute
-			top: 5px
-			left: 15px
-		i
-			position: absolute
-			top: 7px
-			right: -22px
-	.titleinfo
-		font-size: 20px
-		margin: 35px 0 40px
-		text-align: center
 
-.noInputBox
+
+
+
+.btn
+	width: 40px
+	height: 22px
 	text-align: center
-	margin-bottom: 13px
-.zindexBox
-	position: relative
-	z-index: 5
-.clears:after
-	content: ''
-	display: block
-	clear: both
-
-
-
-
-.alertCenter
-	position: relative
-	margin: 0 60px
-	/deep/
-		.errorInput .el-input__inner
-			border: 1px solid #FF4040
-	.btnBox
-		margin: 35px 0 0
-		padding-bottom: 15px
-
-/deep/
-	.el-input__inner
-		color: #333333
-		height: 30px
-	.el-button--medium
-		width: 100px
-		height: 36px
-	.cancle_btn 
-		font-size: 16px
-		color: #0083FF
-		border: 1px solid #0083FF
-		margin-right: 20px
-	.save_btn
-		font-size: 16px
-		background: #0083FF
-		border: 1px solid #0083FF
-		&:hover
-			background-color: #50a8ff
-			border-color: #50a8ff
-.center_box
-	display: flex
-	font-size: 16px
-	height: 800px
-
-	.left_box
-		display: inline-block
-	.left_ul
-		border: 1px solid #EBEBEB
-		height: 800px
-		width: 360px
-		overflow: hidden
-		border-radius: 5px
-		li
-			height: 60px
-			color: #666666
-			padding: 0 40px
-			line-height: 60px
-			border-bottom: 1px solid #E6E6E6
-		.all_li 
-			color: #1A1A1A
-		.nametitle
-			margin-right: 10px
-		.resDatali
-			padding: 0 20px 0 40px
-			&:hover
-				background: #fbfbfb
-		.first_li
-			background: #F5F5F5
-			border-bottom: 0
+	line-height: 22px
+	padding: 0
+	font-size: 12px
+.edit_btn
+	color: #0083FF
+	border: 1px solid #0083FF
+.edit_btn:hover
+	color: #ffffff
+	background: #0083FF
+.not_allowed_btn
+	color: #FF7733
+	border: 1px solid #FF7733
+.not_allowed_btn:hover
+	color: #ffffff
+	background: #FF7733
+.delete_btn
+	color: #FF5959
+	border: 1px solid #FF5959
+.delete_btn:hover
+	color: #ffffff
+	background: #FF5959
 			
-		.all_li
-			background: #FAFAFA
-	.btn_gobal
-		font-size: 12px
-		text-align: center
-		line-height: 22px
-		width: 40px
-		height: 22px
-		border-radius: 5px
-		display: inline-block
-		font-weight: normal
-		margin-right: 20px
-	.edit_btn
-		color:#0083FF
-		border: 1px solid #0083FF
-		&:hover
-			background: #0083FF
-			color: #fff
-	.disa_btn
-		color:#FF7733
-		border: 1px solid #FF7733 
-		&:hover
-			background: #FF7733
-			color: #fff
-	.delete_btn
-		color:#FF5959
-		border: 1px solid #FF5959
-		&:hover
-			background: #FF5959
-			color: #fff
-	.right_box
-		margin-left: 20px
-		vertical-align: top
-		display: inline-block
-		flex: 1
-		border: 1px solid #EBEBEB
-		border-radius: 5px
-		.title_ul
-			padding: 0 60px
-			background: #F5F5F5
-			line-height: 60px
-			li
-				margin-right: 60px
-				font-size: 18px
-				color: #595959
-		.second_ul_box
-			li
-				padding: 9px 0
-				border-bottom: 1px solid #E6E6E6
-			li.fisrt_li
-				color: #333333
-				background: #FAFAFA
-				// border-bottom: 1px solid #EBEBEB
-			.li_span_list
-				display: flex
-				span
-					flex: 1
-			.center_li
-				color: #999999
-				&:hover
-					color: inherit
-			li span
-				text-align: center
-				display: inline-block
-		.overBox
-			height: 680px
-			max-height: 680px
-			overflow-y: auto
-			overflow-x: hidden
-			font-size: 14px
+				
+					
+
+
+
+			
+				
+
+
+
+                        
