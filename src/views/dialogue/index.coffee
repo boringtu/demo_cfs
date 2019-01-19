@@ -144,8 +144,10 @@ export default
 					# 向正在对话的访客列表中推送访客
 					@$store.commit 'addToChattingList', user
 					# 发送欢迎语
-					welcomeMsg = @$store.state.welcomeMsg
-					@wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, user.id, welcomeMsg.msg.encodeHTML() if +welcomeMsg.switch
+					welcomeMsg = ALPHA.welcomeMsg
+					# 发送消息体（messageType 1: 文字 2: 图片）
+					sendBody = messageType: 1, message: welcomeMsg.msg.encodeHTML()
+					@wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, user.id, JSON.stringify sendBody if +welcomeMsg.switch
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.READED
 					## 3: 消息已读处理成功
 					## 3|userId|
