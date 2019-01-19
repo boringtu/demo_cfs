@@ -79,6 +79,7 @@ export default
 				@$router.push target
 
 			.catch (err) =>
+				@login_loading = false
 				console.log err
 				# 提示登录失败
 				vm.$notify
