@@ -78,6 +78,7 @@
 				v-model="inputText"
 				spellcheck="false"
 				:readonly="!dialogInfo"
+				maxlength="1000"
 			)
 			el-button.send(type="primary" :disabled="!inputText.trim()" @click="eventSend") 发送
 </template>
