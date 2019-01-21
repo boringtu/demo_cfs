@@ -237,7 +237,7 @@ export default do ->
 		## 以下用于用以建立的 ws 监听和发送
 		# 点对点
 		p2p:
-			get: -> "/user/#{ ALPHA.admin.adminId }/cs/chatting"
+			get: -> "/user/#{ ALPHA.admin?.adminId or '' }/cs/chatting"
 		# 广播
 		broadcast:
 			writable: off, value: '/cs/waitingUser'
