@@ -59,7 +59,7 @@ export default
 				@processPermission data.permissions, data.menus
 				console.log '权限数据: ', data.permissions
 				## 缓存数据
-				arr = ['token', 'admin', 'permissions', 'topics', 'welcomeMsg']
+				arr = ['token', 'admin', 'permissions', 'topics', 'config']
 				for key in arr
 					if typeof data[key] is 'string'
 						localStorage.setItem key, data[key]

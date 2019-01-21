@@ -162,18 +162,18 @@ export default do ->
 				return null unless topics
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
 				vm.$store.state.topics = topics.toJSON()
-		# 欢迎语相关数据
-		welcomeMsg:
+		# 配置数据
+		config:
 			get: ->
-				welcomeMsg = vm.$store.state.welcomeMsg
+				config = vm.$store.state.config
 				# 如 vuex 中已有数据，直接返回
-				return welcomeMsg if welcomeMsg
+				return config if config
 				# 如 vuex 中没有，则去 localStorage 中取
-				welcomeMsg = localStorage.getItem 'welcomeMsg'
+				config = localStorage.getItem 'config'
 				# 如 localStorage 中也没有，返回 null
-				return null unless welcomeMsg
+				return null unless config
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
-				vm.$store.state.welcomeMsg = welcomeMsg.toJSON()
+				vm.$store.state.config = config.toJSON()
 
 		# 枚举: 接口响应 code（非 HTTP Status Code）
 		RES_CODE:
