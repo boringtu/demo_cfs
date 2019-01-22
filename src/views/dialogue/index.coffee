@@ -143,9 +143,8 @@ export default
 					user.isChatting = 1
 					# 向正在对话的访客列表中推送访客
 					@$store.commit 'addToChattingList', user
-					# 发送欢迎语
-					welcomeMsg = @$store.state.welcomeMsg
-					@wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, user.id, welcomeMsg.msg.encodeHTML() if +welcomeMsg.switch
+					# 标记等待发送欢迎语的状态
+					@$store.state.waitingWelcome = 1
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.READED
 					## 3: 消息已读处理成功
 					## 3|userId|

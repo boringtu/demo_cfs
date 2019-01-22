@@ -149,7 +149,6 @@ export default
 				@referTimeStamp = list[0].timeStamp
 				multiple = 0
 				# 追加数据（包含首屏数据的情况）
-				# list = list.concat @chatHistoryList
 				list = [...list, ...@chatHistoryList]
 				for item, i in list
 					unless i
@@ -177,6 +176,17 @@ export default
 						@setUnreadList()
 						# 滚动到最底部
 						@scrollToBottom 0
+						# 发送欢迎语
+						return unless @$store.state.waitingWelcome
+						@$store.state.waitingWelcome = 0
+						config = ALPHA.config
+						return unless config
+						welcome = config.welcome_msg
+						return unless welcome
+						welText = welcome.msg_content
+						welStatus = welcome.auto_send_on_start
+						sendBody = messageType: 1, message: welcome.msg_content.encodeHTML()
+						@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, @dialogInfo.id, JSON.stringify sendBody if +welStatus and welText
 				else
 					## 非首屏时，保持当前窗口中的可视消息位置
 					els = [].slice.apply @$refs.chatWrapper.children
@@ -204,6 +214,35 @@ export default
 			diff = conH - winH
 			return if diff < 0
 			win.velocity scrollTop: "#{ diff }px", {duration: duration}
+
+		# 历史消息区当前位置是否位于最底部
+		isLocateBottom: ->
+			# window element
+			win = @$refs.chatWindow
+			# window height
+			winH = win.offsetHeight
+			# content height
+			conH = @$refs.chatWrapper.offsetHeight
+			# difference value
+			diff = conH - winH
+			# 如果内容没满一屏
+			return 1 if diff < 0
+
+			# all chat element list
+			allEls = [].slice.apply @$refs.chatWrapper.children
+			# the last chat element
+			el = allEls.last()
+
+			# 备注：
+			# 9:	.msg-self/.msg-opposite padding-top/padding-bottom
+			# 34/2	.msg-bubble half height
+
+			# window scrollTop
+			sT = win.scrollTop
+			# total height
+			tH = @$refs.chatWrapper.offsetHeight
+
+			return sT + winH > tH - 9 - 34 / 2
 
 		# Event: 消息发送事件
 		eventSend: ->
@@ -239,15 +278,12 @@ export default
 			list = @unreadElList
 			# window element
 			win = @$refs.chatWindow
-			# window height
-			wT = win.offsetHeight
 			# 备注：
-			# 12:	.chat-content padding-top
 			# 14:	.time-line height
 			# 9:	.msg-self/.msg-opposite padding-top
 			# 34/2	.msg-bubble half height
 			# 消息顶部距离文字中间的高度（不包含timeline）
-			cH = 12 + 9 + 34 / 2
+			cH = 9 + 34 / 2
 			# .time-line height
 			tT = 14
 			# window scrollTop
@@ -264,6 +300,8 @@ export default
 				el.setAttribute 'data-unread', 0
 				list.shift()
 				
+			## 处理 newUnreadElList
+			@newUnreadElList = [] if @isLocateBottom()
 
 			## 获取更多历史消息数据
 			@fetchHistory() if sT < cH + tT
@@ -331,8 +369,11 @@ export default
 				# 己方消息，滚动到底部
 				@$nextTick => @scrollToBottom 80
 			else
-				# 对方消息，追加到 newUnreadElList
-				@newUnreadElList.push msg
+				if @isLocateBottom()
+					@$nextTick => @scrollToBottom()
+				else
+					# 对方消息，追加到 newUnreadElList
+					@newUnreadElList.push msg
 
 		# 处理未读消息（只会在首屏时被执行
 		setUnreadList: ->
@@ -400,7 +441,16 @@ export default
 			switch msg.messageType
 				when 1
 					# 文本消息
-					msg.message.encodeHTML()
+					text = msg.message
+					text = text.replace /\n|\ /g, (char) ->
+						switch char
+							when '\n'
+								'<br/>'
+							when ' '
+								'&nbsp;'
+							else
+								char
+					text.encodeHTML()
 				when 2
 					# 图片
 					"""

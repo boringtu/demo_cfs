@@ -162,6 +162,18 @@ export default do ->
 				return null unless topics
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
 				vm.$store.state.topics = topics.toJSON()
+		# 配置数据
+		config:
+			get: ->
+				config = vm.$store.state.config
+				# 如 vuex 中已有数据，直接返回
+				return config if config
+				# 如 vuex 中没有，则去 localStorage 中取
+				config = localStorage.getItem 'config'
+				# 如 localStorage 中也没有，返回 null
+				return null unless config
+				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
+				vm.$store.state.config = config.toJSON()
 
 		# 枚举: 接口响应 code（非 HTTP Status Code）
 		RES_CODE:
@@ -225,7 +237,7 @@ export default do ->
 		## 以下用于用以建立的 ws 监听和发送
 		# 点对点
 		p2p:
-			get: -> "/user/#{ ALPHA.admin.adminId }/cs/chatting"
+			get: -> "/user/#{ ALPHA.admin?.adminId or '' }/cs/chatting"
 		# 广播
 		broadcast:
 			writable: off, value: '/cs/waitingUser'

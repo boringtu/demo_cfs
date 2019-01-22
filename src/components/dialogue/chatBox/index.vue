@@ -71,12 +71,14 @@
 			textarea(
 				ref="input"
 				placeholder="请输入消息..."
+				@keydown.enter.exact="$event.preventDefault()"
 				@keyup.enter.exact="eventSend"
 				@focus="isReadyToType = 1"
 				@blur="isReadyToType = 0"
 				v-model="inputText"
 				spellcheck="false"
 				:readonly="!dialogInfo"
+				maxlength="1000"
 			)
 			el-button.send(type="primary" :disabled="!inputText.trim()" @click="eventSend") 发送
 </template>
