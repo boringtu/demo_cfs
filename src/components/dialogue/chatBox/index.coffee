@@ -93,9 +93,6 @@ export default
 				# 加载首屏历史消息数据
 				@fetchHistory 1
 
-	mounted: ->
-		window._chatHistoryScrollToBottom = @scrollToBottom
-
 	methods:
 		# 清空数据
 		clearData: ->
@@ -454,6 +451,6 @@ export default
 					# 图片
 					"""
 						<a href="/#{ msg.message.encodeHTML() }" target="_blank">
-							<img src="/#{ msg.message.encodeHTML() }" onload="window._chatHistoryScrollToBottom()" />
+							<img src="/#{ msg.message.encodeHTML() }" />
 						</a>
 					"""
