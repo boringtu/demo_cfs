@@ -51,8 +51,7 @@ export default
 		# 建立 WebSocket 连接
 		@connectWSLink()
 
-		# 如页面被关闭，关闭 WebSocket 连接
-		window.addEventListener 'unload', =>
+	beforeDestroy: ->
 			@closingActively = 1
 			@socket?.close()
 			@ws?.disconnect()
