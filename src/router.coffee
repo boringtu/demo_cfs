@@ -32,10 +32,11 @@ export default new Router
 			path: '/synergy'
 			name: 'synergy'
 			component: (resolve) => require ["@/views/synergy"], resolve
-		,
-			path: '/synergy/addService'
-			name: 'addService'
-			component:(resolve) => require ["@/views/synergy/addService"],resolve
+			children: [
+				path: 'addService/:id?'
+				name: 'addService'
+				component: (resolve) => require ["@/views/synergy/addService"], resolve
+			]
 		,
 			# 配置管理
 			path: '/configuration'

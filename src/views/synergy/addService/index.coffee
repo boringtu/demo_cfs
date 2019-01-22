@@ -3,304 +3,266 @@ import Utils from '@/assets/scripts/utils'
 
 export default
 	data: ->
-		# 表单数据
-		account: ''
-		name: ''
-		nickname: ''
-		roleId: ''
+		serverId: ''
+		serverName: ''
+		serverNickName: ''
+		roleId: 2
 		groupId: 0
 		password: ''
-		grouplist: ''
-		confirmpassword: ''
-		uesrid: ''
-		# 管理员权限列表
-		Customerservice: []
-		# 初始化类型 => 1 ? 管理员 : 客服
-		inittype: ''
-		# 切换checkbox数组对比
-		adminslist: ''
-		# 所有checkbox
-		allCheckBox: []
-		# 是否编辑页面
-		isedit: false
-		hasparams: false
-		# 编辑页面默认权限
-		initMenIds: []
-		checkedData: {}
-		# 表单字段正则
-		acountIdReg: /^[0-9a-zA-Z_]+$/
-		nameReg: /^[\u4e00-\u9fa5_a-zA-Z0-9`~!@#$%^&*()_\-+=?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]{1,20}$/
-		# 默认选中 客服 和 管理员
-		initkfarr: []
-		initAdmin: []
-		# 数组重新组成 => 默认选中的客服
-		checkedKf:[]
-		checkArrlist:[]
-		overdata: false
-		# 数组重新组成 => 默认选中的管理员
-		checkedAdmin: []
-		checkArrlist_admin:[]
-		overdata_admin:false
-	created:->
-		await @getgrounds()
-		await @permissionF()
-		@checkedDataFun()
+		confirmPassword: ''
+		defaultInfo: ''
+		IdIsDisabled: false
+		allGroupList: []
+		allPermissionList: []
+		allPermissionTreeList: []
+		checkAll: false
+		checkItems: []
+		menuIDs: []
+		serverIdIsRepeat: false
+		userId: ''
 	watch:
-		$route:(to)->
-			@getgrounds() if to.name is 'addService'
-			@checkedData = {}
-	methods:
-		# 初始化分组数据
-		getgrounds:->
+		$route: (to) ->
+			# @initData() if to.name is 'addService'
+	
+	created: ->
+		
+	# filters: 
+	# 	isHasPermission: (id, menuIDs) ->
+	# 		menuIDs.some (item) -> item is id
+	mounted: ->
+		RouterId = @$route.params.id
+		if !@$store.state.allGroupList
 			Utils.ajax ALPHA.API_PATH.synergy.all
 			.then (res) =>
-				@adminslist =  res.data.admins
-				@grouplist = res.data.groups
-				@getParams()
-		# 判断是否编辑页面 or 新添加页面
-		getParams:->
-			if @$route.query.account
-				@getAcountData(@$route.query.account) 
-				@changselect(@roleId)
-				@hasparams = true
-			else
-				# 清空表单数据
-				@account = ''
-				@name = ''
-				@nickname = ''
-				@roleId = ''
-				@groupId = 0
-				@password = ''
-				@confirmpassword = ''
-				@uesrid = ''
-				@roleId = "2"
-				@inittype =  2
-				@hasparams = false
-				@isedit = false
-		# 编辑按钮 对应的客服id信息
-		getAcountData:(account)->
-			for item in @adminslist
-				if item.id is Number(account)
-					@isedit = true
-					@uesrid = item.id
-					@account = item.account
-					@name = item.name
-					@roleId = String(item.roleId)
-					@nickname = item.nickname
-					@password = item.password
-					@confirmpassword = item.password
-					@groupId = item.groupId
-					# 默认的权限
-					initMenIds = item.menuIds.split ','
-					@initMenIds = initMenIds.map(Number)
-		# checkedbox点击事件
-		checkboxFs:(event,val,index)->
-			# val == 14 (查看客服列表) , val == 44 (查看风格设置)
-			# index == 2 (客服checkbox列表) index == 1 (管理员checkbox列表)
-			# 如果没有选中 val == 14 或者 44 则所包含的子集 不可点击
-			if @inittype is 2 and index is 2
-				if val is 14
-					if event.target.checked is no
-						# 内部协同所包含的子Id数组
-						for item,i in @allCheckBox
-							if item['name'] is '内部协同'
-								for perId,i in item.permissions
-									unless perId.id is 14 
-										@checkArrlist.remove perId.id
-										@initMenIds.remove perId.id
-				if val is 44
-					if event.target.checked is no
-						# 配置管理所包含的子Id数组 
-						for item,i in @allCheckBox
-							if item['name'] is '配置管理'
-								for chilId in item.children[0].permissions
-									unless chilId.id is 44 
-										@checkArrlist.remove chilId.id
-										@initMenIds.remove chilId.id
-			else if @inittype is 1 and index is 1
-				if val is 14
-					if event.target.checked is no
-						# 内部协同所包含的子Id数组
-						for item,i in @allCheckBox
-							if item['name'] is '内部协同'
-								for perId,i in item.permissions
-									unless perId.id is 14 
-										@checkArrlist_admin.remove perId.id
-										@initMenIds.remove perId.id
-				if val is 44
-					if event.target.checked is no
-						# 配置管理所包含的子Id数组 
-						for item,i in @allCheckBox
-							if item['name'] is '配置管理'
-								for chilId in item.children[0].permissions
-									unless chilId.id is 44 
-										@initMenIds.remove chilId.id
-										@checkArrlist_admin.remove chilId.id
-		# 检测客服id是否存在
-		blurcheck:->
-			Utils.ajax ALPHA.API_PATH.synergy.check,
-				params: account:@account
+				if RouterId
+					@$store.state.allGroupList = res.data.groups
+					tempList = res.data.admins
+					for item in tempList
+						if +item.id is +RouterId
+							@getGefaultInfo = item
+					# 每次编辑带过来默认显示的数据
+					@$store.state.serverListItem = @getGefaultInfo
+			# 如果没有store的时候，获取客服和管理员默认的权限
+			@$store.state.menuServeIdList = []
+			@$store.state.menuManagerIdList = []
+			Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
 			.then (res) =>
-				if res.data
-					@alertTip("客服ID已存在")
-					return !1
+				for item in res.data
+					if item.id is 2
+						for item1 in item.menus
+							@$store.state.menuServeIdList.push(item1.id)
+					else if item.id is 1
+						for item1 in item.menus
+							@$store.state.menuManagerIdList.push(item1.id)
+			setTimeout (=> 
+				@initData()
+				@allGroupList = @$store.state.allGroupList
+				@getAllpermission()
+			), 500
+		else
+			@initData()
+			@allGroupList = @$store.state.allGroupList
+			@getAllpermission()
+
+	methods:
+		# 如果没有store的时候，获取客服和管理员默认的权限
+		getDefaultPermission: ->
+			Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
+			.then (res) =>
+				for item in res.data
+					if item.id is 2
+						for item1 in item.menus
+							@$store.state.menuServeIdList.push(item1.id)
+					else if item.id is 1
+						for item1 in item.menus
+							@$store.state.menuManagerIdList.push(item1.id)
+		#取消 
+		cancelSaveAccountInfo: ->
+			@$router.push({name: 'synergy'})
+		# 保存
+		saveAccountInfo: ->
+			regPwd = /^(?!\d+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/
+			regId = /^\w+$/g
+			# regName = /^[\u4E00-\u9FA5\w*!@#$%^&~]+$/
+			if !@serverId
+				return @warnPop('客服ID不能为空')
+			if !regId.test(@serverId)
+				return @warnPop('客服ID只能输入数字字母或者下划线')
+			if @serverIdIsRepeat
+				return @warnPop('客服ID已经存在')
+			if !@serverName
+				return @warnPop('姓名不能为空')
+			if !@serverNickName
+				return @warnPop('昵称不能为空')
+			if !@password
+				return @warnPop('请输入密码')
+			if !@confirmPassword
+				return @warnPop('请输入确认密码')
+			if @password isnt @defaultPwd
+				if !regPwd.test(@password)
+					return @warnPop('密码长度为8-20个字符，且至少包含数字和字母')
+				if @confirmPassword isnt @password
+					return @warnPop('确认密码不一样')
+			menuIdslist = []
+			for item in @allPermissionTreeList
+				if item.children
+					for item1 in item.children
+						for item2 in item1.permissions
+							if item2.checkStatus
+								menuIdslist.push item2.id
 				else
-					@postForm()
-		# 角色选择
-		changselect:(val)->
-			# inittype=1 ? 管理员 : 客服
-			@inittype = 1  if Number(val) is 1
-			@inittype = 2 if Number(val) is 2
-		# 取消按钮返回上一层
-		cancleBtn:->
-			@$router.push path:'/synergy'
-		# 初始化复选框的类别
-		permissionF:->
-			Utils.ajax ALPHA.API_PATH.synergy.permission
-			.then (res) =>
-				allpermission = []
-				@formaData(allpermission,res.data,3)
-		# 初始化 客服 与 管理员 分别默认选中的checkbox		
-		checkedDataFun:()->
-			Utils.ajax ALPHA.API_PATH.synergy.onlypermission
-			.then (res) =>
-				# 默认选中客服 => 2
-				for item,index in res.data
-					# 管理员权限
-					if item.name is '管理员'
-						newarr_first = []
-						@initAdmin =  res.data[index].menus
-						@formaRes(newarr_first,@initAdmin,1)
-					# 客服权限
-					else if item.name is '客服'
-						@initkfarr = res.data[index].menus
-						newarr_second = []
-						@formaRes(newarr_second,@initkfarr,2)
-		formaRes:(newarr,data,type)->
-			@formaData(newarr,data,type)
-		# 格式化数据
-		formaData:(newarr,permissionList,type)->
-		# type 1 (管理员) ,2(客服) 3(默认所有的复选框)
-			id = 0
-			i = 0
-			id = newarr.id unless newarr instanceof Array
-			while i < permissionList.length
-				item = permissionList[i]
-				if item.pid is 0
-					newarr.push item
-					permissionList.remove item
-					continue
-				else if item.pid is id
-					key = 'children'
-					key = 'permissions' unless item.type 
-					# and item.pid is 0
-					newarr[key] ?= []
-					newarr[key].push item
-					permissionList.remove item
-					continue
-				i++
-			newarr = newarr.children if id
-			@formaData item, permissionList for item in newarr if newarr
-			if type is 1
-				@checkedAdmin = newarr
-				for item,i in @checkedAdmin
-					if item.permissions
-						for items,i in item.permissions
-							@checkArrlist_admin.push items.id
-				@overdata_admin = true
-			else if type is 2
-				@checkedKf = newarr
-				for item,i in @checkedKf
-					if item.permissions
-						for items,i in item.permissions
-							@checkArrlist.push items.id
-				@overdata = true
-			else if type is 3
-				@allCheckBox = newarr
+					for item3 in item.permissions
+						if item3.checkStatus
+							menuIdslist.push item3.id
+			if @$route.params.id
+				Utils.ajax ALPHA.API_PATH.synergy.addadmin,
+					method: 'put'
+					data:
+						menuIds: menuIdslist.join(',') or ''
+						# account: @serverId
+						id: @userId
+						name: @serverName
+						nickname: @serverNickName
+						roleId: @roleId
+						groupId: @groupId
+						password: @password
+				.then (res) =>
+					if res.msg is 'success'
+						vm.$notify
+							type: 'success'
+							title: '提示'
+							message: '保存成功'
+						@$router.push({name: 'synergy'})
+			else
+				Utils.ajax ALPHA.API_PATH.synergy.addadmin,
+					method: 'post'
+					data:
+						menuIds: menuIdslist.join(',') or ''
+						account: @serverId
+						name: @serverName
+						nickname: @serverNickName
+						roleId: @roleId
+						groupId: @groupId
+						password: @password
+				.then (res) =>
+					if res.msg is 'success'
+						vm.$notify
+							type: 'success'
+							title: '提示'
+							message: '保存成功'
+						@$router.push({name: 'synergy'})
+
 		# 提示框
-		alertTip:(msg,msgtype)->
+		warnPop:(msg)->
 			vm.$notify
 				type: 'error'
 				title: '提示'
 				message: msg
-		# 保存按钮提交数据
-		saveF:->
-			unless @account
-				@alertTip("客服ID不能为空")
-				return !1
-			else if(!@acountIdReg.test(@account))
-				@alertTip("客服ID格式为数字、字母或下划线")
-				return !1
-			unless @name 
-				@alertTip("姓名不能为空")
-				return !1
-			else if(!@nameReg.test(@name))
-				@alertTip("姓名包含中文、字母、数字、特殊符号")
-				return !1
-			unless @nickname 
-				@alertTip("昵称不能为空")
-				return !1
-			else if(!@nameReg.test(@name))
-				@alertTip("昵称包含中文、字母、数字、特殊符号")
-				return !1
-			# unless @groupId 
-			# 	@alertTip("请选择分组")
-			# 	return !1
-			unless @password 
-				@alertTip("密码格式错误")
-				return !1
-			if !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/.test(@password)
-				@alertTip("密码长度为8-20个字符，且至少包含数字和字母")
-				return !1
-			if @password isnt @confirmpassword
-				@alertTip("确认密码不一样")
-				return !1
-			# 编辑 or 新增
-			@blurcheck() if @isedit is no
-			@formEdit() if @isedit is yes
-		# 编辑提交
-		formEdit:->
-			menuIdslist = @initMenIds.join(',')
-			Utils.ajax ALPHA.API_PATH.synergy.addadmin,
-				method: 'put'
-				data:
-					# 提交代码前需要把 account 字段 去掉
-					account:@account
-					id:@uesrid
-					menuIds:menuIdslist or ''
-					name:@name
-					nickname:@nickname
-					roleId:@roleId
-					groupId:@groupId
-					password:@password
+		# 初始化复选框的类别
+		getAllpermission: ->
+			Utils.ajax ALPHA.API_PATH.synergy.permission
 			.then (res) =>
-				vm.$notify
-					type: 'success'
-					title: '提示'
-					message: '修改成功'
-				@$router.push({path:'/synergy'})
-		# 新增提交
-		postForm:->
-			# 客服
-			if @inittype is 2 
-				menuIdslist = @checkArrlist.join(',')
-			# 管理员
-			else if @inittype is 1
-				menuIdslist = @checkArrlist_admin.join(',')
-			Utils.ajax ALPHA.API_PATH.synergy.addadmin,
-				method: 'post'
-				data:
-					menuIds:menuIdslist or ''
-					account:@account
-					name:@name
-					nickname:@nickname
-					roleId:@roleId
-					groupId:@groupId
-					password:@password
-			.then (res) =>
-				vm.$notify
-					type: 'success'
-					title: '提示'
-					message: '添加成功'
-				this.$router.push({path:'/synergy'})
+				# 全部权限 - 一维数组
+				@allPermissionList = Utils.clone res.data
+				## 处理权限数据
+				res.permissions = []
+				@processPermission res.permissions, res.data
+				# 全部权限 - 树状结构
+				@allPermissionTreeList = res.permissions
+				setTimeout (=> 
+					if @$route.params.id
+						@menuIDs = @$store.state.serverListItem.menuIds.split(',').map (id) -> +id
+					else
+						@menuIDs = @$store.state.menuServeIdList
+				) ,100
+				@checkSameId(@allPermissionTreeList, @menuIDs)
 				
+		checkSameId: (permissionList, menuIds) ->
+			for item in permissionList
+				if item.children
+					for item1 in item.children
+						for item2 in item1.permissions
+							item2.checkStatus = false
+							for id in menuIds
+								if item2.id is id
+									item2.checkStatus = true
+				else
+					for item3 in item.permissions
+						item3.checkStatus = false
+						for id in menuIds
+							if item3.id is id
+								item3.checkStatus = true
+		# 选择角色和管理员 
+		roleChange: (val)->
+			if val is 1
+				@menuIDs = @$store.state.menuManagerIdList
+			if val is 2
+				@menuIDs = @$store.state.menuServeIdList
+			@checkSameId(@allPermissionTreeList, @menuIDs)
+		# 检查客服ID是否重复
+		checkIdIsRepeat: -> 
+			Utils.ajax ALPHA.API_PATH.synergy.check,
+				params: account: @serverId
+			.then (res) =>
+				if res.data
+					@serverIdIsRepeat = true
+					return @warnPop("客服ID已存在")
+				else
+					@serverIdIsRepeat = false
+		# 复选框选中与不选中状态
+		boxIsChecked: (item, index, parentIndex, grandFatherIndex)->
+			@$forceUpdate();
+			item.checkStatus = !item.checkStatus
+			return if item.checkStatus
+			if grandFatherIndex and  index is 0
+				@allPermissionTreeList[grandFatherIndex].children[parentIndex].permissions.forEach (item) =>
+					item.checkStatus = false
+			if index is 0
+				@allPermissionTreeList[parentIndex].permissions.forEach (item) =>
+					item.checkStatus = false
+		initData: ->
+			routerId = @$route.params.id
+			# 编辑时带过来的数据
+			if routerId
+				@IdIsDisabled = true
+				@allGroupList = @$store.state.allGroupList
+				@defaultInfo = list = @$store.state.serverListItem
+				@menuIDs = @$store.state.serverListItem.menuIds.split(',').map (id) -> +id
+				@serverId = list.account
+				@serverName = list.name
+				@serverNickName = list.nickname
+				@roleId = list.roleId
+				@groupId = list.groupId
+				@userId = list.id
+				@defaultPwd = @password = @confirmPassword = list.password
+			# 新增客服时
+			else
+				@menuIDs = @$store.state.menuServeIdList
+				@IdIsDisabled = false
+				@serverId = ''
+				@serverName = ''
+				@serverNickName = ''
+				@password = @confirmPassword = ''
+		# 处理权限数据
+		processPermission: (target, data) ->
+			return unless data.length
+			id = 0
+			id = target.id unless target instanceof Array
+			i = 0
+			while i < data.length
+				item = data[i]
+				if item.pid is 0
+					target.push item
+					data.remove item
+					continue
+				else if item.pid is id
+					key = 'children'
+					key = 'permissions' unless item.type
+					target[key] ?= []
+					target[key].push item
+					data.remove item
+					continue
+				i++
+			target = target.children if id
+			@processPermission item, data for item in target if target
+		
