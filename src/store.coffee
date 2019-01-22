@@ -31,6 +31,8 @@ export default new Vuex.Store
 		# add visitor into visitor list
 		addToVisitorList: (state, user) ->
 			list = state.visitorList
+			# 去重
+			return if list.some (item) -> item.id is user.id
 			state.visitorList = [...list, user]
 
 		# remove visitor from visitor list
