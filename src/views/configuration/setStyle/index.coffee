@@ -100,9 +100,9 @@ export default
 		saveSetTheme: ->
 			isloading = true
 			params =
-				logoHref: @logoUrlText
+				logoHref: encodeURIComponent @logoUrlText
 				logoMediaId: @logoImgId
-				rightAdHref: @adUrlText
+				rightAdHref: encodeURIComponent @adUrlText
 				rightAdMediaId: @adImgId
 			Utils.ajax ALPHA.API_PATH.configManagement.saveSetTheme,
 				method: 'put'
@@ -113,6 +113,7 @@ export default
 					vm.$notify
 						type: 'success'
 						title: '保存成功'
+					@isDisabled = true
 		# 恢复默认设置
 		recoverDefaultSet: ->
 			params =
