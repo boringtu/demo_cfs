@@ -48,6 +48,8 @@ export default do ->
 					history: '/api/dialog/history'
 					# 结束对话
 					close: '/api/dialog/conversation/close'
+					# 今日访问量
+					todayCount: '/api/dialog/todayVisits'
 				## 内部协同 ##
 				synergy:
 					# 客服列表

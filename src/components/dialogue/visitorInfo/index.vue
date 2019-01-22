@@ -41,7 +41,7 @@
 			ul
 				li
 					label 来源
-					a(:href="info.origin") {{ info.origin }}
+					p {{ info.origin }}
 				li
 					label 操作系统
 					p {{ info.os }}

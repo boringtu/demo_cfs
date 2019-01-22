@@ -2,6 +2,7 @@
 <template lang="pug">
 .headbar
 	//- button(@click="eventSetting" class="icon icon-setting")
-	button(@click="eventExit" class="icon icon-exit")
+	el-tooltip(content="退出")
+		button(@click="eventExit" class="icon icon-exit")
 </template>
 <script lang="coffee" src="./index.coffee"></script>

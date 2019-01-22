@@ -3,13 +3,13 @@
 .footbar
 	div
 		label 当前访问量：
-		span {{ chattingCount }}
+		span {{ chattingCount || '--' }}
 	div
 		label 今日访问量：
-		span {{ todayCount }}
+		span {{ todayCount || '--' }}
 	div
 		label 客服ID：
-		span {{ admin.adminId }}
+		span {{ admin.account }}
 	div
 		label 角色：
 		span {{ admin.roleName }}

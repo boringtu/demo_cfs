@@ -85,7 +85,7 @@ export default
 				vm.$notify
 					type: 'error'
 					title: '登录失败'
-					message: err.msg
+					message: err.data.msg
 
 		# 处理权限数据
 		processPermission: (target, data) ->

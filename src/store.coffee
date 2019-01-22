@@ -24,6 +24,8 @@ export default new Vuex.Store
 		dialogID: null
 		# 当前会话数据
 		dialogInfo: null
+		# 今日访问量
+		todayCount: 0
 
 	mutations:
 		# add visitor into visitor list
@@ -96,5 +98,9 @@ export default new Vuex.Store
 		addToChatHistoryList: (state, msg) ->
 			list = state.chatHistoryList
 			state.chatHistoryList = [...list, msg]
+
+		# 递增今日访问量
+		increaseTodayCount: (state) ->
+			++state.todayCount
 
 	actions: {}

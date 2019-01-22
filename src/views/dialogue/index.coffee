@@ -144,6 +144,8 @@ export default
 					@$store.commit 'addToChattingList', user
 					# 标记等待发送欢迎语的状态
 					@$store.state.waitingWelcome = 1
+					# 递增今日访问量
+					@$store.commit 'increaseTodayCount'
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.READED
 					## 3: 消息已读处理成功
 					## 3|userId|

@@ -17,6 +17,7 @@ import {
 	Input
 	Button
 	Notification
+	Tooltip
 } from 'element-ui'
 
 import 'element-ui/lib/theme-chalk/index.css'
@@ -27,6 +28,7 @@ Vue.use VueAxios, axios
 # Vue.use ElementUI
 Vue.use Input
 Vue.use Button
+Vue.use Tooltip
 
 Vue.prototype.$notify = Notification
 

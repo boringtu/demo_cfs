@@ -212,7 +212,7 @@ export default
 			# difference value
 			diff = conH - winH
 			return if diff < 0
-			win.velocity scrollTop: "#{ diff }px", {duration: duration}
+			win.velocity scrollTop: "#{ diff + 20 }px", {duration: duration}
 
 		# 历史消息区当前位置是否位于最底部
 		isLocateBottom: ->
