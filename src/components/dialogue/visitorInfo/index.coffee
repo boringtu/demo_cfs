@@ -103,6 +103,7 @@ export default
 				method: 'PUT'
 				data: @info
 			.then (res) =>
+				@dataChanged = 0
 				info = @info
 				# 更新列表中的数据
 				# 姓名
