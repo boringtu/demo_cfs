@@ -18,6 +18,7 @@ export default
 		else
 			next()
 	created: ->
+		window.x = @
 		# 获取服务器时间
 		axios
 			.get ALPHA.API_PATH.common.timestamp
@@ -43,6 +44,9 @@ export default
 		# Event: submit for login
 		eventSubmit: (event) ->
 			event.preventDefault()
+			# 验证字段
+			return if @validate data
+			# 激活正在登录的状态
 			@login_loading = true
 			data =
 				account: @username
@@ -82,10 +86,30 @@ export default
 				@login_loading = false
 				console.log err
 				# 提示登录失败
-				vm.$notify
-					type: 'error'
-					title: '登录失败'
-					message: err.data.msg
+				@showErrorNotify err.data.msg
+
+		# 显示登录失败的提示
+		showErrorNotify: (msg) ->
+			vm.$notify
+				type: 'error'
+				title: '登录失败'
+				message: msg
+
+		# 验证字段
+		validate: ->
+			username = @username.trim()
+			password = @password.trim()
+			switch true
+				when not username
+					msg = '请输入用户名'
+				when not password
+					msg = '请输入密码'
+
+			if msg
+				@showErrorNotify msg
+				1
+			else
+				0
 
 		# 处理权限数据
 		processPermission: (target, data) ->
