@@ -8,7 +8,7 @@
 				div(class="add_group_btn" @click="addNewGroup") + 添加分组
 			ul.group_list
 				//- li(class="list_item") 全部（1）
-				li(class="list_item" v-for="item,index in allGroupList" @click="clickGroupItem(item)") 
+				li(class="list_item" v-for="item, index in allGroupList" @click="clickGroupItem(item)" :class="{active: activeGroupId == item.id}")
 					.left_txt_name  {{item.name}}
 					div(class="right_btns" v-if="index > 0")
 						el-button(type="primary" plain class="btn edit_btn" @click="editGroup(item)") 编辑
@@ -30,7 +30,7 @@
 					li 角色
 					li 操作
 				.cont_detail_wrap
-					ul(class="cont_detail" v-for ="item,index in serveListDetail" v-if="leftGroupId === 0 || leftGroupId === item.groupId" :key="index")
+					ul(class="cont_detail" v-for ="item, index in serveListDetail" v-if="activeGroupId === 0 || activeGroupId === item.groupId" :key="index")
 						li {{item.account}} 
 						li {{item.name}}
 						li {{item.nickname}}

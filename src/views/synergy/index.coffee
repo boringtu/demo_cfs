@@ -17,7 +17,8 @@ export default
 		managerNum: 0 
 		serverNum: 0
 		disabledNum: 0
-		leftGroupId: 0
+		# 当前选中的分组 ID
+		activeGroupId: 0
 		
 	watch:
 		$route: (to) ->
@@ -82,7 +83,7 @@ export default
 			@confirmTitle = '确定删除该客服？'
 		# 筛选分组
 		clickGroupItem: (groupItem) ->
-			@leftGroupId = groupItem.id
+			@activeGroupId = groupItem.id
 		# 保存添加或修改新的分组
 		saveAddNew: ->
 			return @saveBlock = true if @addGroupName is ''
