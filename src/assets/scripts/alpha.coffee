@@ -69,7 +69,7 @@ export default do ->
 					# 所有权限
 					permission: '/api/teamwork/permission'
 					# 默认权限
-					onlypermission:	'/api/teamwork/role/permission'
+					defaultpermission:	'/api/teamwork/role/permission'
 					# 根据account查询单个客服
 					check:	'/api/teamwork/admin/check'
 				## 配置管理 ##
@@ -77,7 +77,7 @@ export default do ->
 					# 保存设置对话框主题
 					saveSetTheme: '/api/conf/pcDialog'
 					# 获取默认配置
-					getDefaultSet: '/api/conf/all'
+					getDefaultSet: '/api/conf/pcDialog'
 					# 恢复默认设置
 					recoverDefaultSet: '/api/conf/default'
 

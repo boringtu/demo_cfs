@@ -1,156 +1,180 @@
-.f18
-	font-size: 18px
-.pointer
-	cursor: pointer
-
-.center_box
-	display: flex
-.center
-	text-align: left
-.marb18
-	margin-bottom: 20px
-.left_box
-	border: 1px solid #EBEBEB
-	width: 600px
-	margin-right: 20px
-	border-radius: 5px 
-.title_details
-	background: #F5F5F5
-	line-height: 60px
-	padding: 0 40px
-	margin-bottom: 35px
-	color: #333333
-.lable_box
-	margin-top: 25px
-	label
-		display: inline-block
-		line-height: 30px
-		margin-left: 60px
-		margin-right: 20px
-		i
-			color: #FF4040
-			margin-right: 12px
-		span
-			color: #666666
-			width: 65px
-			display: inline-block
-	.el-input,.el-select
-		width: 200px
-		display: inline-block
-	.citeBox
-		margin-left: 160px
-		margin-top: 12px
-		color: #999999
-	/deep/
-		.el-input__icon
-			line-height: 30px
-		input
-			height: 30px
-			line-height: 30px
-			padding: 0 10px
-			color: #333
-.cite-button
-	text-align: center
-	margin-top: 40px
-	margin-bottom: 50px	
-	.el-button.cancleBtn	
-		line-height: 36px
-		width: 100px
-		padding: 0
-		background: #fff
-		color: #0080FF
-		border: 1px solid #0080FF
-		&:hover
-			background-color: #ecf5ff
-	.el-button.saveBtn
-		line-height: 36px
-		width: 100px
-		padding: 0
-		background: #0080FF
-		color: #fff
-		border: 1px solid #0080FF
-		&:hover
-			background-color: #50a8ff
-			border-color: #50a8ff
-.right_box
-	border: 1px solid #EBEBEB
-	width: 600px
-	border-radius: 5px 
-	.label_chidren
-		color: #666666
-		margin-bottom: 20px
-		display: inline-block
-		margin-right: 60px
-		font-size: 16px
-		position: relative
-	.childrenName
-		color: #999999
-		font-size: 16px
-		margin-bottom: 5px
-	.citeBox
-		margin: 40px 0px 40px  40px
-		.label_check
-			color: #666666
-			margin-bottom: 20px
-			display: inline-block
-			margin-right: 40px
-			margin-left: 20px
-		.title
-			color: #333333
-			font-size: 16px
-			margin: 40px 0 20px
-		.cite
-			color: #999999
-			font-size: 16px
-			margin: 40px 0 20px
-		/deep/
-			.el-checkbox+.el-checkbox
-				margin-bottom: 15px
-				margin-left: 0
-			.el-checkbox__label
-				font-size: 16px
-			.el-checkbox
-				margin-right: 40px
-			.el-checkbox__input.is-checked+.el-checkbox__label
-				color: #666666
-.icon-checkbox-1:before
-	color: #0783FF
-.noallowed
-	cursor: not-allowed
-	.icon-checkbox-1:before,.icon-checkbox-0:before
-		color: #ccc
-.inputBox
-	width: 200px
-	height: 30px
-	margin-left: 35px
-
-.rel
-	position: relative
-
-.checkboxInfo
-	display: inline-block
-	margin-left: 10px
-.inputCheck
+.childRoot
 	position: absolute
-	opacity: 0
-	left: 0
-	right: 0
-	z-index: -1
-/deep/
-	.el-checkbox
-		font-family: "icon" !important
-		.el-checkbox__inner
-			border: 0
-			vertical-align: super
-			background-color: transparent
-			position: relative
-		.el-checkbox__inner:after
-			content: "\E620"
-			transform: rotate(0)
-		.is-checked
-			color: #0783FF
-			.el-checkbox__inner:after
-				content: "\E621"
-				transform: rotate(0)
+	width: 100%
+	height: 100%
+	top: 30px
+	left: 30px
+	background: #ffffff
+	z-index: 1
+.childRoot
+	.title
+		font-size: 18px
+		color: #333
+		padding-bottom: 21px
+		text-align: left
+		font-weight: 400
+	.cont_wrap
+		width: 100%
+		height: 600px
+		display: flex
+		.left_cont_box
+			margin-right: 20px
+		.com_box
+			width: 600px
+			height: 600px
+			border: 1px solid #EBEBEB
+			border-radius: 5px
+			.com_top_tlt
+				width: 100%
+				height: 60px
+				line-height: 60px
+				font-size: 18px
+				color: #333333
+				padding-left: 40px
+				text-align: left
+				background: #F5F5F5
+			.form_wrap
+				padding: 15px 0 0 61px
+				.form_item
+					display: flex
+					margin-top: 20px
+					label
+						width: 100px
+						line-height: 30px
+						text-align: left
+						font-size: 14px
+						color: #666666
+						i
+							display: inline-block
+							width: 30px
+							color: #FF4040
+							position: relative
+							top: 2px
+					.input_item
+						width: 200px
+						height: 30px
+						border: 1px solid #cccccc
+						border-radius: 5px
+						padding-left: 16px
+					.input_item:disabled
+						background: #F0F2F5
+					.el-select
+						width: 200px
+						.el-input.is-focus
+							.el-input__inner
+								border-color: #cccccc
+				.pwd_item
+					position: relative
+					height: 80px
+					.pwd_info
+						position: absolute
+						top: 40px
+						left: 100px
+						text-align: left
+						p
+							color: #999999
+							font-size: 14px
+				.submit_line
+					margin-top: 40px
+					display: flex
+					padding-left: 129px
+					.cancel_btn
+						width: 100px
+						height: 36px
+						line-height: 36px
+						color: #0080FF
+						border: 1px solid #0080FF
+						border-radius: 5px
+						font-size: 16px
+						margin-right: 20px
+						cursor: pointer
+					.save_btn
+						width: 100px
+						height: 36px
+						line-height: 36px
+						color: #ffff
+						background: #0080FF
+						border-radius: 5px
+						font-size: 16px
+						cursor: pointer
+		.right_cont_box
+			.permission_cont
+				padding: 30px 0 0 40px
+				text-align: left
+				.title
+					font-size: 16px
+					padding-bottom: 19px
+				.subCont
+					.subTitle
+						color: #999999
+						padding: 0 0 9px 28px
+					.check_group
+						color: #666666
+						font-size: 16px
+						display: flex
+						flex-wrap: wrap
+						.checkbox_item
+							padding-right: 60px
+							line-height: 30px
+							.checked_box
+								display: inline-block
+								width: 14px
+								height: 14px
+								border: 1px solid #cccccc
+								border-radius: 3px
+								margin-right: 10px
+								position: relative
+								top: 1px
+							.isChecked
+								border: 1px solid #0783FF
+							.isChecked:after
+								content: ''
+								position: absolute
+								left: 2px
+								bottom: 5px
+								width: 6px
+								height: 3px 
+								border: 2px solid #0783FF
+								border-top-color: transparent
+								border-right-color: transparent 
+								-ms-transform: rotate(-60deg) 
+								-moz-transform: rotate(-60deg) 
+								-webkit-transform: rotate(-60deg) 
+								transform: rotate(-45deg)
+
+				.check_group
+					color: #666666
+					font-size: 16px
+					padding: 0 0 27px 30px
+					display: flex
+					flex-wrap: wrap
+					.checkbox_item
+						padding-right: 60px
+						line-height: 30px
+						.checked_box
+							display: inline-block
+							width: 14px
+							height: 14px
+							border: 1px solid #cccccc
+							border-radius: 3px
+							margin-right: 10px
+							position: relative
+							top: 1px
+						.isChecked
+							border: 1px solid #0783FF
+						.isChecked:after
+							content: ''
+							position: absolute
+							left: 2px
+							bottom: 5px
+							width: 6px
+							height: 2px 
+							border: 2px solid #0783FF
+							border-top-color: transparent
+							border-right-color: transparent 
+							-ms-transform: rotate(-60deg) 
+							-moz-transform: rotate(-60deg) 
+							-webkit-transform: rotate(-60deg) 
+							transform: rotate(-45deg)
 
 
