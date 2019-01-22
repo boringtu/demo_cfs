@@ -3,7 +3,6 @@ import Utils from '@/assets/scripts/utils'
 
 export default
 	data: ->
-		sumPersonNum: 10
 		popTitle: '添加分组'
 		confirmTitle: '确定禁用该客服？'
 		addGroupName: ''
@@ -15,6 +14,11 @@ export default
 		groupItemId: ''
 		confirmPopStatus: 0
 		serverItemId: ''
+		managerNum: 0 
+		serverNum: 0
+		disabledNum: 0
+		leftGroupId: 0
+		
 	watch:
 		$route: (to) ->
 			@getInitData() if to.name is 'synergy'
@@ -26,12 +30,15 @@ export default
 			@isShowAddNewPop = true
 			@saveBlock = false
 			@addGroupName = ''
+			@saveStatus = 1
 
 		#编辑分组 
 		editGroup: (item) ->
 			@isShowAddNewPop = true
 			@popTitle = '修改分组名称'
 			@addGroupName = item.name
+			@editId = item.id
+			@saveStatus = 2
 
 		# 删除分组
 		deleteGroup: (item) ->
@@ -61,11 +68,11 @@ export default
 		userServer: (item) ->
 			@serverItemId = item.id
 			@isShowConfirmPop = true
-			if item.status is 1
-				@confirmPopStatus = 2
+			if item.status is 2
+				@confirmPopStatus = 1
 				@confirmTitle = '确定启用该客服？'
 			else
-				@confirmPopStatus = 1
+				@confirmPopStatus = 2
 				@confirmTitle = '确定禁用该客服？'
 		# 删除客服
 		deleteServer: (item) ->
@@ -73,6 +80,9 @@ export default
 			@confirmPopStatus = 3
 			@isShowConfirmPop = true
 			@confirmTitle = '确定删除该客服？'
+		# 筛选分组
+		clickGroupItem: (groupItem) ->
+			@leftGroupId = groupItem.id
 		# 保存添加或修改新的分组
 		saveAddNew: ->
 			return @saveBlock = true if @addGroupName is ''
@@ -82,19 +92,33 @@ export default
 					title: '提示'
 					message: '列表已存在该分组名称，请勿重复添加'
 				return
-
-			Utils.ajax ALPHA.API_PATH.synergy.group,
-				method: 'POST'
-				data: 
-					name: @addGroupName
-			.then (res) =>
-				if res.msg is 'success'
-					vm.$notify
-						type: 'success'
-						title: '提示'
-						message: '添加成功'
-					@isShowAddNewPop = false
-					@getInitData()
+			if @saveStatus is 1
+				Utils.ajax ALPHA.API_PATH.synergy.group,
+					method: 'POST'
+					data: 
+						name: @addGroupName
+				.then (res) =>
+					if res.msg is 'success'
+						vm.$notify
+							type: 'success'
+							title: '提示'
+							message: '添加成功'
+						@isShowAddNewPop = false
+						@getInitData()
+			else if @saveStatus is 2
+				Utils.ajax ALPHA.API_PATH.synergy.group,
+					method: 'put'
+					data: 
+						name: @addGroupName
+						id: @editId
+				.then (res) =>
+					if res.msg is 'success'
+						vm.$notify
+							type: 'success'
+							title: '提示'
+							message: '添加成功'
+						@isShowAddNewPop = false
+						@getInitData()
 
 		# 添加分组弹窗中的取消
 		cancelAddNew: ->
@@ -156,3 +180,13 @@ export default
 				@allGroupList = res.data.groups
 				@$store.state.allGroupList = res.data.groups;
 				@serveListDetail = res.data.admins
+				@serveListDetail = @serveListDetail.concat @serveListDetail
+				serverRoleList = @serveListDetail.filter (item) ->
+					item.roleId is 2
+				managerRoleList = @serveListDetail.filter (item) ->
+					item.roleId is 1
+				disabledRoleist = @serveListDetail.filter (item) ->
+					item.status is 1
+				@serverNum = serverRoleList.length
+				@managerNum = managerRoleList.length
+				@disabledNum = disabledRoleist.length

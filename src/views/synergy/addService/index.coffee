@@ -125,7 +125,7 @@ export default
 						nickname: @serverNickName
 						roleId: @roleId
 						groupId: @groupId
-						password: @password
+						password: "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 				.then (res) =>
 					if res.msg is 'success'
 						vm.$notify
@@ -143,7 +143,7 @@ export default
 						nickname: @serverNickName
 						roleId: @roleId
 						groupId: @groupId
-						password: @password
+						password: "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 				.then (res) =>
 					if res.msg is 'success'
 						vm.$notify
