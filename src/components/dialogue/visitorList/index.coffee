@@ -63,6 +63,7 @@ export default
 
 		# 启动计数器（每秒刷新一次
 		startCount: ->
+			@stopCount()
 			@handleCount = setInterval =>
 				item.conversation.waitingTime += 1000 for item in @list
 			, 1000

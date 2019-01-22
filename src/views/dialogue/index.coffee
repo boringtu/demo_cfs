@@ -101,9 +101,10 @@ export default
 					## 1|user Object|
 					body = body.replace /\|$/, ''
 					user = body.toJSON()
+					# 添加 waitingTime 字段
+					user.conversation.waitingTime = 0
 					# 将该访客追加到待接待访客列表中
 					@$store.commit 'addToVisitorList', user
-					# @$store.state.visitorList.push user
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.broadcast.RECEIVED
 					## 2: 指定访客已被接待
 					## 2|userId|
