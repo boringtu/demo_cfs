@@ -94,8 +94,7 @@ export default
 				@fetchHistory 1
 
 	mounted: ->
-		window.x = @
-		window.u = Utils
+		window._chatHistoryScrollToBottom = @scrollToBottom
 
 	methods:
 		# 清空数据
@@ -455,6 +454,6 @@ export default
 					# 图片
 					"""
 						<a href="/#{ msg.message.encodeHTML() }" target="_blank">
-							<img src="/#{ msg.message.encodeHTML() }" />
+							<img src="/#{ msg.message.encodeHTML() }" onload="window._chatHistoryScrollToBottom()" />
 						</a>
 					"""
