@@ -118,6 +118,7 @@ export default
 		cancelAddNew: ->
 			@isShowAddNewPop = false
 			@saveBlock = false
+			@saveIsDisabled = false
 		#取消 
 		cancelConfirmPop: ->
 			@isShowConfirmPop = false
