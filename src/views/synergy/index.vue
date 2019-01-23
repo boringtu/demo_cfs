@@ -59,8 +59,8 @@
 		.pop_cont
 			h2.title {{confirmTitle}}
 			.btn_line
-				div(class="popBtn cancel_btn" @click="cancelConfirmPop") 取消
-				div(class="popBtn save_btn" @click="sureConfirmPop") 确定
+				el-button(class="popBtn cancel_btn" @click="cancelConfirmPop") 取消
+				el-button(class="popBtn save_btn" @click="sureConfirmPop") 确定
 	router-view
 
 </template>
