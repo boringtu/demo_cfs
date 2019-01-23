@@ -189,7 +189,7 @@ export default
 					item.roleId is 1
 				# 被禁用人数
 				disabledRoleist = @serveListDetail.filter (item) ->
-					item.status is 1
+					item.status is 2
 				@serverNum = serverRoleList.length
 				@managerNum = managerRoleList.length
 				@disabledNum = disabledRoleist.length
