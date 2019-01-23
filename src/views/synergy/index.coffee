@@ -44,8 +44,7 @@ export default
 		editGroupNameInput: () ->
 			@saveIsDisabled = false 
 		editGroupNameChange: () ->
-			if @addGroupName is @defaultGroupName
-				@saveIsDisabled = true
+			@saveIsDisabled = @addGroupName is @defaultGroupName
 		# 删除分组
 		deleteGroup: (item) ->
 			@isShowConfirmPop = true
@@ -54,17 +53,6 @@ export default
 			@confirmPopStatus = 0
 		# 添加客服
 		addNewServer: ->
-			# @$store.state.menuServeIdList = []
-			# @$store.state.menuManagerIdList = []
-			# Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
-			# .then (res) =>
-			# 	for item in res.data
-			# 		if item.id is 2
-			# 			for item1 in item.menus
-			# 				@$store.state.menuServeIdList.push(item1.id)
-			# 		else if item.id is 1
-			# 			for item1 in item.menus
-			# 				@$store.state.menuManagerIdList.push(item1.id)
 			@$router.push({name: 'addService'})
 		#编辑客服 
 		editServer: (item) ->
