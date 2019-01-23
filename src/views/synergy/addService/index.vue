@@ -38,7 +38,7 @@
 				.form_item.pwd_item
 					label
 						i *
-						span 初始密码
+						span 设置密码
 					input(type="password" class="input_item" v-model="password" minlength="8" maxlength="20" @input="inputChange")
 					.pwd_info
 						p 修改密码后需重新登录，请谨慎操作。
