@@ -103,8 +103,10 @@ export default
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
 			if @password isnt @defaultPwd
+				if @password.length < 8
+					return @warnPop('密码长度为8-20个字符')
 				if !regPwd.test(@password)
-					return @warnPop('密码长度为8-20个字符，且必须包含数字和字母')
+					return @warnPop('密码必须包含数字和字母')
 				if @confirmPassword isnt @password
 					return @warnPop('密码输入不一致，请重新输入')
 			menuIdslist = []
