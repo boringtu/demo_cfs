@@ -9,8 +9,9 @@
 			ul.group_list
 				//- li(class="list_item") 全部（1）
 				li(class="list_item" v-for="item, index in allGroupList" @click="clickGroupItem(item)" :class="{active: activeGroupId == item.id}")
-					.left_txt_name 
-						span.name {{item.name}}
+					.left_txt_name
+						el-tooltip(:content="item.name" placement="left")
+							span(class="name") {{item.name}}
 						span.num （{{item.num}}）
 					div(class="right_btns" v-if="index > 0")
 						el-button(type="primary" plain class="btn edit_btn" @click="editGroup(item)") 编辑
@@ -18,7 +19,7 @@
 		.right_cont_box
 			.title_line.list_cont_tlt
 				.left
-					span.item 总人数：{{serveListDetail.length}}																																																																																																					
+					span.item 总人数：{{totalServerNum}}																																																																																																					
 					span.item 管理员：{{managerNum}}																																																																																																																																														
 					span.item 客服：{{serverNum}}
 					span.item 被禁用人数：{{disabledNum}}

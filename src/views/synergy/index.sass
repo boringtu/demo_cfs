@@ -34,6 +34,8 @@
 					margin: 0 auto
 					cursor: pointer
 			ul.group_list
+				max-height: 740px
+				overflow: auto
 				li.list_item
 					width: 100%
 					height: 60px
@@ -44,9 +46,13 @@
 					justify-content: space-between
 					background: #fff
 					cursor: pointer
+					// .right_btns
+					// 	display: none
 					&.active,
 					&:hover
 						background: #fafafa
+					// &:hover .right_btns
+					// 	display: block
 					.left_txt_name
 						width: 65%
 						text-align: left
