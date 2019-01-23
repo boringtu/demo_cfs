@@ -105,4 +105,11 @@ export default new Vuex.Store
 		increaseTodayCount: (state) ->
 			++state.todayCount
 
+		# 递增未读消息数
+		increaseUnreadCount: (state, id) ->
+			list = state.chattingList
+			for item in list when item.id is id
+				item.unreadCount++
+				break
+
 	actions: {}

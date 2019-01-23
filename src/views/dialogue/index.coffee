@@ -136,6 +136,9 @@ export default
 						@$refs.cpnt_chatBox.addMessage msg
 						# 通知服务器端清空未读消息
 						@wsSend ALPHA.API_PATH.WS.SEND_CODE.READING, userId
+					else
+						# 递增未读消息数
+						@$store.commit 'increaseUnreadCount', userId
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.RECEIVED
 					## 2: 开始接待用户
 					## 2|userId|user Object
