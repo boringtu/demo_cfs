@@ -17,7 +17,7 @@ export default
 	computed:
 		admin: -> ALPHA.admin or {}
 	created: ->
-		@getDefaultSet()
+		@fetchImgSetting()
 	methods: 
 		logoUrlChange: ->
 			@isDisabled = @logoUrlText is @defaultLogoUrlText
@@ -41,7 +41,6 @@ export default
 			# 发起请求
 			@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
 			.then (res) =>
-				console.log(res.data)
 				if res.msg is 'success'
 					@logoImgUrl = "/#{ res.data.fileUrl }"
 					@logoImgId = res.data.id
@@ -63,27 +62,25 @@ export default
 			formData.append 'multipartFile', adImg
 			@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
 			.then (res) =>
-				console.log res.data
 				if res.msg is 'success'
 					@adImgUrl = "/#{ res.data.fileUrl }"
 					@adImgId = res.data.id
 					@isDisabled = @adImgId is @defaultAdImgId
-		# 获取默认配置
-		getDefaultSet: ->
-			console.log @admin
+		# 获取当前配置
+		fetchImgSetting: ->
 			data =
 				adminId: ALPHA.admin.adminId
 				type: 'pc_dialog'
-			Utils.ajax ALPHA.API_PATH.configManagement.getDefaultSet, params: data
+			Utils.ajax ALPHA.API_PATH.configManagement.imgSetting, params: data
 			.then (res) =>
 				resData = res.data.sys_conf
 				if resData
 					for item in resData
 						switch item.key
 							when 'logo_href'
-								@defaultLogoUrlText = @logoUrlText = item.value
+								@defaultLogoUrlText = @logoUrlText = decodeURI item.value
 							when 'right_ad_href'
-								@defaultAdUrlText = @adUrlText = item.value
+								@defaultAdUrlText = @adUrlText = decodeURI item.value
 							when 'logo_media_id'
 								logoUrl = item.other
 								@defaultLogoImgId = @logoImgId = item.value
@@ -100,9 +97,9 @@ export default
 		saveSetTheme: ->
 			isloading = true
 			params =
-				logoHref: encodeURIComponent @logoUrlText
+				logoHref: encodeURI @logoUrlText
 				logoMediaId: @logoImgId
-				rightAdHref: encodeURIComponent @adUrlText
+				rightAdHref: encodeURI @adUrlText
 				rightAdMediaId: @adImgId
 			Utils.ajax ALPHA.API_PATH.configManagement.saveSetTheme,
 				method: 'put'
@@ -126,7 +123,7 @@ export default
 					vm.$notify
 						type: 'success'
 						title: '已恢复默认设置'
-					@getDefaultSet()
+					@fetchImgSetting()
 
 			
 

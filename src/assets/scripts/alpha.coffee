@@ -78,8 +78,8 @@ export default do ->
 				configManagement:
 					# 保存设置对话框主题
 					saveSetTheme: '/api/conf/pcDialog'
-					# 获取默认配置
-					getDefaultSet: '/api/conf/pcDialog'
+					# 当前图片（logo、广告）配置
+					imgSetting: '/api/conf/pcDialog'
 					# 恢复默认设置
 					recoverDefaultSet: '/api/conf/default'
 

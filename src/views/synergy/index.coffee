@@ -184,6 +184,17 @@ export default
 		getInitData: ->
 			Utils.ajax ALPHA.API_PATH.synergy.all
 			.then (res) =>
+				# 计算分组人数
+				numMap = {}
+				for user in res.data.admins when user.groupId isnt 0
+					numMap[user.groupId] ?= 0
+					numMap[user.groupId]++
+				for group in res.data.groups
+					if group.id is 0
+						group.num = res.data.admins.length
+					else
+						group.num = numMap[group.id] or 0
+
 				@allGroupList = res.data.groups
 				@$store.state.allGroupList = res.data.groups;
 				@serveListDetail = res.data.admins
