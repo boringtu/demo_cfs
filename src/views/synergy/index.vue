@@ -22,36 +22,37 @@
 					span.item 被禁用人数：{{disabledNum}}
 				.right
 					div(class="add_serve_btn" @click="addNewServer") + 添加客服
-			table(class="serve_list_cont" width="100%" border="0" cellspacing="0" cellpadding="0")
-				thead
-					tr(class="line_tlt")
-						th 客服ID
-						th 姓名
-						th 昵称
-						th 角色
-						th(colspan="2") 操作
-				tbody
-					tr(class="cont_detail" v-for ="item, index in serveListDetail" v-if="activeGroupId === 0 || activeGroupId === item.groupId" :key="index")
-						td {{item.account}} 
-						td {{item.name}} 
-						td {{item.nickname}} 
-						td {{item.roleId === 1 ?'管理员':'客服'}}
-						td(colspan="2")
-							el-button(type="primary" plain class="btn edit_btn" @click="editServer(item)") 编辑
-							el-button(type="warning" plain class="btn not_allowed_btn" @click="userServer(item)") {{item.status === 2 ? '启用' : '禁用'}}
-							el-button(type="danger" plain class="btn delete_btn" @click="deleteServer(item)") 删除
-	
+			.table_cont
+				table(class="serve_list_cont" width="100%" border="0" cellspacing="0" cellpadding="0")
+					thead
+						tr(class="line_tlt")
+							th 客服ID
+							th 姓名
+							th 昵称
+							th 角色
+							th(colspan="2") 操作
+					tbody.cont_detail_wrap
+						tr(class="cont_detail" v-for ="item, index in serveListDetail" v-if="activeGroupId === 0 || activeGroupId === item.groupId" :key="index")
+							td {{item.account}} 
+							td {{item.name}} 
+							td {{item.nickname}} 
+							td {{item.roleId === 1 ?'管理员':'客服'}}
+							td(colspan="2")
+								el-button(type="primary" plain class="btn edit_btn" @click="editServer(item)") 编辑
+								el-button(type="warning" plain class="btn not_allowed_btn" @click="userServer(item)") {{item.status === 2 ? '启用' : '禁用'}}
+								el-button(type="danger" plain class="btn delete_btn" @click="deleteServer(item)") 删除
+		
 	//- //- 添加及修改分组弹框
 	div(class="popup" v-if="isShowAddNewPop")
 		.pop_cont
 			h2.title {{popTitle}}
-			.center_cont                 
-				input(type="text" maxlength="20" v-model="addGroupName" @focus="saveBlock = false" class="add_group_input" :class="{'save_block': saveBlock}")
+			.center_cont 
+				input(type="text" v-model="addGroupName" maxlength="20" @focus="saveBlock = false" class="add_group_input" :class="{'save_block': saveBlock}")
 				p(class="block_warn_msg" v-if="saveBlock") 分组名称不能为空
 				i(class="el-icon-warning warn_icon" v-if="saveBlock")
 			.btn_line
-				div(class="popBtn cancel_btn" @click="cancelAddNew") 取消
-				div(class="popBtn save_btn" @click="saveAddNew") 保存
+				el-botton(class="popBtn cancel_btn" @click="cancelAddNew") 取消
+				el-botton(class="popBtn save_btn" @click="saveAddNew") 保存
 	div(class="confirmPop" v-if="isShowConfirmPop")
 		.pop_cont
 			h2.title {{confirmTitle}}
