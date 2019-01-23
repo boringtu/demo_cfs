@@ -100,9 +100,9 @@ export default
 		saveSetTheme: ->
 			isloading = true
 			params =
-				logoHref: encodeURIComponent @logoUrlText
+				logoHref: encodeURI @logoUrlText
 				logoMediaId: @logoImgId
-				rightAdHref: encodeURIComponent @adUrlText
+				rightAdHref: encodeURI @adUrlText
 				rightAdMediaId: @adImgId
 			Utils.ajax ALPHA.API_PATH.configManagement.saveSetTheme,
 				method: 'put'
