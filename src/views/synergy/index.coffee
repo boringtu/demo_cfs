@@ -14,6 +14,7 @@ export default
 		groupItemId: ''
 		confirmPopStatus: 0
 		serverItemId: ''
+		totalServerNum: 0
 		managerNum: 0 
 		serverNum: 0
 		disabledNum: 0
@@ -76,7 +77,32 @@ export default
 			@confirmTitle = '确定删除该客服？'
 		# 筛选分组
 		clickGroupItem: (groupItem) ->
+			console.log groupItem.id
 			@activeGroupId = groupItem.id
+			@recoverNumData()
+			# totalCount = adminCount = serverCount = disabledCount = 0
+			# for item in @serveListDetail when groupItem.id is 0 or item.groupId is groupItem.id
+			# 	# 总人数
+			# 	totalCount++
+			# 	adminCount++ if item.roleId is 1
+			# 	serverCount++ if item.roleId is 2
+			# 	disabledCount++ if item.status is 2
+			# @totalServerNum = totalCount
+			# @managerNum = adminCount
+			# @serverNum = serverCount
+			# @disabledNum = disabledCount
+		recoverNumData: () ->
+			totalCount = adminCount = serverCount = disabledCount = 0
+			for item in @serveListDetail when @activeGroupId is 0 or item.groupId is @activeGroupId
+				# 总人数
+				totalCount++
+				adminCount++ if item.roleId is 1
+				serverCount++ if item.roleId is 2
+				disabledCount++ if item.status is 2
+			@totalServerNum = totalCount
+			@managerNum = adminCount
+			@serverNum = serverCount
+			@disabledNum = disabledCount
 		# 保存添加或修改新的分组
 		saveAddNew: ->
 			return @saveBlock = true if @addGroupName is ''
@@ -187,18 +213,20 @@ export default
 				@allGroupList = res.data.groups
 				@$store.state.allGroupList = res.data.groups;
 				@serveListDetail = res.data.admins
-				# 角色为客服人数
-				serverRoleList = @serveListDetail.filter (item) ->
-					item.roleId is 2
-				# 角色为管理员人数 
-				managerRoleList = @serveListDetail.filter (item) ->
-					item.roleId is 1
-				# 被禁用人数
-				disabledRoleist = @serveListDetail.filter (item) ->
-					item.status is 2
-				@serverNum = serverRoleList.length
-				@managerNum = managerRoleList.length
-				@disabledNum = disabledRoleist.length
+				@recoverNumData()
+				# # 角色为客服人数
+				# serverRoleList = @serveListDetail.filter (item) ->
+				# 	item.roleId is 2
+				# # 角色为管理员人数 
+				# managerRoleList = @serveListDetail.filter (item) ->
+				# 	item.roleId is 1
+				# # 被禁用人数
+				# disabledRoleist = @serveListDetail.filter (item) ->
+				# 	item.status is 2
+				# @totalServerNum = @serveListDetail.length
+				# @serverNum = serverRoleList.length
+				# @managerNum = managerRoleList.length
+				# @disabledNum = disabledRoleist.length
 			if @$store.state.menuServeIdList.length is 0
 				Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
 				.then (res) =>
