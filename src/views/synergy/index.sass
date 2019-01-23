@@ -48,8 +48,12 @@
 					&:hover
 						background: #fafafa
 					.left_txt_name
-						width: 60%
+						width: 65%
 						text-align: left
+						display: flex
+					.name
+						display: block
+						max-width: 90%
 						white-space: nowrap
 						text-overflow: ellipsis
 						overflow: hidden
@@ -197,16 +201,19 @@
 		width: 100px
 		height: 36px
 		line-height: 36px
+		padding: 0	
 		text-align: center
 		border-radius: 5px
 		font-size: 16px
-		cursor: pointer
+		// cursor: pointer
 	.cancel_btn
 		border: 1px solid #0083ff
 		color: #0083ff
 	.save_btn
 		background: #0083ff
 		color: #ffffff
+	.save_btn.is-disabled
+		background: #a0cfff
 .cont_detail_wrap
 	max-height: 700px
 	overflow: auto

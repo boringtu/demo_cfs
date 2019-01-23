@@ -9,7 +9,9 @@
 			ul.group_list
 				//- li(class="list_item") 全部（1）
 				li(class="list_item" v-for="item, index in allGroupList" @click="clickGroupItem(item)" :class="{active: activeGroupId == item.id}")
-					.left_txt_name {{item.name}}（{{item.num}}）
+					.left_txt_name 
+						span.name {{item.name}}
+						span.num （{{item.num}}）
 					div(class="right_btns" v-if="index > 0")
 						el-button(type="primary" plain class="btn edit_btn" @click="editGroup(item)") 编辑
 						el-button(type="danger" plain class="btn delete_btn" @click="deleteGroup(item)") 删除
@@ -47,12 +49,12 @@
 		.pop_cont
 			h2.title {{popTitle}}
 			.center_cont 
-				input(type="text" v-model="addGroupName" maxlength="20" @focus="saveBlock = false" class="add_group_input" :class="{'save_block': saveBlock}")
+				input(type="text" v-model="addGroupName" maxlength="20" @focus="saveBlock = false" class="add_group_input" :class="{'save_block': saveBlock}" @input="editGroupNameInput" @change="editGroupNameChange")
 				p(class="block_warn_msg" v-if="saveBlock") 分组名称不能为空
 				i(class="el-icon-warning warn_icon" v-if="saveBlock")
 			.btn_line
-				el-botton(class="popBtn cancel_btn" @click="cancelAddNew") 取消
-				el-botton(class="popBtn save_btn" @click="saveAddNew") 保存
+				el-button(class="popBtn cancel_btn" @click="cancelAddNew") 取消
+				el-button(type="primary" class="popBtn save_btn" @click="saveAddNew" :disabled="saveIsDisabled") 保存
 	div(class="confirmPop" v-if="isShowConfirmPop")
 		.pop_cont
 			h2.title {{confirmTitle}}

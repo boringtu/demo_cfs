@@ -19,7 +19,7 @@ export default
 		disabledNum: 0
 		# 当前选中的分组 ID
 		activeGroupId: 0
-		
+		saveIsDisabled: false
 	watch:
 		$route: (to) ->
 			@getInitData() if to.name is 'synergy'
@@ -32,15 +32,20 @@ export default
 			@saveBlock = false
 			@addGroupName = ''
 			@saveStatus = 1
-
+			@saveIsDisabled = false
 		#编辑分组 
 		editGroup: (item) ->
 			@isShowAddNewPop = true
 			@popTitle = '修改分组名称'
-			@addGroupName = item.name
+			@defaultGroupName = @addGroupName = item.name
 			@editId = item.id
 			@saveStatus = 2
-
+			@saveIsDisabled = true
+		editGroupNameInput: () ->
+			@saveIsDisabled = false 
+		editGroupNameChange: () ->
+			if @addGroupName is @defaultGroupName
+				@saveIsDisabled = true
 		# 删除分组
 		deleteGroup: (item) ->
 			@isShowConfirmPop = true
@@ -124,6 +129,7 @@ export default
 		# 添加分组弹窗中的取消
 		cancelAddNew: ->
 			@isShowAddNewPop = false
+			@saveBlock = false
 		#取消 
 		cancelConfirmPop: ->
 			@isShowConfirmPop = false
