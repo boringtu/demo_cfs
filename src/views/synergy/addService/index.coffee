@@ -85,7 +85,7 @@ export default
 			@saveIsDisabled = false
 		# 保存
 		saveAccountInfo: ->
-			regPwd = /^(?!\d+$)(?![a-zA-Z]+$)[0-9A-Za-z]$/
+			regPwd = /^(?!\d+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/
 			regId = /^\w+$/g
 			# regName = /^[\u4E00-\u9FA5\w*!@#$%^&~]+$/
 			if !@serverId
@@ -99,7 +99,7 @@ export default
 			if !@serverNickName
 				return @warnPop('请输入昵称')
 			if !@password
-				return @warnPop('请输入密码')
+				return @warnPo p('请输入密码')
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
 			if @password isnt @defaultPwd
