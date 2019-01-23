@@ -136,15 +136,18 @@ export default
 						@$refs.cpnt_chatBox.addMessage msg
 						# 通知服务器端清空未读消息
 						@wsSend ALPHA.API_PATH.WS.SEND_CODE.READING, userId
+					else
+						# 递增未读消息数
+						@$store.commit 'increaseUnreadCount', userId
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.RECEIVED
 					## 2: 开始接待用户
 					## 2|userId|user Object
 					user = body.toJSON()
 					user.isChatting = 1
-					# 向正在对话的访客列表中推送访客
-					@$store.commit 'addToChattingList', user
 					# 标记等待发送欢迎语的状态
 					@$store.state.waitingWelcome = 1
+					# 向正在对话的访客列表中推送访客
+					@$store.commit 'addToChattingList', user
 					# 递增今日访问量
 					@$store.commit 'increaseTodayCount'
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.READED

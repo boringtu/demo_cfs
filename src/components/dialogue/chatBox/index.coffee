@@ -136,6 +136,8 @@ export default
 					@isLoadingHistory = 0
 					# 无更多数据的状态
 					@noMoreHistory = 1
+					# 发送欢迎语
+					@sendWelcome() if isReset
 					return
 
 				# 新请求来的消息条数
@@ -173,16 +175,7 @@ export default
 						# 滚动到最底部
 						@scrollToBottom 0
 						# 发送欢迎语
-						return unless @$store.state.waitingWelcome
-						@$store.state.waitingWelcome = 0
-						config = ALPHA.config
-						return unless config
-						welcome = config.welcome_msg
-						return unless welcome
-						welText = welcome.msg_content
-						welStatus = welcome.auto_send_on_start
-						sendBody = messageType: 1, message: welcome.msg_content.encodeHTML()
-						@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, @dialogInfo.id, JSON.stringify sendBody if +welStatus and welText
+						@sendWelcome()
 				else
 					## 非首屏时，保持当前窗口中的可视消息位置
 					els = [].slice.apply @$refs.chatWrapper.children
@@ -193,6 +186,19 @@ export default
 						h += el.offsetHeight
 					@$refs.chatWindow.scrollTop = h
 			return
+
+		# 发送欢迎语
+		sendWelcome: ->
+			return unless @$store.state.waitingWelcome
+			@$store.state.waitingWelcome = 0
+			config = ALPHA.config
+			return unless config
+			welcome = config.welcome_msg
+			return unless welcome
+			welText = welcome.msg_content
+			welStatus = welcome.auto_send_on_start
+			sendBody = messageType: 1, message: welcome.msg_content.encodeHTML()
+			@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, @dialogInfo.id, JSON.stringify sendBody if +welStatus and welText
 
 		# 历史消息滚动到指定位置
 		scrollTo: (targetY = 0, duration = 200) ->
