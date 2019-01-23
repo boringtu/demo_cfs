@@ -49,18 +49,18 @@ export default
 			@confirmPopStatus = 0
 		# 添加客服
 		addNewServer: ->
+			# @$store.state.menuServeIdList = []
+			# @$store.state.menuManagerIdList = []
+			# Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
+			# .then (res) =>
+			# 	for item in res.data
+			# 		if item.id is 2
+			# 			for item1 in item.menus
+			# 				@$store.state.menuServeIdList.push(item1.id)
+			# 		else if item.id is 1
+			# 			for item1 in item.menus
+			# 				@$store.state.menuManagerIdList.push(item1.id)
 			@$router.push({name: 'addService'})
-			@$store.state.menuServeIdList = []
-			@$store.state.menuManagerIdList = []
-			Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
-			.then (res) =>
-				for item in res.data
-					if item.id is 2
-						for item1 in item.menus
-							@$store.state.menuServeIdList.push(item1.id)
-					else if item.id is 1
-						for item1 in item.menus
-							@$store.state.menuManagerIdList.push(item1.id)
 		#编辑客服 
 		editServer: (item) ->
 			@$router.push({name: 'addService', params: { id: item.id }}) if item.id
@@ -181,13 +181,25 @@ export default
 				@allGroupList = res.data.groups
 				@$store.state.allGroupList = res.data.groups;
 				@serveListDetail = res.data.admins
-				@serveListDetail = @serveListDetail.concat @serveListDetail
+				# 角色为客服人数
 				serverRoleList = @serveListDetail.filter (item) ->
 					item.roleId is 2
+				# 角色为管理员人数 
 				managerRoleList = @serveListDetail.filter (item) ->
 					item.roleId is 1
+				# 被禁用人数
 				disabledRoleist = @serveListDetail.filter (item) ->
 					item.status is 1
 				@serverNum = serverRoleList.length
 				@managerNum = managerRoleList.length
 				@disabledNum = disabledRoleist.length
+			if @$store.state.menuServeIdList.length is 0
+				Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
+				.then (res) =>
+					for item in res.data
+						if item.id is 2
+							for item1 in item.menus
+								@$store.state.menuServeIdList.push(item1.id)
+						else if item.id is 1
+							for item1 in item.menus
+								@$store.state.menuManagerIdList.push(item1.id)

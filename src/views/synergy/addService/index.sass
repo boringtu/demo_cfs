@@ -22,7 +22,7 @@
 		.com_box
 			width: 600px
 			height: 600px
-			border: 1px solid #EBEBEB
+			border: 1px solid #ebebeb
 			border-radius: 5px
 			.com_top_tlt
 				width: 100%
@@ -32,7 +32,7 @@
 				color: #333333
 				padding-left: 40px
 				text-align: left
-				background: #F5F5F5
+				background: #f5f5f5
 			.form_wrap
 				padding: 15px 0 0 61px
 				.form_item
@@ -82,8 +82,8 @@
 						width: 100px
 						height: 36px
 						line-height: 36px
-						color: #0080FF
-						border: 1px solid #0080FF
+						color: #0080ff
+						border: 1px solid #0080ff
 						border-radius: 5px
 						font-size: 16px
 						margin-right: 20px
@@ -93,10 +93,12 @@
 						height: 36px
 						line-height: 36px
 						color: #ffff
-						background: #0080FF
+						background: #0080ff
 						border-radius: 5px
 						font-size: 16px
-						cursor: pointer
+						padding: 0
+					.save_btn.is-disabled
+						background: #a0cfff
 		.right_cont_box
 			.permission_cont
 				padding: 30px 0 0 40px
@@ -126,7 +128,7 @@
 								position: relative
 								top: 1px
 							.isChecked
-								border: 1px solid #0783FF
+								border: 1px solid #0783ff
 							.isChecked:after
 								content: ''
 								position: absolute
@@ -134,14 +136,10 @@
 								bottom: 5px
 								width: 6px
 								height: 3px 
-								border: 2px solid #0783FF
+								border: 2px solid #0783ff
 								border-top-color: transparent
 								border-right-color: transparent 
-								-ms-transform: rotate(-60deg) 
-								-moz-transform: rotate(-60deg) 
-								-webkit-transform: rotate(-60deg) 
 								transform: rotate(-45deg)
-
 				.check_group
 					color: #666666
 					font-size: 16px
@@ -160,8 +158,19 @@
 							margin-right: 10px
 							position: relative
 							top: 1px
+						.fixed_checkbox:after
+							content: ''
+							position: absolute
+							left: 2px
+							bottom: 5px
+							width: 6px
+							height: 3px 
+							border: 2px solid #cccccc
+							border-top-color: transparent
+							border-right-color: transparent 
+							transform: rotate(-45deg)
 						.isChecked
-							border: 1px solid #0783FF
+							border: 1px solid #0783ff
 						.isChecked:after
 							content: ''
 							position: absolute
@@ -169,7 +178,7 @@
 							bottom: 5px
 							width: 6px
 							height: 2px 
-							border: 2px solid #0783FF
+							border: 2px solid #0783ff
 							border-top-color: transparent
 							border-right-color: transparent 
 							-ms-transform: rotate(-60deg) 

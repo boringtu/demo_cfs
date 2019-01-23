@@ -20,6 +20,8 @@ export default
 		menuIDs: []
 		serverIdIsRepeat: false
 		userId: ''
+		saveIsDisabled: true
+		defaultPwd: ''
 	watch:
 		$route: (to) ->
 			# @initData() if to.name is 'addService'
@@ -79,30 +81,32 @@ export default
 		#取消 
 		cancelSaveAccountInfo: ->
 			@$router.push({name: 'synergy'})
+		inputChange: ->
+			@saveIsDisabled = false
 		# 保存
 		saveAccountInfo: ->
-			regPwd = /^(?!\d+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/
+			regPwd = /^(?!\d+$)(?![a-zA-Z]+$)[0-9A-Za-z]$/
 			regId = /^\w+$/g
 			# regName = /^[\u4E00-\u9FA5\w*!@#$%^&~]+$/
 			if !@serverId
-				return @warnPop('客服ID不能为空')
+				return @warnPop('请输入ID')
 			if !regId.test(@serverId)
 				return @warnPop('客服ID只能输入数字字母或者下划线')
 			if @serverIdIsRepeat
 				return @warnPop('客服ID已经存在')
 			if !@serverName
-				return @warnPop('姓名不能为空')
+				return @warnPop('请输入姓名')
 			if !@serverNickName
-				return @warnPop('昵称不能为空')
+				return @warnPop('请输入昵称')
 			if !@password
 				return @warnPop('请输入密码')
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
 			if @password isnt @defaultPwd
 				if !regPwd.test(@password)
-					return @warnPop('密码长度为8-20个字符，且至少包含数字和字母')
+					return @warnPop('密码长度为8-20个字符，且必须包含数字和字母')
 				if @confirmPassword isnt @password
-					return @warnPop('确认密码不一样')
+					return @warnPop('密码输入不一致，请重新输入')
 			menuIdslist = []
 			for item in @allPermissionTreeList
 				if item.children
@@ -169,12 +173,10 @@ export default
 				@processPermission res.permissions, res.data
 				# 全部权限 - 树状结构
 				@allPermissionTreeList = res.permissions
-				setTimeout (=> 
-					if @$route.params.id
-						@menuIDs = @$store.state.serverListItem.menuIds.split(',').map (id) -> +id
-					else
-						@menuIDs = @$store.state.menuServeIdList
-				) ,100
+				if @$route.params.id
+					@menuIDs = @$store.state.serverListItem.menuIds.split(',').map (id) -> +id
+				else
+					@menuIDs = @$store.state.menuServeIdList
 				@checkSameId(@allPermissionTreeList, @menuIDs)
 				
 		checkSameId: (permissionList, menuIds) ->
@@ -198,6 +200,7 @@ export default
 				@menuIDs = @$store.state.menuManagerIdList
 			if val is 2
 				@menuIDs = @$store.state.menuServeIdList
+			# console.log @allPermissionTreeList, @menuIDs
 			@checkSameId(@allPermissionTreeList, @menuIDs)
 		# 检查客服ID是否重复
 		checkIdIsRepeat: -> 
@@ -206,11 +209,12 @@ export default
 			.then (res) =>
 				if res.data
 					@serverIdIsRepeat = true
-					return @warnPop("客服ID已存在")
+					return @warnPop("客服ID已被使用")
 				else
 					@serverIdIsRepeat = false
 		# 复选框选中与不选中状态
 		boxIsChecked: (item, index, parentIndex, grandFatherIndex)->
+			@saveIsDisabled = false
 			@$forceUpdate();
 			item.checkStatus = !item.checkStatus
 			return if item.checkStatus

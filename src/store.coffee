@@ -26,6 +26,10 @@ export default new Vuex.Store
 		dialogInfo: null
 		# 今日访问量
 		todayCount: 0
+        # 默认的客服权限
+		menuServeIdList: []
+        # 默认的管理员权限
+		menuManagerIdList: []
 
 	mutations:
 		# add visitor into visitor list
