@@ -36,17 +36,6 @@ export default
 		if !@$store.state.allGroupList
 			Utils.ajax ALPHA.API_PATH.synergy.all
 			.then (res) =>
-				# 计算分组人数
-				numMap = {}
-				for user in res.data.admins when user.groupId isnt 0
-					numMap[user.groupId] ?= 0
-					numMap[user.groupId]++
-				for group in res.data.groups
-					if group.id is 0
-						group.num = res.data.admins.length
-					else
-						group.num = numMap[group.id] or 0
-
 				if RouterId
 					@$store.state.allGroupList = res.data.groups
 					tempList = res.data.admins
@@ -113,16 +102,13 @@ export default
 				return @warnPo p('请输入密码')
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
-			if !@$route.params.id or @defaultPwd and @password isnt '12345abc'
+			if @password isnt @defaultPwd
 				if @password.length < 8
 					return @warnPop('密码长度为8-20个字符')
 				if !regPwd.test(@password)
 					return @warnPop('密码必须包含数字和字母')
 				if @confirmPassword isnt @password
 					return @warnPop('密码输入不一致，请重新输入')
-			else if @defaultPwd and @password isnt @defaultPwd
-				@password = @defaultPwd
-			console.log "pwd",@password
 			menuIdslist = []
 			for item in @allPermissionTreeList
 				if item.children
@@ -254,8 +240,7 @@ export default
 				@roleId = list.roleId
 				@groupId = list.groupId
 				@userId = list.id
-				@defaultPwd = list.password
-				@password = @confirmPassword = '12345abc'
+				@defaultPwd = @password = @confirmPassword = list.password
 			# 新增客服时
 			else
 				@menuIDs = @$store.state.menuServeIdList
