@@ -6,7 +6,7 @@
 		span {{ chattingCount }}
 	div
 		label 今日访问量：
-		span {{ todayCount || '--' }}
+		span {{ todayCount }}
 	div
 		label 客服ID：
 		span {{ admin.account }}
