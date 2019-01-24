@@ -32,6 +32,14 @@ export default new Vuex.Store
 		menuManagerIdList: []
 
 	mutations:
+		# 清空数据
+		clearData: (state) ->
+			console.warn '清空数据'
+			state.visitorList = []
+			state.chattingList = []
+			state.closedList = []
+			state.chatHistoryList = []
+
 		# add visitor into visitor list
 		addToVisitorList: (state, user) ->
 			list = state.visitorList

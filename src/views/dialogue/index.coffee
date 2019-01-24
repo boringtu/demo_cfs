@@ -52,9 +52,14 @@ export default
 		@connectWSLink()
 
 	beforeDestroy: ->
+			# 清空数据
+			@$store.commit 'clearData'
+
+			# 断开 WebSocket 连接
 			@closingActively = 1
-			@socket?.close()
-			@ws?.disconnect()
+			try
+				@socket?.close()
+				@ws?.disconnect()
 
 	methods:
 		# 建立 WebSocket 连接
