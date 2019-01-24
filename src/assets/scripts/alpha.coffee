@@ -82,22 +82,31 @@ export default do ->
 					imgSetting: '/api/conf/pcDialog'
 					# 恢复默认设置
 					recoverDefaultSet: '/api/conf/default'
-
-		# PERMISSIONS:
-		# 	writable: off, value:
-		# 		## 访客对话 ##
-		# 		dialogue:
-		# 			# 查看客户信息
-		# 			# 修改客户信息
-		# 		## 内部协同 ##
-		# 		synergy:
-		# 			# 查看客服列表
-		# 			# 添加分组
-		# 			# 添加客服
-		# 		## 配置管理 ##
-		# 		configManagement:
-		# 			# 查看风格设置
-		# 			# 修改风格设置
+		# 枚举：具体权限（用于鉴权）
+		PERMISSIONS:
+			writable: off, value:
+				## 访客对话 ##
+				dialogue:
+					# 修改客户信息
+					infoModifiable: '1,13'
+				## 内部协同 ##
+				synergy:
+					# 添加分组
+					groupAddable: '2,34'
+					# 编辑分组
+					groupModifiable: '2,35'
+					# 删除分组
+					groupDeletable: '2,36'
+					# 添加客服
+					serverAddable: '2,38'
+					# 编辑客服
+					serverModifiable: '2,39'
+					# 删除客服
+					serverDeletable: '2,40'
+				## 配置管理 ##
+				configManagement:
+					# 修改风格设置
+					styleModifiable: '3,20,45'
 
 
 		# 签名私盐
@@ -208,6 +217,12 @@ export default do ->
 				# 配置管理 - 设置样式
 				20: url: '/configuration/setStyle'
 
+		###
+		 # 鉴权模块
+		 # @params data 传进来的必须是枚举：ALPHA.PERMISSIONS 中的一项
+		###
+		checkPermission: (data) ->
+
 	Object.defineProperties window.ALPHA.API_PATH.WS,
 		# 用于建立 WebSocket 连接
 		url:
@@ -242,7 +257,8 @@ export default do ->
 			get: -> "/user/#{ ALPHA.admin?.adminId or '' }/cs/chatting"
 		# 广播
 		broadcast:
-			writable: off, value: '/cs/waitingUser'
+			# writable: off, value: '/cs/waitingUser'
+			get: -> "/user/#{ ALPHA.admin?.adminId or '' }/cs/waitingUser"
 		# 发送
 		send:
 			writable: off, value: '/cs/chatting'

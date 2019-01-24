@@ -59,6 +59,26 @@ export default
 				@login_loading = false
 				data = res.data
 				data.permissions = []
+
+				## 去无效菜单
+				globalFlag = 0
+				protection = 0
+				loop
+					# 死循环保护机制
+					break if ++protection > 100
+					for m, i in data.menus when m.type is 1 and m.id isnt 1
+						flag = 0
+						for item in data.menus when item.pid is m.id
+							flag = 1
+							break
+						unless flag
+							globalFlag = 1
+							data.menus[i] = {}
+					if globalFlag
+						globalFlag = 0
+					else
+						break
+
 				## 处理权限数据
 				@processPermission data.permissions, data.menus
 				console.log '权限数据: ', data.permissions
