@@ -125,11 +125,11 @@ export default
 					for item3 in item.permissions
 						if item3.checkStatus
 							menuIdslist.push item3.id
-			if @password is @defaultPwd
-				savePwd =  @defaultPwd
-			else
-				savePwd = "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 			if @$route.params.id
+				if @password is @defaultPwd
+					savePwd =  @defaultPwd
+				else
+					savePwd = "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 				Utils.ajax ALPHA.API_PATH.synergy.addadmin,
 					method: 'put'
 					data:
