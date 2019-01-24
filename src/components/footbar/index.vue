@@ -3,7 +3,7 @@
 .footbar
 	div
 		label 当前访问量：
-		span {{ chattingCount }}
+		span {{ visitingCount }}
 	div
 		label 今日访问量：
 		span {{ todayCount }}
