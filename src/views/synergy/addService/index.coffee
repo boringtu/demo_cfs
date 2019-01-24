@@ -102,6 +102,8 @@ export default
 				return @warnPo p('请输入密码')
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
+			if @defaultPwd and @password is '!13&6fa^' and @confirmPassword is '!13&6fa^'
+				@password = @confirmPassword = @defaultPwd
 			if @password isnt @defaultPwd
 				if @password.length < 8
 					return @warnPop('密码长度为8-20个字符')
@@ -241,6 +243,7 @@ export default
 				@groupId = list.groupId
 				@userId = list.id
 				@defaultPwd = @password = @confirmPassword = list.password
+				@password = @confirmPassword = '!13&6fa^'
 			# 新增客服时
 			else
 				@menuIDs = @$store.state.menuServeIdList
