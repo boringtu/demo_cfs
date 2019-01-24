@@ -30,6 +30,7 @@ export default
 		# 添加分组
 		addNewGroup: ->
 			@isShowAddNewPop = true
+			@popTitle = '添加分组'
 			@saveBlock = false
 			@addGroupName = ''
 			@saveStatus = 1

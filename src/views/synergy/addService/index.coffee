@@ -101,7 +101,7 @@ export default
 			if !@serverNickName
 				return @warnPop('请输入昵称')
 			if !@password
-				return @warnPo p('请输入密码')
+				return @warnPop('请输入密码')
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
 			if @defaultPwd and @password is @defaultShowPwd and @confirmPassword is @defaultShowPwd
