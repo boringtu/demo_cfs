@@ -155,6 +155,7 @@ export default
 							message: '删除成功'
 						@isShowConfirmPop = false
 						@getInitData()
+						@activeGroupId = 0
 			# 禁用或者启用客服
 			else if @confirmPopStatus is 1 or @confirmPopStatus is 2
 				Utils.ajax ALPHA.API_PATH.synergy.disabledServe,
