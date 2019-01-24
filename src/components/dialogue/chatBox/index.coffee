@@ -143,20 +143,11 @@ export default
 				# 新请求来的消息条数
 				newMsgCount = list.length
 
-				# 刷新 referTimeStamp
-				@referTimeStamp = list[0].timeStamp
-				multiple = 0
 				# 追加数据（包含首屏数据的情况）
-				list = [...list, ...@chatHistoryList]
-				for item, i in list
-					unless i
-						item.hasTimeline = 1
-						continue
-					# 5 为 5分钟
-					tempMultiple = ~~( (item.timeStamp - @referTimeStamp) / (5 * 60 * 1000) )
-					if tempMultiple > multiple
-						item.hasTimeline = 1
-						multiple = tempMultiple
+				@$store.state.chatHistoryList = list = [...list, ...@chatHistoryList]
+				# 刷新 timeline 的数据
+				@refreshTimeline()
+
 				# 更改是否正在加载历史数据的状态
 				@isLoadingHistory = 0
 				# 添加未读标记
@@ -165,8 +156,6 @@ export default
 					break unless count--
 					item = list[i]
 					item.isUnread = 1
-				# 刷新数据
-				@$store.state.chatHistoryList = list
 				if isReset
 					## 首屏时，滚动到最底部
 					@$nextTick =>
@@ -185,7 +174,25 @@ export default
 						break unless el
 						h += el.offsetHeight
 					@$refs.chatWindow.scrollTop = h
-			return
+
+		# 刷新 timeline 的数据
+		refreshTimeline: ->
+			list = @chatHistoryList
+			return unless list.length
+			# 刷新 referTimeStamp
+			@referTimeStamp = list[0].timeStamp
+			multiple = 0
+			for item, i in list
+				unless i
+					item.hasTimeline = 1
+					continue
+				# 5 为 5分钟
+				tempMultiple = ~~( (item.timeStamp - @referTimeStamp) / (5 * 60 * 1000) )
+				if tempMultiple > multiple
+					item.hasTimeline = 1
+					multiple = tempMultiple
+				else
+					item.hasTimeline = 0
 
 		# 发送欢迎语
 		sendWelcome: ->
@@ -368,6 +375,8 @@ export default
 		# 服务器推送来的消息（包括己方发送的消息）
 		addMessage: (msg) ->
 			@$store.commit 'addToChatHistoryList', msg
+			# 刷新 timeline 的数据
+			@refreshTimeline()
 			if msg.sendType is 1
 				# 己方消息，滚动到底部
 				@$nextTick => @scrollToBottom 80
