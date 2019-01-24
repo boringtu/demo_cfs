@@ -232,7 +232,7 @@ export default
 			if grandFatherIndex and  index is 0
 				@allPermissionTreeList[grandFatherIndex].children[parentIndex].permissions.forEach (item) =>
 					item.checkStatus = false
-			if index is 0
+			else if !grandFatherIndex and index is 0
 				@allPermissionTreeList[parentIndex].permissions.forEach (item) =>
 					item.checkStatus = false
 		initData: ->

@@ -81,17 +81,7 @@ export default
 			console.log groupItem.id
 			@activeGroupId = groupItem.id
 			@recoverNumData()
-			# totalCount = adminCount = serverCount = disabledCount = 0
-			# for item in @serveListDetail when groupItem.id is 0 or item.groupId is groupItem.id
-			# 	# 总人数
-			# 	totalCount++
-			# 	adminCount++ if item.roleId is 1
-			# 	serverCount++ if item.roleId is 2
-			# 	disabledCount++ if item.status is 2
-			# @totalServerNum = totalCount
-			# @managerNum = adminCount
-			# @serverNum = serverCount
-			# @disabledNum = disabledCount
+		# 筛选分组时计算总人数，管理员，客服，被禁用人数
 		recoverNumData: () ->
 			totalCount = adminCount = serverCount = disabledCount = 0
 			for item in @serveListDetail when @activeGroupId is 0 or item.groupId is @activeGroupId
@@ -215,19 +205,6 @@ export default
 				@$store.state.allGroupList = res.data.groups;
 				@serveListDetail = res.data.admins
 				@recoverNumData()
-				# # 角色为客服人数
-				# serverRoleList = @serveListDetail.filter (item) ->
-				# 	item.roleId is 2
-				# # 角色为管理员人数 
-				# managerRoleList = @serveListDetail.filter (item) ->
-				# 	item.roleId is 1
-				# # 被禁用人数
-				# disabledRoleist = @serveListDetail.filter (item) ->
-				# 	item.status is 2
-				# @totalServerNum = @serveListDetail.length
-				# @serverNum = serverRoleList.length
-				# @managerNum = managerRoleList.length
-				# @disabledNum = disabledRoleist.length
 			if @$store.state.menuServeIdList.length is 0
 				Utils.ajax ALPHA.API_PATH.synergy.defaultpermission
 				.then (res) =>
@@ -238,3 +215,4 @@ export default
 						else if item.id is 1
 							for item1 in item.menus
 								@$store.state.menuManagerIdList.push(item1.id)
+			
