@@ -78,12 +78,19 @@ export default
 						globalFlag = 0
 					else
 						break
+				# 移除无数据对象
+				menus = []
+				loop
+					break unless data.menus.length
+					temp = data.menus.shift()
+					menus.push temp if temp.id
+				data.menus = menus
 
 				## 处理权限数据
-				@processPermission data.permissions, data.menus
+				@processPermission data.permissions, Utils.clone menus
 				console.log '权限数据: ', data.permissions
 				## 缓存数据
-				arr = ['token', 'admin', 'permissions', 'topics', 'config']
+				arr = ['token', 'admin', 'menus', 'permissions', 'topics', 'config']
 				for key in arr
 					if typeof data[key] is 'string'
 						localStorage.setItem key, data[key]

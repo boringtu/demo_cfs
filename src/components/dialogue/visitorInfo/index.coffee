@@ -100,6 +100,8 @@ export default
 
 	methods:
 		saveInfo: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.dialogue.infoModifiable
 			Utils.ajax ALPHA.API_PATH.dialogue.user,
 				method: 'PUT'
 				data: @info

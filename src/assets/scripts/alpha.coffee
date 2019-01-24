@@ -16,6 +16,23 @@ export default do ->
 				localStorage.removeItem key
 				vm.$store.state[key] = null
 
+		###
+		 # 鉴权模块
+		 # @params data 传进来的必须是枚举：ALPHA.PERMISSIONS 中的一项
+		###
+		checkPermission: (id) ->
+			return 0 unless id
+			ps = ALPHA.menus
+			return 0 unless ps
+			hasPermission = ps.some (item) -> item.id is id
+			unless hasPermission
+				# 弹出无权限操作提示
+				vm.$notify
+					type: 'error'
+					title: '操作失败'
+					message: '您无权限操作该模块'
+			hasPermission
+
 	Object.defineProperties window.ALPHA,
 		# 枚举: 接口地址
 		API_PATH:
@@ -88,21 +105,21 @@ export default do ->
 				## 访客对话 ##
 				dialogue:
 					# 修改客户信息
-					infoModifiable: '1,13'
+					infoModifiable: 13
 				## 内部协同 ##
 				synergy:
 					# 添加分组
-					groupAddable: '2,34'
+					groupAddable: 34
 					# 编辑分组
-					groupModifiable: '2,35'
+					groupModifiable: 35
 					# 删除分组
-					groupDeletable: '2,36'
+					groupDeletable: 36
 					# 添加客服
-					serverAddable: '2,38'
+					serverAddable: 38
 					# 编辑客服
-					serverModifiable: '2,39'
+					serverModifiable: 39
 					# 删除客服
-					serverDeletable: '2,40'
+					serverDeletable: 40
 				## 配置管理 ##
 				configManagement:
 					# 修改风格设置
@@ -125,7 +142,19 @@ export default do ->
 					console.error '无服务器时间数据'
 					return now
 				new Date +now - ~~timeDiff
-		# 客服权限
+		# 客服权限（一维数组）
+		menus:
+			get: ->
+				menus = vm.$store.state.menus
+				# 如 vuex 中已有数据，直接返回
+				return menus if menus
+				# 如 vuex 中没有，则去 localStorage 中取
+				menus = localStorage.getItem 'menus'
+				# 如 localStorage 中也没有，返回 null
+				return null unless menus
+				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
+				vm.$store.state.menus = menus.toJSON()
+		# 客服权限（树桩结构）
 		permissions:
 			get: ->
 				permissions = vm.$store.state.permissions
@@ -216,12 +245,6 @@ export default do ->
 				3: icon: 'icon-configuration', url: '/configuration'
 				# 配置管理 - 设置样式
 				20: url: '/configuration/setStyle'
-
-		###
-		 # 鉴权模块
-		 # @params data 传进来的必须是枚举：ALPHA.PERMISSIONS 中的一项
-		###
-		checkPermission: (data) ->
 
 	Object.defineProperties window.ALPHA.API_PATH.WS,
 		# 用于建立 WebSocket 连接
