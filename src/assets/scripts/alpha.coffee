@@ -123,7 +123,7 @@ export default do ->
 				## 配置管理 ##
 				configManagement:
 					# 修改风格设置
-					styleModifiable: '3,20,45'
+					styleModifiable: 45
 
 
 		# 签名私盐

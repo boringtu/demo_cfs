@@ -95,6 +95,8 @@ export default
 			
 		# 保存设置对话框主题
 		saveSetTheme: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.styleModifiable
 			isloading = true
 			params =
 				logoHref: encodeURI @logoUrlText

@@ -29,6 +29,8 @@ export default
 	methods:
 		# 添加分组
 		addNewGroup: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.synergy.groupAddable
 			@isShowAddNewPop = true
 			@popTitle = '添加分组'
 			@saveBlock = false
@@ -37,6 +39,8 @@ export default
 			@saveIsDisabled = false
 		#编辑分组 
 		editGroup: (item) ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.synergy.groupModifiable
 			@isShowAddNewPop = true
 			@popTitle = '修改分组名称'
 			@defaultGroupName = @addGroupName = item.name
@@ -49,19 +53,27 @@ export default
 			@saveIsDisabled = @addGroupName is @defaultGroupName
 		# 删除分组
 		deleteGroup: (item) ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.synergy.groupDeletable
 			@isShowConfirmPop = true
 			@groupItemId = item.id
 			@confirmTitle = '确定删除该分组？'
 			@confirmPopStatus = 0
 		# 添加客服
 		addNewServer: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.synergy.serverAddable
 			@$router.push({name: 'addService'})
 		#编辑客服 
 		editServer: (item) ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.synergy.serverModifiable
 			@$router.push({name: 'addService', params: { id: item.id }}) if item.id
 			@$store.state.serverListItem = item
 		# 启用或者禁用客服
 		userServer: (item) ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.synergy.serverModifiable
 			@serverItemId = item.id
 			@isShowConfirmPop = true
 			if item.status is 2
@@ -72,6 +84,8 @@ export default
 				@confirmTitle = '确定禁用该客服？'
 		# 删除客服
 		deleteServer: (item) ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.synergy.serverDeletable
 			@serverItemId = item.id
 			@confirmPopStatus = 3
 			@isShowConfirmPop = true
