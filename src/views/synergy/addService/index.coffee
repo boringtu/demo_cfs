@@ -101,7 +101,7 @@ export default
 			if !@serverNickName
 				return @warnPop('请输入昵称')
 			if !@password
-				return @warnPo p('请输入密码')
+				return @warnPop('请输入密码')
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
 			if @defaultPwd and @password is @defaultShowPwd and @confirmPassword is @defaultShowPwd
@@ -125,11 +125,11 @@ export default
 					for item3 in item.permissions
 						if item3.checkStatus
 							menuIdslist.push item3.id
-			if @password is @defaultPwd
-				savePwd =  @defaultPwd
-			else
-				savePwd = "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 			if @$route.params.id
+				if @password is @defaultPwd
+					savePwd =  @defaultPwd
+				else
+					savePwd = "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 				Utils.ajax ALPHA.API_PATH.synergy.addadmin,
 					method: 'put'
 					data:

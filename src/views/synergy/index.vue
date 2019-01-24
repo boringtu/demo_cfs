@@ -50,7 +50,7 @@
 		.pop_cont
 			h2.title {{popTitle}}
 			.center_cont 
-				input(type="text" v-model="addGroupName" maxlength="20" @focus="saveBlock = false" class="add_group_input" :class="{'save_block': saveBlock}" @input="editGroupNameInput" @change="editGroupNameChange")
+				input(type="text" v-model.trim="addGroupName" maxlength="20" @focus="saveBlock = false" class="add_group_input" :class="{'save_block': saveBlock}" @input="editGroupNameInput" @change="editGroupNameChange")
 				p(class="block_warn_msg" v-if="saveBlock") 分组名称不能为空
 				i(class="el-icon-warning warn_icon" v-if="saveBlock")
 			.btn_line
