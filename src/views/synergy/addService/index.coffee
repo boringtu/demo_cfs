@@ -22,6 +22,7 @@ export default
 		userId: ''
 		saveIsDisabled: true
 		defaultPwd: ''
+		defaultShowPwd: '!13&6fa^'
 	watch:
 		$route: (to) ->
 			# @initData() if to.name is 'addService'
@@ -85,6 +86,7 @@ export default
 			@saveIsDisabled = false
 		# 保存
 		saveAccountInfo: ->
+			console.log "del",@defaultPwd
 			regPwd = /^(?!\d+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/
 			regId = /^\w+$/g
 			# regName = /^[\u4E00-\u9FA5\w*!@#$%^&~]+$/
@@ -102,8 +104,9 @@ export default
 				return @warnPo p('请输入密码')
 			if !@confirmPassword
 				return @warnPop('请输入确认密码')
-			if @defaultPwd and @password is '!13&6fa^' and @confirmPassword is '!13&6fa^'
+			if @defaultPwd and @password is @defaultShowPwd and @confirmPassword is @defaultShowPwd
 				@password = @confirmPassword = @defaultPwd
+			
 			if @password isnt @defaultPwd
 				if @password.length < 8
 					return @warnPop('密码长度为8-20个字符')
@@ -122,6 +125,10 @@ export default
 					for item3 in item.permissions
 						if item3.checkStatus
 							menuIdslist.push item3.id
+			if @password is @defaultPwd
+				savePwd =  @defaultPwd
+			else
+				savePwd = "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
 			if @$route.params.id
 				Utils.ajax ALPHA.API_PATH.synergy.addadmin,
 					method: 'put'
@@ -133,7 +140,7 @@ export default
 						nickname: @serverNickName
 						roleId: @roleId
 						groupId: @groupId
-						password: "#{ @password }#{ ALPHA.SUFFIX }".md5().toUpperCase()
+						password: savePwd
 				.then (res) =>
 					if res.msg is 'success'
 						vm.$notify
@@ -243,7 +250,7 @@ export default
 				@groupId = list.groupId
 				@userId = list.id
 				@defaultPwd = @password = @confirmPassword = list.password
-				@password = @confirmPassword = '!13&6fa^'
+				@password = @confirmPassword = @defaultShowPwd
 			# 新增客服时
 			else
 				@menuIDs = @$store.state.menuServeIdList
