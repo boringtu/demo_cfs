@@ -62,6 +62,7 @@ export default
 		topicOptions: -> @$store.state.topics
 
 	created: ->
+		ALPHA.topics
 		@info = Utils.clone @defInfo
 	
 	watch:
