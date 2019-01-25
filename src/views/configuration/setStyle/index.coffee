@@ -115,6 +115,8 @@ export default
 					@isDisabled = true
 		# 恢复默认设置
 		recoverDefaultSet: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.styleModifiable
 			params =
 				type: 'pc_dialog'
 			Utils.ajax ALPHA.API_PATH.configManagement.recoverDefaultSet,
