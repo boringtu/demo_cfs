@@ -63,8 +63,7 @@
 			font-size: 12px
 			font-weight: 400
 			color: #999
-		ul
-			text-align: left
+		.listWindow
 			position: absolute
 			z-index: 1
 			width: 100%
@@ -73,6 +72,8 @@
 			overflow: auto
 			&[data-type="0"]
 				top: 30px
+		ul
+			text-align: left
 			li
 				background-color: #fff
 				position: relative
@@ -84,7 +85,7 @@
 					flex-direction: column
 					justify-content: space-between
 					height: 80px
-					border-top: 1px solid #e6e6e6
+					border-bottom: 1px solid #e6e6e6
 					padding: 14px 65px
 					font-size: 14px
 					line-height: 18px
@@ -126,9 +127,14 @@
 						color: #fff
 						font-size: 12px
 						text-align: center
-				&:first-child
+				&.loading-data
+					line-height: 40px
+					text-align: center
+					&:hover
+						background-color: #fff
+				&:last-child
 					a
-						border-top: 0
+						border-bottom: 0
 		/deep/
 			.list-item
 				transition: all .2s

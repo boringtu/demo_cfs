@@ -5,6 +5,10 @@ export default
 	data: ->
 		# tab 标签当前下标
 		tabIndex: 0
+		# 是否正在加载已结束对话的数据
+		isLoadingClosedData: 0
+		# 是否无更多已结束对话数据
+		noMoreClosedData: 0
 	created: ->
 		# 获取数据
 		@fetchChattingData()
@@ -77,16 +81,28 @@ export default
 				item.isChatting = 1 for item in data
 				@$store.state.chattingList = data
 
-		# 获取已结束的会话列表（目前不提供刷新功能，感觉没必要）
+		# 获取已结束的会话列表
 		fetchClosedData: ->
+			return if @isLoadingClosedData
+			# 更改是否正在加载已结束回话的数据
+			@isLoadingClosedData = 1
 			count = @closedList.length
 			params = count: count if count
 			Utils.ajax ALPHA.API_PATH.dialogue.closed,
 				params: params
 			.then (res) =>
 				data = res.data
+				unless data.length
+					# 更改是否正在加载已结束对话列表
+					@isLoadingClosedData = 0
+					# 无更多数据的状态
+					@noMoreClosedData = 1
+					return
 				item.isChatting = 0 for item in data
-				@$store.state.closedList = data
+				list = @$store.state.closedList
+				@$store.state.closedList = [...list, ...data]
+				# 更改是否正在加载已结束对话列表
+				@isLoadingClosedData = 0
 
 		# Event: mouseenter of tab title
 		eventTabMouseEnter: (event) ->
@@ -110,3 +126,24 @@ export default
 			left = (428 / 2 - target.offsetWidth) / 2
 			left += 428 / 2 if i
 			target.style.left = "#{ left }px"
+
+		# Event: 已结束对话列表滚动事件
+		eventScrollClosed: ->
+			return if @noMoreClosedData
+
+			# 频率控制器
+			return if @winScrollState
+			@winScrollState = 1
+			setTimeout (=> @winScrollState = 0), 20
+
+			# win element
+			win = @$refs.closedWindow
+			# lines' wrapper
+			wrap = @$refs.closedWrapper.$el
+			# window's height
+			wH = win.offsetHeight
+			# window scrollTop
+			sT = win.scrollTop
+			# lines' total height
+			tH = wrap.offsetHeight
+			@fetchClosedData() if wH + sT > tH - 40
