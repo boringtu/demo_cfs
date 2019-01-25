@@ -91,6 +91,7 @@ export default new Vuex.Store
 			for user in list when user.id is userId
 				user.unreadCount = 0
 				break
+			state.chattingList = Utils.clone list
 
 		# 刷新 chatting list
 		refreshChattingList: (state, msg) ->
