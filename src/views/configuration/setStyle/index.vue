@@ -21,7 +21,7 @@
                         .url_input
                             span https://
                             input(type="text" v-model="logoUrlText" @input="logoUrlChange")
-                h2.set_adline 设置右侧广告栏
+                h2.set_adline 设置右侧广告栏	
                 .common_line.ad_img_line
                     .left_text 广告图
                     .right_cont 

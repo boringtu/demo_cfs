@@ -228,13 +228,18 @@ export default
 			@saveIsDisabled = false
 			@$forceUpdate();
 			item.checkStatus = !item.checkStatus
-			return if item.checkStatus
-			if grandFatherIndex and  index is 0
-				@allPermissionTreeList[grandFatherIndex].children[parentIndex].permissions.forEach (item) =>
-					item.checkStatus = false
-			else if !grandFatherIndex and index is 0
-				@allPermissionTreeList[parentIndex].permissions.forEach (item) =>
-					item.checkStatus = false
+			if !item.checkStatus
+				if grandFatherIndex and  index is 0
+					@allPermissionTreeList[grandFatherIndex].children[parentIndex].permissions.forEach (item) =>
+						item.checkStatus = false
+				else if !grandFatherIndex and index is 0
+					@allPermissionTreeList[parentIndex].permissions.forEach (item) =>
+						item.checkStatus = false
+			else
+				if grandFatherIndex and index isnt 0
+					@allPermissionTreeList[grandFatherIndex].children[parentIndex].permissions[0].checkStatus = true
+				else if !grandFatherIndex and index isnt 0
+					@allPermissionTreeList[parentIndex].permissions[0].checkStatus = true
 		initData: ->
 			routerId = @$route.params.id
 			# 编辑时带过来的数据

@@ -92,7 +92,7 @@ export default
 			@confirmTitle = '确定删除该客服？'
 		# 筛选分组
 		clickGroupItem: (groupItem) ->
-			console.log groupItem.id
+			# console.log groupItem.id
 			@activeGroupId = groupItem.id
 			@recoverNumData()
 		# 筛选分组时计算总人数，管理员，客服，被禁用人数
