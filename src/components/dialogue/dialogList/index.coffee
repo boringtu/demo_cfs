@@ -40,12 +40,26 @@ export default
 		formatTime: (message) ->
 			return '' unless message
 			stamp = message.timeStamp
+
 			date = new Date stamp
+			today = new Date()
+			Y = date.getFullYear()
+			Y = if (Y + '').length > 1 then Y else '0' + Y
+			M = date.getMonth() + 1
+			M = if (M + '').length > 1 then M else '0' + M
+			d = date.getDate()
+			d = if (d + '').length > 1 then d else '0' + d
 			H = date.getHours()
 			H = if (H + '').length > 1 then H else '0' + H
 			m = date.getMinutes()
 			m = if (m + '').length > 1 then m else '0' + m
-			"#{ H }:#{ m }"
+			if today.getFullYear() isnt date.getFullYear()
+				"#{ Y }-#{ M }-#{ d } #{ H }:#{ m }"
+			else if today.getMonth() isnt date.getMonth() or today.getDate() isnt date.getDate()
+				"#{ M }-#{ d } #{ H }:#{ m }"
+			else
+				"#{ H }:#{ m }"
+
 		# 未读消息条数处理
 		unreadCount: (n) ->
 			return "#{ n }" if n < 100

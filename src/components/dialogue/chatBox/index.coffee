@@ -64,6 +64,8 @@ export default
 		timeline: (stamp) ->
 			date = new Date stamp
 			today = new Date()
+			Y = date.getFullYear()
+			Y = if (Y + '').length > 1 then Y else '0' + Y
 			M = date.getMonth() + 1
 			M = if (M + '').length > 1 then M else '0' + M
 			d = date.getDate()
@@ -74,10 +76,12 @@ export default
 			m = if (m + '').length > 1 then m else '0' + m
 			s = date.getSeconds()
 			s = if (s + '').length > 1 then s else '0' + s
-			if today.getMonth() is date.getMonth() and today.getDate() is date.getDate()
-				"#{ H }:#{ m }:#{ s }"
-			else
+			if today.getFullYear() isnt date.getFullYear()
+				"#{ Y }-#{ M }-#{ d } #{ H }:#{ m }:#{ s }"
+			else if today.getMonth() isnt date.getMonth() or today.getDate() isnt date.getDate()
 				"#{ M }-#{ d } #{ H }:#{ m }:#{ s }"
+			else
+				"#{ H }:#{ m }:#{ s }"
 
 	watch:
 		# 切换用户
