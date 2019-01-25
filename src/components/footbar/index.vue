@@ -2,10 +2,10 @@
 <template lang="pug">
 .footbar
 	div
-		label 当前访问量：
+		label 当前访客量：
 		span {{ visitingCount }}
 	div
-		label 今日访问量：
+		label 今日接待量：
 		span {{ todayCount }}
 	div
 		label 客服ID：
