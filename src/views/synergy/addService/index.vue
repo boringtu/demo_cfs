@@ -11,7 +11,7 @@
 					label
 						i *
 						span 客服ID
-					input(type="text" class="input_item" v-model="serverId" :disabled="IdIsDisabled" maxlength="20" @blur="checkIdIsRepeat" @input="inputChange")
+					input(type="text" class="input_item" v-model="serverId" :disabled="IdIsDisabled" maxlength="20" @blur="checkIdIsRepeat" @input="inputChange" name="username")
 				.form_item
 					label
 						i *
