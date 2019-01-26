@@ -1,7 +1,7 @@
 <style lang="sass" src="./index.sass" scoped></style>
 <template lang="pug">
 el-table.root(height="190" :data="list" @row-dblclick="eventReceiveCustomer" empty-text="暂无访客记录")
-	el-table-column(label="姓名" prop="name")
+	el-table-column(label="姓名" prop="name" :show-overflow-tooltip="true")
 	el-table-column(label="渠道" width="60")
 		template(slot-scope="scope")
 			i.icon(:class="scope.row.conversation.channel | channelIcon")
