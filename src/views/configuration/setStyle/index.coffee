@@ -97,7 +97,7 @@ export default
 		saveSetTheme: ->
 			# 鉴权
 			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.styleModifiable
-			isloading = true
+			@isloading = true
 			params =
 				logoHref: encodeURI @logoUrlText
 				logoMediaId: @logoImgId
@@ -107,7 +107,7 @@ export default
 				method: 'put'
 				data: params
 			.then (res) =>
-				isloading = false
+				@isloading = false
 				if res.msg is 'success'
 					vm.$notify
 						type: 'success'

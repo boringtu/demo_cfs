@@ -43,6 +43,7 @@ export default
 						type: 'success'
 						title: '已恢复默认设置'
 					@fetchInitSetting()
+		# 默认欢迎语
 		fetchInitSetting: ->
 			data =
 				adminId: ALPHA.admin.adminId
