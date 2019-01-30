@@ -95,6 +95,8 @@ export default do ->
 				configManagement:
 					# 保存设置对话框主题
 					saveSetTheme: '/api/conf/pcDialog'
+					# 当前客服系统 Logo 配置
+					sysLogoSetting: '/api/conf/manageLogo'
 					# 当前图片（logo、广告）配置
 					imgSetting: '/api/conf/pcDialog'
 					# 恢复默认设置
@@ -128,6 +130,9 @@ export default do ->
 				configManagement:
 					# 修改风格设置
 					styleModifiable: 45
+					# 修改客服系统 LOGO 设置
+					sysLogoModifiable: 50
+					# 修改对话设置
 					dialogueModifiable: 48
 
 

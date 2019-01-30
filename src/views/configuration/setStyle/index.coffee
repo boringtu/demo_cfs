@@ -2,6 +2,9 @@
 import Utils from '@/assets/scripts/utils'
 export default
 	data: ->
+		sysLogoImgUrl: ''
+		sysLogoImgId: ''
+		defaultSysLogoImgId: ''
 		logoImgUrl: ''
 		adImgUrl: ''
 		logoImgId: ''
@@ -12,17 +15,29 @@ export default
 		defaultLogoUrlText: ''
 		adUrlText: ''
 		defaultAdUrlText: ''
-		isloading: false
-		isDisabled: true
+		isloadingForPC: false
+		isloadingForSysLogo: false
+		isDisabledForPC: true
+		isDisabledForSysLogo: true
+		menuList: [
+			id: 0, text: '桌面对话窗口'
+		,
+			id: 1, text: '客服系统样式'
+		]
+		activeMenu: 0
+
 	computed:
 		admin: -> ALPHA.admin or {}
+
 	created: ->
 		@fetchImgSetting()
+		@fetchSysLogoSetting()
+
 	methods: 
 		logoUrlChange: ->
-			@isDisabled = @logoUrlText is @defaultLogoUrlText
+			@isDisabledForPC = @logoUrlText is @defaultLogoUrlText
 		adUrlChange: ->
-			@isDisabled = @adUrlText is @defaultAdUrlText
+			@isDisabledForPC = @adUrlText is @defaultAdUrlText
 		# logo图片点击上传
 		getLogoImg: ->
 			img1 = event.target.files[0]
@@ -44,7 +59,7 @@ export default
 				if res.msg is 'success'
 					@logoImgUrl = "/#{ res.data.fileUrl }"
 					@logoImgId = res.data.id
-					@isDisabled = @logoImgId is @defaultLogoImgId
+					@isDisabledForPC = @logoImgId is @defaultLogoImgId
 		# 广告图片点击上传
 		getAdImg: ->
 			adImg = event.target.files[0]
@@ -65,7 +80,31 @@ export default
 				if res.msg is 'success'
 					@adImgUrl = "/#{ res.data.fileUrl }"
 					@adImgId = res.data.id
-					@isDisabled = @adImgId is @defaultAdImgId
+					@isDisabledForPC = @adImgId is @defaultAdImgId
+
+		# 客服系统logo图片点击上传
+		getSysLogoImg: ->
+			img1 = event.target.files[0]
+
+			# 限制图片大小 小于 10Mb
+			if img1.size / 1024 / 1024 > 10
+				# 弹出提示
+				vm.$notify
+					type: 'warning'
+					title: '图片上传失败'
+					message: "图片大小不可超过10Mb"
+				return
+
+			formData = new FormData()
+			formData.append 'multipartFile', img1
+			# 发起请求
+			@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
+			.then (res) =>
+				if res.msg is 'success'
+					@sysLogoImgUrl = "/#{ res.data.fileUrl }"
+					@sysLogoImgId = res.data.id
+					@isDisabledForSysLogo = @sysLogoImgId is @defaultSysLogoImgId
+
 		# 获取当前配置
 		fetchImgSetting: ->
 			data =
@@ -92,12 +131,22 @@ export default
 						@logoImgUrl = "/#{ logoUrl }"
 					if adUrl
 						@adImgUrl = "/#{ adUrl }"
+
+		# 获取当前 Logo 配置
+		fetchSysLogoSetting: ->
+			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting
+			.then (res) =>
+				return
+				resData = res.data
+				return unless resData
+				@sysLogoImgUrl = "/#{ resData.other }"
+				@defaultSysLogoImgId = @sysLogoImgId = resData.value
 			
 		# 保存设置对话框主题
 		saveSetTheme: ->
 			# 鉴权
 			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.styleModifiable
-			isloading = true
+			@isloadingForPC = true
 			params =
 				logoHref: encodeURI @logoUrlText
 				logoMediaId: @logoImgId
@@ -107,12 +156,13 @@ export default
 				method: 'put'
 				data: params
 			.then (res) =>
-				isloading = false
+				@isloadingForPC = false
 				if res.msg is 'success'
 					vm.$notify
 						type: 'success'
 						title: '保存成功'
-					@isDisabled = true
+					@isDisabledForPC = true
+
 		# 恢复默认设置
 		recoverDefaultSet: ->
 			# 鉴权
@@ -129,6 +179,38 @@ export default
 						title: '已恢复默认设置'
 					@fetchImgSetting()
 
-			
+		# 恢复默认系统 LOGO
+		recoverDefaultSysLogo: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.styleModifiable
+			params =
+				type: 'pc_dialog'
+			Utils.ajax ALPHA.API_PATH.configManagement.recoverDefaultSet,
+				method: 'put'
+				data: params
+			.then (res) =>
+				if res.msg is 'success'
+					vm.$notify
+						type: 'success'
+						title: '已恢复默认设置'
+					@fetchSysLogoSetting()
+		
+		# 保存系统 LOGO 设置
+		saveSysLogo: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.sysLogoModifiable
+			@isloadingForSysLogo = true
+			params =
+				mediaId: @sysLogoImgId
+			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting,
+				method: 'put'
+				data: params
+			.then (res) =>
+				@isloadingForSysLogo = false
+				if res.msg is 'success'
+					vm.$notify
+						type: 'success'
+						title: '保存成功'
+					@isDisabledForSysLogo = true	
 
 			
