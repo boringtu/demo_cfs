@@ -47,5 +47,10 @@ export default new Router
 			path: '/configuration/setStyle'
 			name: 'setStyle'
 			component: (resolve) => require ["@/views/configuration/setStyle"], resolve
+		,
+			# 配置管理 - 对话设置
+			path: '/configuration/setDialogue'
+			name: 'setDialogue'
+			component: (resolve) => require ["@/views/configuration/setDialogue"], resolve
 		]
 	]

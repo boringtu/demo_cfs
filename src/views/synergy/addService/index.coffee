@@ -86,7 +86,6 @@ export default
 			@saveIsDisabled = false
 		# 保存
 		saveAccountInfo: ->
-			console.log "del",@defaultPwd
 			regPwd = /^(?!\d+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/
 			regId = /^\w+$/g
 			# regName = /^[\u4E00-\u9FA5\w*!@#$%^&~]+$/

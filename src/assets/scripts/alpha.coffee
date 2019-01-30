@@ -99,6 +99,10 @@ export default do ->
 					imgSetting: '/api/conf/pcDialog'
 					# 恢复默认设置
 					recoverDefaultSet: '/api/conf/default'
+					# 默认欢迎语
+					defaultWelcomeSentence: '/api/conf/all'
+					# 保存歡迎語
+					saveWelcomeSentence: '/api/conf/welcomeMsg'
 		# 枚举：具体权限（用于鉴权）
 		PERMISSIONS:
 			writable: off, value:
@@ -124,6 +128,7 @@ export default do ->
 				configManagement:
 					# 修改风格设置
 					styleModifiable: 45
+					dialogueModifiable: 48
 
 
 		# 签名私盐
@@ -245,6 +250,8 @@ export default do ->
 				3: icon: 'icon-configuration', url: '/configuration'
 				# 配置管理 - 设置样式
 				20: url: '/configuration/setStyle'
+				# 配置管理 - 对话设置
+				46: url: '/configuration/setDialogue'
 
 	Object.defineProperties window.ALPHA.API_PATH.WS,
 		# 用于建立 WebSocket 连接
