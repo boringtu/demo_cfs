@@ -136,11 +136,10 @@ export default
 		fetchSysLogoSetting: ->
 			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting
 			.then (res) =>
-				return
 				resData = res.data
 				return unless resData
 				@sysLogoImgUrl = "/#{ resData.other }"
-				@defaultSysLogoImgId = @sysLogoImgId = resData.value
+				@defaultSysLogoImgId = @sysLogoImgId = +resData.value
 			
 		# 保存设置对话框主题
 		saveSetTheme: ->
