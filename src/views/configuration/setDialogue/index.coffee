@@ -5,6 +5,10 @@ export default
 		isloading: false
 		isDisabled: true
 		welcomeCont: ''
+		menuList: [
+			id: 0, text: '欢迎语设置'
+		]
+		activeMenu: 0
 	created: ->
 		@fetchInitSetting()
 	methods:
