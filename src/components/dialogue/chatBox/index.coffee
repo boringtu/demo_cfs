@@ -418,6 +418,8 @@ export default
 
 			# 限制图片大小 小于 10Mb
 			if file.size / 1024 / 1024 > 10
+				# 清空 value，否则重复上传同一个文件不会触发 change 事件
+				target.value = ''
 				# 弹出提示
 				vm.$notify
 					type: 'warning'
