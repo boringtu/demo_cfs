@@ -47,7 +47,6 @@ export default
 		# 获取客服系统 Logo Url
 		fetchSysLogo: ->
 			data =
-				adminId: ALPHA.admin.adminId
 				type: 'manageLogo'
 			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting, params: data
 			.then (res) =>

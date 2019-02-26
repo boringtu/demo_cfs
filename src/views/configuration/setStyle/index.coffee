@@ -135,7 +135,6 @@ export default
 		# 获取客服系统样式数据
 		fetchSysLogoSetting: ->
 			data =
-				adminId: ALPHA.admin.adminId
 				type: 'manageLogo'
 			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting, params: data
 			.then (res) =>
