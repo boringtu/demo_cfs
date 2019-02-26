@@ -47,7 +47,7 @@ export default
 		# 历史消息数据列表（新数据在后）
 		chatHistoryList: -> @$store.state.chatHistoryList
 		isFromIE: ->
-			@dialogInfo?.conversation?.isIE
+			@dialogInfo?.conversation?.keyWord is 'isIE'
 
 	filters:
 		# 历史消息区 消息 class 类名（区分己方/对方）
