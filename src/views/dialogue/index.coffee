@@ -79,7 +79,9 @@ export default
 						duration: 0
 						showClose: false
 				else
-					@connectWSLink() unless @closingActively
+					setTimeout =>
+						@connectWSLink() unless @closingActively
+					, 1000
 			ws.connect {}, (frame) =>
 				# 添加监听
 				ws.subscribe ALPHA.API_PATH.WS.broadcast, @monitorBroadcast
