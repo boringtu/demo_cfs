@@ -46,6 +46,8 @@ export default
 		newUnreadCount: -> @newUnreadElList.length
 		# 历史消息数据列表（新数据在后）
 		chatHistoryList: -> @$store.state.chatHistoryList
+		isFromIE: ->
+			@dialogInfo?.conversation?.isIE
 
 	filters:
 		# 历史消息区 消息 class 类名（区分己方/对方）

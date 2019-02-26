@@ -30,6 +30,7 @@ export default new Vuex.Store
 		menuServeIdList: []
         # 默认的管理员权限
 		menuManagerIdList: []
+		logoUrl: ''
 
 	mutations:
 		# 清空数据
@@ -39,6 +40,9 @@ export default new Vuex.Store
 			state.chattingList = []
 			state.closedList = []
 			state.chatHistoryList = []
+
+		setLogoUrl: (state, url) ->
+			state.logoUrl = url
 
 		# add visitor into visitor list
 		addToVisitorList: (state, user) ->

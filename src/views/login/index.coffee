@@ -6,6 +6,7 @@ export default
 		username: ''
 		password: ''
 		login_loading: false
+		logoUrl: ''
 	beforeRouteEnter: (to, from, next) ->
 		# 验证如果当前已登录，则直接进入主页（即“访客对话”
 		isLoggedIn = yes
@@ -26,6 +27,8 @@ export default
 				# 保存服务器时间差值
 				@$store.state.timeDiff = timeDiff = +new Date() - res.data
 				localStorage.setItem 'timeDiff', timeDiff
+				# 获取 logo
+				@fetchSysLogo()
 			.catch (err) ->
 				console.error '服务器时间获取失败'
 
@@ -41,6 +44,19 @@ export default
 			elSubmitBtn.click()
 
 	methods:
+		# 获取客服系统 Logo Url
+		fetchSysLogo: ->
+			data =
+				adminId: ALPHA.admin.adminId
+				type: 'manageLogo'
+			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting, params: data
+			.then (res) =>
+				resData = res.data
+				return unless resData
+				@logoUrl = logoUrl = "/#{ resData.other }"
+				localStorage.setItem 'logoUrl', logoUrl
+				@$store.commit 'setLogoUrl', logoUrl
+
 		# Event: submit for login
 		eventSubmit: (event) ->
 			event.preventDefault()

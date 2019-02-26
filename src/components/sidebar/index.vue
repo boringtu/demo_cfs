@@ -2,7 +2,7 @@
 <template lang="pug">
 .sidebar
 	.logo
-		i.icon.icon-logo
+		img(:src="logoUrl")
 	ul.level_1
 		router-link(
 			tag="li"
