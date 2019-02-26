@@ -53,7 +53,6 @@ export default
 				resData = res.data
 				return unless resData
 				@logoUrl = logoUrl = "/#{ resData.other }"
-				localStorage.setItem 'logoUrl', logoUrl
 				@$store.commit 'setLogoUrl', logoUrl
 
 		# Event: submit for login

@@ -141,6 +141,7 @@ export default
 				resData = res.data
 				return unless resData
 				@sysLogoImgUrl = "/#{ resData.other }"
+				@$store.commit 'setLogoUrl', @sysLogoImgUrl
 				@defaultSysLogoImgId = @sysLogoImgId = +resData.value
 			
 		# 保存设置对话框主题
@@ -213,5 +214,6 @@ export default
 						type: 'success'
 						title: '保存成功'
 					@isDisabledForSysLogo = true	
+					@$store.commit 'setLogoUrl', @sysLogoImgUrl
 
 			

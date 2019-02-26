@@ -42,6 +42,7 @@ export default new Vuex.Store
 			state.chatHistoryList = []
 
 		setLogoUrl: (state, url) ->
+			localStorage.setItem 'logoUrl', url
 			state.logoUrl = url
 
 		# add visitor into visitor list
