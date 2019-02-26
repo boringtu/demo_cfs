@@ -93,7 +93,8 @@ export default
 				## 理论上不会出现 newInfo 为 null 的情况，首次加载除外，所以应该不会进入这里
 				# 清空数据
 				@clearData()
-			else if (oldInfo and newInfo.id isnt oldInfo.id) or !oldInfo
+			#else if (oldInfo and newInfo.id isnt oldInfo.id) or !oldInfo
+			else
 				# 清空数据
 				@clearData()
 				# 加载首屏历史消息数据
