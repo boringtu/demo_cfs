@@ -18,7 +18,7 @@ export default
 		saveSetDialogue: ->
 			# 鉴权
 			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
-			isloading = true
+			@isloading = true
 			params =
 				msgContent: @welcomeCont
 				autoSendOnStart: 1
@@ -26,7 +26,7 @@ export default
 				method: 'put'
 				data: params
 			.then (res) =>
-				isloading = false
+				@isloading = false
 				if res.msg is 'success'
 					vm.$notify
 						type: 'success'
