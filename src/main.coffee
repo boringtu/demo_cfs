@@ -97,6 +97,9 @@ window.vm = new Vue {
 		@$store.state.timeDiff = ~~localStorage.getItem 'timeDiff'
 
 		Utils.ajax = Utils.ajax.bind @
+
+		ALPHA.audios.newMsg ?= new Utils.Audio '/audios/newMsg.wav'
+		ALPHA.audios.newDialog ?= new Utils.Audio '/audios/newDialog.mp3'
 	render: (h) => h App
 }
 .$mount '#app'

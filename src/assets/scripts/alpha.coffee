@@ -33,6 +33,11 @@ export default do ->
 					message: '您无权限操作该模块'
 			hasPermission
 
+		# 保存 Audio 实例的 space
+		audios: {}
+		# 静音标识
+		isMuted: 0
+
 	Object.defineProperties window.ALPHA,
 		# 枚举: 接口地址
 		API_PATH:

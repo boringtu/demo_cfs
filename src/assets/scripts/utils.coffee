@@ -64,6 +64,24 @@ class Utils
 		str += key + data[key] for key in tmp
 		"#{ ALPHA.SALT }#{ str }#{ token }#{ timestamp }".md5().toLocaleUpperCase()
 
+	###
+	 # 包装过的 Audio
+	###
+	class @Audio
+		constructor: (filepath) ->
+			@audio = new window.Audio filepath
+		play: =>
+			return @ if ALPHA.isMute
+			@audio.play()
+			@
+		stop: =>
+			return @ if ALPHA.isMute
+			@audio.pause()
+			@audio.currentTime = 0
+			@
+		remove: =>
+			@audio.remove()
+
 #****************************** 内部函数 ******************************#
 
 ###
