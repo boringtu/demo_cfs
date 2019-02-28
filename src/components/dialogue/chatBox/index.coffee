@@ -26,6 +26,9 @@ export default
 		# 历史消息列表中第一条数据的timeStamp
 		referTimeStamp: 0
 
+	created: ->
+		window._imgLoaded = @eventImgLoaded
+
 	computed:
 		isChatting: ->
 			info = @dialogInfo
@@ -413,10 +416,10 @@ export default
 			@refreshTimeline()
 			if msg.sendType is 1
 				# 己方消息，滚动到底部
-				@$nextTick => @scrollToBottom 80
+				@$nextTick => @scrollToBottom 0
 			else
 				if @isLocateBottom()
-					@$nextTick => @scrollToBottom()
+					@$nextTick => @scrollToBottom 0
 				else
 					# 对方消息，追加到 newUnreadElList
 					@newUnreadElList.push msg
@@ -503,9 +506,13 @@ export default
 								char
 					text.encodeHTML()
 				when 2
+					toBottom = msg.sendType is 1 or @isLocateBottom()
 					# 图片
 					"""
 						<a href="/#{ msg.message.encodeHTML() }" target="_blank">
-							<img src="/#{ msg.message.encodeHTML() }" />
+							<img src="/#{ msg.message.encodeHTML() }" onload="_imgLoaded(#{ +toBottom })" />
 						</a>
 					"""
+
+		eventImgLoaded: (toBottom) ->
+			@scrollToBottom 0 if +toBottom
