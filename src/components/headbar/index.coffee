@@ -10,17 +10,32 @@ export default
 	}
 	computed: ->
 		admin: -> ALPHA.admin or {}
-	created: ->
 
 	mounted: ->
-		console.log ALPHA.admin
+		window.addEventListener 'load', => @eventWindowLoad()
+		window.addEventListener 'unload', => @eventWindowUnload()
+
 	methods:
-		# Event: 设置按钮点击事件
-		eventSetting: (event) ->
+		# Event: window load
+		eventWindowLoad: ->
+			leaveTime = localStorage.getItem 'leaveTime'
+			localStorage.removeItem 'leaveTime'
+			return unless leaveTime
+			nowTime = +new Date()
+			# 差值超过 5 秒则登出
+			@eventExit 1 if nowTime - leaveTime > 5000
+
+		# Event: window unload
+		eventWindowUnload: ->
+			localStorage.setItem 'leaveTime', +new Date()
 
 		# Event: 退出按钮点击事件
-		eventExit: (event) ->
-			console.log ALPHA.admin
+		eventExit: (isForcible) ->
+			type = 'success'
+			title = '退出登录'
+			if +isForcible
+				type = 'warning'
+				title = '登录失效，请重新登录'
 			data =
 				adminId: ALPHA.admin.adminId
 			Utils.ajax ALPHA.API_PATH.common.logout,
@@ -29,6 +44,6 @@ export default
 			.then (res) =>
 				if res.msg is 'success'
 					vm.$notify
-						type: 'success'
-						title: '退出登录'
-					@$router.push({path:'/login'})
+						type: type
+						title: title
+					@$router.push path: '/login'
