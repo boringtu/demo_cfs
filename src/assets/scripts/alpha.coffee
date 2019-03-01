@@ -33,6 +33,11 @@ export default do ->
 					message: '您无权限操作该模块'
 			hasPermission
 
+		# 保存 Audio 实例的 space
+		audios: {}
+		# 静音标识
+		isMuted: 0
+
 	Object.defineProperties window.ALPHA,
 		# 枚举: 接口地址
 		API_PATH:
@@ -93,12 +98,8 @@ export default do ->
 					check:	'/api/teamwork/admin/check'
 				## 配置管理 ##
 				configManagement:
-					# 保存设置对话框主题
-					saveSetTheme: '/api/conf/pcDialog'
-					# 当前客服系统 Logo 配置
-					sysLogoSetting: '/api/conf/manageLogo'
-					# 当前图片（logo、广告）配置
-					imgSetting: '/api/conf/pcDialog'
+					# 设置样式接口
+					sysLogoSetting: '/api/conf/pcDialog'
 					# 恢复默认设置
 					recoverDefaultSet: '/api/conf/default'
 					# 默认欢迎语
@@ -128,11 +129,9 @@ export default do ->
 					serverDeletable: 40
 				## 配置管理 ##
 				configManagement:
-					# 修改风格设置
+					# 设置样式的修改权限
 					styleModifiable: 45
-					# 修改客服系统 LOGO 设置
-					sysLogoModifiable: 50
-					# 修改对话设置
+					# 对话设置的修改权限
 					dialogueModifiable: 48
 
 
@@ -152,6 +151,18 @@ export default do ->
 					console.error '无服务器时间数据'
 					return now
 				new Date +now - ~~timeDiff
+		# LOGO Url
+		logoUrl:
+			get: ->
+				logoUrl = vm.$store.state.logoUrl
+				# 如 vuex 中已有数据，直接返回
+				return logoUrl if logoUrl
+				# 如 vuex 中没有，则去 localStorage 中取
+				logoUrl = localStorage.getItem 'logoUrl'
+				# 如 localStorage 中也没有，返回 null
+				return null unless logoUrl
+				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
+				vm.$store.state.logoUrl = logoUrl
 		# 客服权限（一维数组）
 		menus:
 			get: ->

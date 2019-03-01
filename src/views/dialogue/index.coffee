@@ -1,4 +1,5 @@
 'use strict'
+import Utils from '@/assets/scripts/utils'
 import ComponentVisitorList from '@/components/dialogue/visitorList'
 import ComponentDialogList from '@/components/dialogue/dialogList'
 import ComponentChatBox from '@/components/dialogue/chatBox'
@@ -79,7 +80,9 @@ export default
 						duration: 0
 						showClose: false
 				else
-					@connectWSLink() unless @closingActively
+					setTimeout =>
+						@connectWSLink() unless @closingActively
+					, 1000
 			ws.connect {}, (frame) =>
 				# 添加监听
 				ws.subscribe ALPHA.API_PATH.WS.broadcast, @monitorBroadcast
@@ -144,6 +147,8 @@ export default
 					else
 						# 递增未读消息数
 						@$store.commit 'increaseUnreadCount', userId
+					# 播放新消息声音
+					ALPHA.audios.newMsg.stop().play() unless msg.sendType is 1
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.RECEIVED
 					## 2: 开始接待用户
 					## 2|userId|user Object
@@ -155,6 +160,8 @@ export default
 					@$store.commit 'addToChattingList', user
 					# 递增今日访问量
 					@$store.commit 'increaseTodayCount'
+					# 播放接待新用户声音
+					ALPHA.audios.newDialog.stop().play()
 				when ALPHA.API_PATH.WS.RECEIVE_CODE.p2p.READED
 					## 3: 消息已读处理成功
 					## 3|userId|

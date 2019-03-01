@@ -26,6 +26,9 @@ export default
 		# 历史消息列表中第一条数据的timeStamp
 		referTimeStamp: 0
 
+	created: ->
+		window._imgLoaded = @eventImgLoaded
+
 	computed:
 		isChatting: ->
 			info = @dialogInfo
@@ -46,6 +49,8 @@ export default
 		newUnreadCount: -> @newUnreadElList.length
 		# 历史消息数据列表（新数据在后）
 		chatHistoryList: -> @$store.state.chatHistoryList
+		isFromIE: ->
+			@dialogInfo?.conversation?.keyWord is 'isIE'
 
 	filters:
 		# 历史消息区 消息 class 类名（区分己方/对方）
@@ -91,7 +96,8 @@ export default
 				## 理论上不会出现 newInfo 为 null 的情况，首次加载除外，所以应该不会进入这里
 				# 清空数据
 				@clearData()
-			else if (oldInfo and newInfo.id isnt oldInfo.id) or !oldInfo
+			#else if (oldInfo and newInfo.id isnt oldInfo.id) or !oldInfo
+			else
 				# 清空数据
 				@clearData()
 				# 加载首屏历史消息数据
@@ -279,6 +285,33 @@ export default
 			@$nextTick =>
 				@$refs.input.focus()
 
+		# Event: 向输入框内黏贴
+		eventOnPaste: (event) ->
+			clipboardData = event.clipboardData or event.originalEvent.clipboardData
+			if clipboardData and clipboardData.getData
+				for i in [0..clipboardData.items.length]
+					item = clipboardData.items[i]
+					if item and item.kind is "file"
+						file = item.getAsFile()
+						if file.size / 1024 / 1024 > 10
+							# 弹出提示
+							vm.$notify
+								type: 'warning'
+								title: '图片发送失败'
+								message: "图片大小不可超过10Mb"
+							return
+						formData = new FormData()
+						formData.append 'multipartFile', file
+						# 发起请求
+						@axios.post ALPHA.API_PATH.common.upload, formData, headers: 'Content-Type': 'multipart/form-data'
+						.then (res) =>
+							if res.msg is 'success'
+								fileUrl = res.data.fileUrl
+								# 发送消息体（messageType 1: 文字 2: 图片）
+								sendBody = messageType: 2, message: fileUrl
+								# 发送消息
+								@view.wsSend ALPHA.API_PATH.WS.SEND_CODE.MESSAGE, @dialogInfo.id, JSON.stringify sendBody
+
 		# Event: 历史消息列表滚动事件
 		eventScrollHistory: ->
 			return if @noMoreHistory
@@ -383,10 +416,10 @@ export default
 			@refreshTimeline()
 			if msg.sendType is 1
 				# 己方消息，滚动到底部
-				@$nextTick => @scrollToBottom 80
+				@$nextTick => @scrollToBottom 0
 			else
 				if @isLocateBottom()
-					@$nextTick => @scrollToBottom()
+					@$nextTick => @scrollToBottom 0
 				else
 					# 对方消息，追加到 newUnreadElList
 					@newUnreadElList.push msg
@@ -473,9 +506,13 @@ export default
 								char
 					text.encodeHTML()
 				when 2
+					toBottom = msg.sendType is 1 or @isLocateBottom()
 					# 图片
 					"""
 						<a href="/#{ msg.message.encodeHTML() }" target="_blank">
-							<img src="/#{ msg.message.encodeHTML() }" />
+							<img src="/#{ msg.message.encodeHTML() }" onload="_imgLoaded(#{ +toBottom })" />
 						</a>
 					"""
+
+		eventImgLoaded: (toBottom) ->
+			@scrollToBottom 0 if +toBottom

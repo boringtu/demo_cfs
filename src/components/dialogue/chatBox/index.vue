@@ -54,7 +54,7 @@
 								i
 
 		.chat-toolbar(v-if="isChatting")
-			emoji-picker(@emoji="insert" class="emoji-picker" ref="emojiPicker")
+			emoji-picker(@emoji="insert" class="emoji-picker" ref="emojiPicker" v-if="!isFromIE")
 				button(slot="emoji-invoker" slot-scope="{ events }" v-on="events")
 					i.icon.icon-face
 				div(class="face-wrapper" slot="emoji-picker" slot-scope="{ emojis, insert }")
@@ -73,6 +73,7 @@
 				placeholder="请输入消息..."
 				@keydown.enter.exact="$event.preventDefault()"
 				@keyup.enter.exact="eventSend"
+				@paste="eventOnPaste($event)"
 				@focus="isReadyToType = 1"
 				@blur="isReadyToType = 0"
 				v-model="inputText"

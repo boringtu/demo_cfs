@@ -105,12 +105,12 @@ export default
 					@sysLogoImgId = res.data.id
 					@isDisabledForSysLogo = @sysLogoImgId is @defaultSysLogoImgId
 
-		# 获取当前配置
+		# 获取桌面对话窗口数据
 		fetchImgSetting: ->
 			data =
 				adminId: ALPHA.admin.adminId
 				type: 'pc_dialog'
-			Utils.ajax ALPHA.API_PATH.configManagement.imgSetting, params: data
+			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting, params: data
 			.then (res) =>
 				resData = res.data.sys_conf
 				if resData
@@ -132,13 +132,16 @@ export default
 					if adUrl
 						@adImgUrl = "/#{ adUrl }"
 
-		# 获取当前 Logo 配置
+		# 获取客服系统样式数据
 		fetchSysLogoSetting: ->
-			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting
+			data =
+				type: 'manageLogo'
+			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting, params: data
 			.then (res) =>
 				resData = res.data
 				return unless resData
 				@sysLogoImgUrl = "/#{ resData.other }"
+				@$store.commit 'setLogoUrl', @sysLogoImgUrl
 				@defaultSysLogoImgId = @sysLogoImgId = +resData.value
 			
 		# 保存设置对话框主题
@@ -151,7 +154,7 @@ export default
 				logoMediaId: @logoImgId
 				rightAdHref: encodeURI @adUrlText
 				rightAdMediaId: @adImgId
-			Utils.ajax ALPHA.API_PATH.configManagement.saveSetTheme,
+			Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting,
 				method: 'put'
 				data: params
 			.then (res) =>
@@ -197,7 +200,7 @@ export default
 		# 保存系统 LOGO 设置
 		saveSysLogo: ->
 			# 鉴权
-			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.sysLogoModifiable
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.styleModifiable
 			@isloadingForSysLogo = true
 			params =
 				mediaId: @sysLogoImgId
@@ -211,5 +214,6 @@ export default
 						type: 'success'
 						title: '保存成功'
 					@isDisabledForSysLogo = true	
+					@$store.commit 'setLogoUrl', @sysLogoImgUrl
 
 			

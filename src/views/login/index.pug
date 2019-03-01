@@ -1,7 +1,7 @@
 .root
 	.content
 		.logo
-			i.icon.icon-logo
+			img(:src="logoUrl")
 		form#loginBox
 			el-input(v-model="username" id="username" placeholder="客服ID" :disabled="login_loading")
 				.icon.icon-service(slot="prefix")
