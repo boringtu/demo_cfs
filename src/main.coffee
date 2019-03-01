@@ -89,6 +89,15 @@ router.afterEach (to, from) ->
 	document.documentElement.scrollTop = 0
 	document.body.scrollTop = 0
 
+fetchLogo = ->
+	data =
+		type: 'manageLogo'
+	Utils.ajax ALPHA.API_PATH.configManagement.sysLogoSetting, params: data
+	.then (res) =>
+		resData = res.data
+		return unless resData
+		vm.$store.commit 'setLogoUrl', "/#{ resData.other }"
+
 window.vm = new Vue {
 	store
 	router
@@ -100,6 +109,8 @@ window.vm = new Vue {
 
 		ALPHA.audios.newMsg ?= new Utils.Audio '/audios/newMsg.wav'
 		ALPHA.audios.newDialog ?= new Utils.Audio '/audios/newDialog.mp3'
+
+		setTimeout (-> fetchLogo()), 0
 	render: (h) => h App
 }
 .$mount '#app'
