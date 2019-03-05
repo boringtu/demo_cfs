@@ -9,5 +9,14 @@ export default
 		logoUrl: -> @$store.state.logoUrl
 	
 	filters:
-		getUrl: (id) -> ALPHA.menuUrlMap[id].url or ''
-		getIcon: (id) -> ALPHA.menuUrlMap[id].icon
+		getUrl: (id) ->
+			try
+				ALPHA.menuUrlMap[id].url or ''
+			catch
+				console.error "Cannot find id of #{ id } in ALPHA.menuUrlMap, please define it." unless ALPHA.menuUrlMap[id]
+
+		getIcon: (id) ->
+			try
+				ALPHA.menuUrlMap[id].icon
+			catch
+				console.error "Cannot find id of #{ id } in ALPHA.menuUrlMap, please define it." unless ALPHA.menuUrlMap[id]
