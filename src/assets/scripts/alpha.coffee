@@ -290,6 +290,8 @@ export default do ->
 					PUSHING: 1
 					# 通知所有客服，指定用户已被接单
 					RECEIVED: 2
+					# 自动分配的新用户
+					ALLOCATED: 3
 				p2p:
 					# 推送消息
 					MESSAGE: 1
