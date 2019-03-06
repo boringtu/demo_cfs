@@ -8,7 +8,7 @@
 					v-for="item in menuList"
 					:key="item.id"
 					:class="{active: item.id === activeMenu}"
-					@click="activeMenu = item.id"
+					@click="changeMenu(item)"
 				).
 					{{ item.text }}
 		.right_cont
@@ -30,7 +30,7 @@
 						div(class="ele-switch" :class="{'is_open': isOpen, 'is_close': !isOpen}" @click="switchDistribute")
 						.districtOne
 							span(class="radio" :class="{'actived_radio': activedRadio}" @click="radioCheck")
-							span(class="radio_word") 自动分配
+							span(class="radio_word") 依次分配
 						.districtTwo
 							span(class="checked_box" :class="{'isChecked': activedCheckbox}" @click="boxIsChecked")
 							span(class="check_word") 优先分配给上次对过话的客服

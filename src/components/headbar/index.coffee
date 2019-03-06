@@ -9,7 +9,7 @@ export default
 		offLineStatus: '离开'
 		lineStatusList: [
 			{icon: 'icon-online', text: '在线', class: "on_line" , id: 1}
-			{icon: 'icon-afk', text: '离开', class: 'off_line', id: 2}
+			{icon: 'icon-afk', text: '离开', class: 'off_line', id: 0}
 		]
 		isShowSlideCont: false
 	created: ->
@@ -43,4 +43,5 @@ export default
 			@isShowSlideCont = !@isShowSlideCont
 		chooseCheckedStatus: (item) ->
 			@isOnLine = item.id
+			Utils.ajax ALPHA.API_PATH.common.lineStatus,
 			localStorage.setItem 'lineStatus', item.id

@@ -54,6 +54,8 @@ export default do ->
 					timestamp: '/api/common/timestamp'
 					# 上传文件
 					upload: '/api/common/upload'
+					# 在线状态
+					lineStatus: '/api/teamwork/online'
 				## 访客对话 ##
 				dialogue:
 					# 访客列表
@@ -106,6 +108,8 @@ export default do ->
 					defaultWelcomeSentence: '/api/conf/all'
 					# 保存歡迎語
 					saveWelcomeSentence: '/api/conf/welcomeMsg'
+					# 保存自动分配
+					saveAutoDistribute: '/api/conf/autoTake'
 		# 枚举：具体权限（用于鉴权）
 		PERMISSIONS:
 			writable: off, value:
@@ -211,6 +215,8 @@ export default do ->
 				return null unless admin
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
 				vm.$store.state.admin = admin.toJSON()
+		# # 是否在线状态
+		# lineStatus: 
 		# 对话主题列表
 		topics:
 			get: ->

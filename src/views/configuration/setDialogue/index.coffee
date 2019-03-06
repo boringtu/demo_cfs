@@ -16,7 +16,7 @@ export default
 		autoIsloading: false
 		atuoIsDisabled: true
 		isShowPop: false
-		isOpen: true
+		isOpen: 0
 	created: ->
 		@fetchInitSetting()
 	methods:
@@ -51,19 +51,31 @@ export default
 				return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
 				params =
 					type: 'welcome_msg'
-				Utils.ajax ALPHA.API_PATH.configManagement.recoverDefaultSet,
-					method: 'put'
-					data: params
-				.then (res) =>
-					if res.msg is 'success'
-						vm.$notify
-							type: 'success'
-							title: '已恢复默认设置'
-						@isShowPop = false
-						@fetchInitSetting()
+				@commonRecoverDefault(params)
+				
 			if @activeMenu is 1 #自动分配
-				console.log '自动分配'
-				@isShowPop = false
+				params =
+					type: 'auto_take'
+				@commonRecoverDefault(params)
+				
+		commonRecoverDefault: (params)->
+			Utils.ajax ALPHA.API_PATH.configManagement.recoverDefaultSet,
+				method: 'put'
+				data: params
+			.then (res) =>
+				if res.msg is 'success'
+					vm.$notify
+						type: 'success'
+						title: '已恢复默认设置'
+					@isShowPop = false
+					if @activeMenu is 0
+						@fetchInitSetting()
+					else
+						@fetchAutoSetting()
+		changeMenu: (item)->
+			@activeMenu = item.id
+			if @activeMenu is 1
+				@fetchAutoSetting()
 		# 默认欢迎语
 		fetchInitSetting: ->
 			data =
@@ -73,7 +85,22 @@ export default
 			.then (res) => 	
 				if res.msg is 'success' && res.data.sys_conf
 					@welcomeCont = item.value for item in res.data.sys_conf when item.key is 'msg_content'
-		fetchInitData: ->
+		fetchAutoSetting: ->
+			data =
+				adminId: ALPHA.admin.adminId
+				type: 'auto_take'
+			Utils.ajax ALPHA.API_PATH.configManagement.defaultWelcomeSentence, params: data
+			.then (res) => 
+				console.log res.data
+				if res.msg is 'success' && res.data.sys_conf
+					for item in res.data.sys_conf
+						switch item.key
+							when 'auto_take_open'
+								@isOpen = +item.value is 1
+							when 'is_order'
+								@activedRadio = +item.value is 1
+							when 'is_admin_first'
+								@activedCheckbox = +item.value is 1
 		# 自动分配
 		radioCheck: ->
 			@atuoIsDisabled = false
@@ -86,8 +113,31 @@ export default
 			@atuoIsDisabled = false
 		# 选择优先分配
 		boxIsChecked: ->
+			@atuoIsDisabled = false
 			@activedCheckbox = !@activedCheckbox
 		# 自动分配保存
 		saveAutoDistribute: ->
+			autoIsloading = true
+			if @isOpen
+				@isOpen = 1
+			else
+				@isOpen = 0
+			if @activedCheckbox
+				@activedCheckbox = 1
+			else
+				@activedCheckbox = 0
+			params =
+				autoTakeOpen: @isOpen
+				isAdminFirst: @activedCheckbox
+			Utils.ajax ALPHA.API_PATH.configManagement.saveAutoDistribute,
+				method: 'put'
+				data: params
+			.then (res) =>
+				if res.msg is 'success'
+					vm.$notify
+						type: 'success'
+						title: '保存成功'
+					@atuoIsDisabled = true
+
 
 
