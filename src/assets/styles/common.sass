@@ -21,3 +21,27 @@
 	border-top-color: transparent
 	border-right-color: transparent 
 	transform: rotate(-45deg)
+.ele-switch
+	width: 56px
+	height: 24px
+	border-radius: 12px
+	position: relative
+	cursor: pointer
+	&:before
+		content: ''
+		position: absolute
+		width: 16px
+		height: 16px
+		border-radius: 50%
+	&.is_open
+		background: #2297F1
+		&:before
+			background: #ffffff
+			top: 4px
+			right: 4px
+	&.is_close
+		background: #EEEEEE
+		&:before
+			background: #999999
+			top: 4px
+			left: 4px

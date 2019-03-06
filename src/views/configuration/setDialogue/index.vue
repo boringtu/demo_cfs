@@ -27,7 +27,7 @@
 					.left 自动分配
 					.right
 						//- el-switch(v-model="autoDistributeVal" @change="switchChange")
-						div(class="el-switch" :class="{'is_open': isOpen, 'is_close': !isOpen}" @click="switchDistribute")
+						div(class="ele-switch" :class="{'is_open': isOpen, 'is_close': !isOpen}" @click="switchDistribute")
 						.districtOne
 							span(class="radio" :class="{'actived_radio': activedRadio}" @click="radioCheck")
 							span(class="radio_word") 自动分配

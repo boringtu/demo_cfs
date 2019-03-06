@@ -73,6 +73,7 @@ export default
 			.then (res) => 	
 				if res.msg is 'success' && res.data.sys_conf
 					@welcomeCont = item.value for item in res.data.sys_conf when item.key is 'msg_content'
+		fetchInitData: ->
 		# 自动分配
 		radioCheck: ->
 			@atuoIsDisabled = false
