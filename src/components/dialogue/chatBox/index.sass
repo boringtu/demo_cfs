@@ -269,14 +269,23 @@
 					width: 100%
 					padding: 0 10px
 					> div
-						display: flex
-						flex-wrap: wrap
-						border-radius: 5px
+						position: relative
 						background-color: #fff
-						overflow: scroll
+						border-radius: 5px
+						overflow: hidden
 						height: 200px
 						box-shadow: 0 0 10px 0 rgba(102, 102, 102, .6)
-						padding: 4px
+						> div
+							background-color: #fff
+							display: flex
+							flex-wrap: wrap
+							position: absolute
+							z-index: 1
+							left: 4px
+							right: -20px
+							top: 4px
+							bottom: 4px
+							overflow-y: scroll
 					.face
 						cursor: pointer
 						padding: 2px 0
