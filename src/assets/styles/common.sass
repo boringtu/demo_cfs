@@ -1,0 +1,23 @@
+// 复选框
+.checked_box
+	display: inline-block
+	width: 14px
+	height: 14px
+	border: 1px solid #cccccc
+	border-radius: 3px
+	margin-right: 10px
+	position: relative
+	top: 1px
+.isChecked
+	border: 1px solid #0783ff
+.isChecked:after
+	content: ''
+	position: absolute
+	left: 2px
+	bottom: 5px
+	width: 6px
+	height: 3px 
+	border: 2px solid #0783ff
+	border-top-color: transparent
+	border-right-color: transparent 
+	transform: rotate(-45deg)
