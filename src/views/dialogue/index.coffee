@@ -120,6 +120,13 @@ export default
 					userId = +body.match(/^(\d+)/)[1]
 					# 从待接待访客列表中移除该用户
 					@$store.commit 'removeFromVisitorList', userId
+				when ALPHA.API_PATH.WS.RECEIVE_CODE.broadcast.ALLOCATED
+					## 3: 自动分配的新访客
+					## 3|user Object|
+					body = body.replace /\|$/, ''
+					user = body.toJSON()
+					# 通知服务器要接待此用户
+					@wsSend ALPHA.API_PATH.WS.SEND_CODE.RECEIVING, user.id
 
 		# 监听 点对点
 		monitorP2P: (res) ->

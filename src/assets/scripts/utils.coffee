@@ -61,7 +61,12 @@ class Utils
 		str = ''
 		tmp.push key for own key, val of data
 		tmp.sort()
-		str += key + data[key] for key in tmp
+		for key in tmp
+			obj = data[key]
+			if typeof obj is 'object'
+				str += key + JSON.stringify obj
+			else
+				str += key + obj
 		"#{ ALPHA.SALT }#{ str }#{ token }#{ timestamp }".md5().toLocaleUpperCase()
 
 	###
@@ -233,6 +238,40 @@ String::encodeHTML = (encodeAll) ->
 	else
 		matchHTML = /&(?!#?\w+;)|<|>|"|'|\//g
 		return @replace matchHTML, (m) -> encodeHTMLRules[m] or m
+
+# A polyfill of String.fromCodePoint
+unless String.fromCodePoint
+	do (stringFromCharCode = String.fromCharCode) ->
+		fromCodePoint = (_) ->
+			codeUnits = [], codeLen = 0, result = ''
+			index = 0, len = arguments.length
+			while index isnt len
+				codePoint = +arguments[index++]
+				# correctly handles all cases including `NaN`, `-Infinity`, `+Infinity`
+				# The surrounding `!(...)` is required to correctly handle `NaN` cases
+				# The (codePoint>>>0) === codePoint clause handles decimals and negatives
+				unless codePoint < 0x10FFFF and (codePoint >>> 0) is codePoint
+					throw RangeError "Invalid code point: #{ codePoint }"
+				if codePoint <= 0xFFFF # BMP code point
+					codeLen = codeUnits.push codePoint
+				else # Astral code point; split in surrogate halves
+					# https:#mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+					codePoint -= 0x10000
+					codeLen = codeUnits.push
+						(codePoint >> 10) + 0xD800,  # highSurrogate
+						(codePoint % 0x400) + 0xDC00 # lowSurrogate
+				if codeLen >= 0x3fff
+					result += stringFromCharCode.apply null, codeUnits
+					codeUnits.length = 0
+			result + stringFromCharCode.apply null, codeUnits
+			
+		try # IE 8 only supports `Object.defineProperty` on DOM elements
+			Object.defineProperty(String, 'fromCodePoint',
+				value: fromCodePoint
+				configurable: true
+				writable: true
+		catch
+			String.fromCodePoint = fromCodePoint
 
 ###
  # Array: 判断当前 array 中是否存在指定元素
