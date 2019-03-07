@@ -106,6 +106,8 @@ export default do ->
 					defaultWelcomeSentence: '/api/conf/all'
 					# 保存歡迎語
 					saveWelcomeSentence: '/api/conf/welcomeMsg'
+					# 保存访客信息
+					saveVisitorInfo: '/api/conf/visitorInfo'
 		# 枚举：具体权限（用于鉴权）
 		PERMISSIONS:
 			writable: off, value:
@@ -133,6 +135,8 @@ export default do ->
 					styleModifiable: 45
 					# 对话设置的修改权限
 					dialogueModifiable: 48
+					# 保存访客信息设置
+					saveVisitorInfo: 55
 
 
 		# 签名私盐
@@ -268,6 +272,8 @@ export default do ->
 				20: url: '/configuration/setStyle'
 				# 配置管理 - 对话设置
 				46: url: '/configuration/setDialogue'
+				# 配置管理 - 对话设置
+				51: url: '/configuration/setUserMsg'
 
 	Object.defineProperties window.ALPHA.API_PATH.WS,
 		# 用于建立 WebSocket 连接
@@ -310,5 +316,5 @@ export default do ->
 		# 发送
 		send:
 			writable: off, value: '/cs/chatting'
-	
+
 	window.ALPHA
