@@ -1,5 +1,6 @@
 .root
 	text-align: left
+	// height: 1000px
 	.cont_wrap
 		width: 100%
 		display: flex
@@ -42,6 +43,7 @@
 						width: 100px
 						text-align: center
 					.right
+						position: relative
 						textarea
 							width: 500px
 							height: 200px
@@ -50,33 +52,62 @@
 							border-radius: 6px
 							line-height: 20px
 							padding: 10px
-			.btn_line
-				display: flex
-				justify-content: center
-				padding-top: 100px
-				.recover_default_btn
-					width: 140px
-					height: 36px
-					line-height: 36px
-					text-align: center
-					font-size: 16px
-					color: #0083FF
-					border: 1px solid #0083FF
-					border-radius: 5px
-					margin-right: 20px
-					cursor: pointer
-				.save_btn
-					width: 100px
-					height: 36px
-					line-height: 36px
-					padding: 0
-					text-align: center
-					color: #ffffff
-					background: #0083FF	
-					font-size: 16px	
-					border-radius: 5px
-					cursor: pointer
-				.save_btn.is-disabled
-					background-color: #a0cfff
-					border-color: #a0cfff
-					cursor: not-allowed
+						.icon-attention
+							position: absolute
+							bottom: 4px
+							right: -20px
+							color: #FF0000
+			[data-type="1"]
+				.cont_box
+					display: flex
+					.left
+						width: 120px
+					.right
+						.districtOne
+							margin: 40px 0
+							.radio
+								display: inline-block
+								width: 20px
+								height: 20px
+								border: 1px solid #cccccc
+								border-radius: 50%
+								position: relative
+								margin-right: 11px
+								&:before
+									content: ''
+									position: absolute
+									top: 3px 
+									left: 3px
+									width: 12px
+									height: 12px
+									border-radius: 50%
+									background: #cccccc
+							.actived_radio
+								border: 1px solid #2297F1
+								&:before
+									background: #2297F1
+							.radio_word
+								position: relative
+								top: -5px
+								font-size: 16px
+								color: #333333
+						.districtTwo
+							.checked_box
+								width: 20px
+								height: 20px
+								cursor: pointer
+							.isChecked
+								background: #0783ff
+								&:after
+									left: 3px
+									bottom: 7px
+									width: 9px
+									height: 5px
+									border: 2px solid #ffffff
+									border-top-color: transparent
+									border-right-color: transparent
+							.check_word
+								font-size: 16px
+								color: #333333
+								position: relative
+								top: -3px

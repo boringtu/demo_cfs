@@ -46,7 +46,7 @@
 							.url_input
 								span https://
 								input(type="text" v-model="adUrlText" @input="adUrlChange")
-					.set_bths
+					.default_btn_line
 						div(class="recover_default_btn" @click="recoverDefaultSet") 恢复默认设置
 						el-button(type="primary" class="save_btn" @click="saveSetTheme" :loading="isloadingForPC" :disabled="isDisabledForPC") 保存
 				.right_view_box
@@ -69,8 +69,14 @@
 							div(class="balckBg") 点击上传
 							img(:src="sysLogoImgUrl")
 						p 企业标志图片尺寸为400 * 80，图片格式为jpg，png
-				.set_bths
+				.default_btn_line
 					el-button(type="primary" class="save_btn" @click="saveSysLogo" :loading="isloadingForSysLogo" :disabled="isDisabledForSysLogo") 保存
-
+	div(class="popup" v-if="isShowPop === true")
+		.pop_cont
+			.tlt 恢复默认设置
+			.cont 确定恢复默认设置？
+			.btns
+				el-button(class="popBtn cancel_btn" @click="isShowPop = false") 取消
+				el-button(class="popBtn save_btn" @click="recoverDefault") 确定
 </template>
 <script lang="coffee" src="./index.coffee"></script>

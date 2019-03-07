@@ -1,0 +1,135 @@
+// 复选框
+.checked_box
+	display: inline-block
+	width: 14px
+	height: 14px
+	border: 1px solid #cccccc
+	border-radius: 3px
+	margin-right: 10px
+	position: relative
+	top: 1px
+.isChecked
+	border: 1px solid #0783ff
+.isChecked:after
+	content: ''
+	position: absolute
+	left: 2px
+	bottom: 5px
+	width: 6px
+	height: 3px 
+	border: 2px solid #0783ff
+	border-top-color: transparent
+	border-right-color: transparent 
+	transform: rotate(-45deg)
+// 原本自己写的开关，目前用了elementUI的，下面的样式暂时用不到
+// .ele-switch
+// 	width: 56px
+// 	height: 24px
+// 	border-radius: 12px
+// 	position: relative
+// 	cursor: pointer
+// 	&:before
+// 		content: ''
+// 		position: absolute
+// 		width: 16px
+// 		height: 16px
+// 		border-radius: 50%
+// 	&.is_open
+// 		background: #2297F1
+// 		&:before
+// 			background: #ffffff
+// 			top: 4px
+// 			right: 4px
+// 	&.is_close
+// 		background: #EEEEEE
+// 		&:before
+// 			background: #999999
+// 			top: 4px
+// 			left: 4px
+
+// 恢复默认设置确认弹窗
+.popup
+	position: absolute
+	top: 0
+	left: 0
+	width: 100%
+	height: 100%
+	background: rgba(0, 0, 0, 0.5)
+	z-index: 20
+	.pop_cont
+		width: 380px
+		height: 212px
+		background: #ffffff
+		position: absolute
+		left: 50%
+		top: 50%
+		margin-left: -190px
+		margin-top: -106px
+		border-radius: 5px
+		color: #333333
+		z-index: 21
+		.tlt
+			height: 56px
+			line-height: 56px
+			text-align: center
+			font-size: 16px
+		.cont
+			width: 100%
+			padding: 32px 0
+			text-align: center
+			font-size: 20px
+		.btns
+			padding: 10px 0 0 30px
+		.popBtn
+			width: 140px
+			height: 36px
+			line-height: 36px
+			padding: 0	
+			text-align: center
+			border-radius: 5px
+			font-size: 16px
+			// cursor: pointer
+		.cancel_btn
+			border: 1px solid #0083ff
+			color: #0083ff
+		.save_btn
+			background: #0083ff
+			color: #ffffff
+// 底部恢复默认设置和保存按钮
+.default_btn_line
+	display: flex
+	justify-content: center
+	padding-left: 240px
+	position: fixed
+	right: 0
+	width: 100%
+	height: 80px
+	padding-top: 20px
+	bottom: 40px
+	box-shadow: 0 -7px 10px rgba(1, 8, 25, 0.05)
+	.recover_default_btn
+		width: 140px
+		height: 36px
+		line-height: 36px
+		text-align: center
+		font-size: 16px
+		color: #0083FF
+		border: 1px solid #0083FF
+		border-radius: 5px
+		margin-right: 20px
+		cursor: pointer
+	.save_btn
+		width: 100px
+		height: 36px
+		line-height: 36px
+		padding: 0
+		text-align: center
+		color: #ffffff
+		background: #0083FF	
+		font-size: 16px	
+		border-radius: 5px
+		cursor: pointer
+	.save_btn.is-disabled
+		background-color: #a0cfff
+		border-color: #a0cfff
+		cursor: not-allowed

@@ -54,6 +54,8 @@ export default do ->
 					timestamp: '/api/common/timestamp'
 					# 上传文件
 					upload: '/api/common/upload'
+					# 在线状态
+					lineStatus: '/api/teamwork/online'
 				## 访客对话 ##
 				dialogue:
 					# 访客列表
@@ -106,6 +108,10 @@ export default do ->
 					defaultWelcomeSentence: '/api/conf/all'
 					# 保存歡迎語
 					saveWelcomeSentence: '/api/conf/welcomeMsg'
+					# 保存自动分配
+					saveAutoDistribute: '/api/conf/autoTake'
+					# 保存访客信息
+					saveVisitorInfo: '/api/conf/visitorInfo'
 		# 枚举：具体权限（用于鉴权）
 		PERMISSIONS:
 			writable: off, value:
@@ -133,6 +139,8 @@ export default do ->
 					styleModifiable: 45
 					# 对话设置的修改权限
 					dialogueModifiable: 48
+					# 保存访客信息设置
+					saveVisitorInfo: 55
 
 
 		# 签名私盐
@@ -211,6 +219,8 @@ export default do ->
 				return null unless admin
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
 				vm.$store.state.admin = admin.toJSON()
+		# # 是否在线状态
+		# lineStatus: 
 		# 对话主题列表
 		topics:
 			get: ->
@@ -268,6 +278,8 @@ export default do ->
 				20: url: '/configuration/setStyle'
 				# 配置管理 - 对话设置
 				46: url: '/configuration/setDialogue'
+				# 配置管理 - 对话设置
+				51: url: '/configuration/setUserMsg'
 
 		twemoji:
 			writable: off, value:
@@ -349,5 +361,5 @@ export default do ->
 		# 发送
 		send:
 			writable: off, value: '/cs/chatting'
-	
+
 	window.ALPHA

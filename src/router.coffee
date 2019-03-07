@@ -52,5 +52,10 @@ export default new Router
 			path: '/configuration/setDialogue'
 			name: 'setDialogue'
 			component: (resolve) => require ["@/views/configuration/setDialogue"], resolve
+		,
+		# 配置管理 - 客户信息收集设置
+		path: '/configuration/setUserMsg'
+		name: 'setUserMsg'
+		component: (resolve) => require ["@/views/configuration/setUserMsg"], resolve
 		]
 	]

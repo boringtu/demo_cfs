@@ -25,6 +25,7 @@ export default
 			id: 1, text: '客服系统样式'
 		]
 		activeMenu: 0
+		isShowPop: false
 
 	computed:
 		admin: -> ALPHA.admin or {}
@@ -164,9 +165,10 @@ export default
 						type: 'success'
 						title: '保存成功'
 					@isDisabledForPC = true
-
 		# 恢复默认设置
 		recoverDefaultSet: ->
+			@isShowPop = true
+		recoverDefault: ->
 			# 鉴权
 			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.styleModifiable
 			params =
@@ -176,11 +178,15 @@ export default
 				data: params
 			.then (res) =>
 				if res.msg is 'success'
+					@isShowPop = false
 					vm.$notify
 						type: 'success'
 						title: '已恢复默认设置'
 					@fetchImgSetting()
-
+				else
+					vm.$notify
+						type: 'warn'
+						title: res.msg
 		# 恢复默认系统 LOGO
 		recoverDefaultSysLogo: ->
 			# 鉴权

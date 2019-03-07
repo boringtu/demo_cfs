@@ -3,14 +3,24 @@
 # import chatFooter from '@/components/chatFooter/chatFooter'
 import Utils from '@/assets/scripts/utils'
 export default
-
+	data: ->
+		isOnLine: localStorage.getItem 'lineStatus' || 1
+		onLineStatus: '在线'
+		offLineStatus: '离开'
+		lineStatusList: [
+			{icon: 'icon-online', text: '在线', class: "on_line" , id: 1}
+			{icon: 'icon-afk', text: '离开', class: 'off_line', id: 0}
+		]
+		isShowSlideCont: false
+	created: ->
+		# console.log "ss", localStorage.getItem 'lineStatus'
+	mounted: ->
 	components: {
 		# chatFooter
 		# chatHistory
 	}
 	computed: ->
 		admin: -> ALPHA.admin or {}
-
 	methods:
 		# Event: 退出按钮点击事件
 		eventExit: (isForcible) ->
@@ -30,3 +40,13 @@ export default
 						type: type
 						title: title
 					@$router.push path: '/login'
+		chooseLineStatus: ->
+			@isShowSlideCont = !@isShowSlideCont
+		chooseCheckedStatus: (item) ->
+			@isOnLine = item.id
+			localStorage.setItem 'lineStatus', item.id
+			data =
+				online: item.id
+			Utils.ajax ALPHA.API_PATH.common.lineStatus, params: data
+			.then (res) => 
+				console.log res.data
