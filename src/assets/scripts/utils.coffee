@@ -239,13 +239,15 @@ String::encodeHTML = (encodeAll) ->
 		matchHTML = /&(?!#?\w+;)|<|>|"|'|\//g
 		return @replace matchHTML, (m) -> encodeHTMLRules[m] or m
 
-###
 # A polyfill of String.fromCodePoint
 unless String.fromCodePoint
 	do (stringFromCharCode = String.fromCharCode) ->
 		fromCodePoint = (_) ->
-			codeUnits = [], codeLen = 0, result = ''
-			index = 0, len = arguments.length
+			codeUnits = []
+			codeLen = 0
+			result = ''
+			index = 0
+			len = arguments.length
 			while index isnt len
 				codePoint = +arguments[index++]
 				# correctly handles all cases including `NaN`, `-Infinity`, `+Infinity`
@@ -258,22 +260,24 @@ unless String.fromCodePoint
 				else # Astral code point; split in surrogate halves
 					# https:#mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
 					codePoint -= 0x10000
-					codeLen = codeUnits.push
-						(codePoint >> 10) + 0xD800,  # highSurrogate
-						(codePoint % 0x400) + 0xDC00 # lowSurrogate
+					codeLen = codeUnits.push(
+						# highSurrogate
+						(codePoint >> 10) + 0xD800,
+						# lowSurrogate
+						(codePoint % 0x400) + 0xDC00
+					)
 				if codeLen >= 0x3fff
 					result += stringFromCharCode.apply null, codeUnits
 					codeUnits.length = 0
 			result + stringFromCharCode.apply null, codeUnits
 			
 		try # IE 8 only supports `Object.defineProperty` on DOM elements
-			Object.defineProperty(String, 'fromCodePoint',
+			Object.defineProperty String, 'fromCodePoint',
 				value: fromCodePoint
 				configurable: true
 				writable: true
 		catch
 			String.fromCodePoint = fromCodePoint
-###
 
 ###
  # Array: 判断当前 array 中是否存在指定元素
