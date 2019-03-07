@@ -261,10 +261,8 @@ unless String.fromCodePoint
 					# https:#mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
 					codePoint -= 0x10000
 					codeLen = codeUnits.push(
-						# highSurrogate
-						(codePoint >> 10) + 0xD800,
-						# lowSurrogate
-						(codePoint % 0x400) + 0xDC00
+						(codePoint >> 10) + 0xD800,		# highSurrogate
+						(codePoint % 0x400) + 0xDC00	# lowSurrogate
 					)
 				if codeLen >= 0x3fff
 					result += stringFromCharCode.apply null, codeUnits
