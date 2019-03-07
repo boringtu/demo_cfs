@@ -139,6 +139,8 @@ export default do ->
 					styleModifiable: 45
 					# 对话设置的修改权限
 					dialogueModifiable: 48
+					# 对话设置的修改权限
+					distributable: 53
 					# 保存访客信息设置
 					saveVisitorInfo: 55
 
@@ -220,7 +222,16 @@ export default do ->
 				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
 				vm.$store.state.admin = admin.toJSON()
 		# # 是否在线状态
-		# lineStatus: 
+		lineStatus: 
+			get: ->
+				lineStatus = vm.$store.state.lineStatus
+				# 如 vuex 中已有数据，直接返回
+				return lineStatus unless lineStatus
+				# 如 vuex 中没有，则去 localStorage 中取
+				lineStatus = localStorage.getItem 'lineStatus'
+				return null unless lineStatus
+				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
+				vm.$store.state.lineStatus = lineStatus
 		# 对话主题列表
 		topics:
 			get: ->
