@@ -16,7 +16,7 @@ export default
 		autoIsloading: false
 		atuoIsDisabled: true
 		isShowPop: false
-		isOpen: 0
+		isOpen: false
 		showWarn: false
 	created: ->
 		@fetchInitSetting()
@@ -80,6 +80,10 @@ export default
 						@fetchInitSetting()
 					else
 						@fetchAutoSetting()
+				else
+					vm.$notify
+						type: 'warn'
+						title: res.msg
 		changeMenu: (item)->
 			@activeMenu = item.id
 			if @activeMenu is 1
@@ -99,7 +103,6 @@ export default
 				type: 'auto_take' 
 			Utils.ajax ALPHA.API_PATH.configManagement.defaultWelcomeSentence, params: data
 			.then (res) => 
-				console.log res.data
 				if res.msg is 'success' && res.data.sys_conf
 					for item in res.data.sys_conf
 						switch item.key
@@ -109,12 +112,8 @@ export default
 								@activedRadio = +item.value is 1
 							when 'is_admin_first'
 								@activedCheckbox = +item.value is 1
-		# 自动分配
-		switchDistribute: ->
-			@isOpen = !@isOpen
-			@atuoIsDisabled = false
-		# 优先分配
-		boxIsChecked: ->
+		# 自动分配开关
+		switchChange: ->
 			@atuoIsDisabled = false
 		# 选择优先分配
 		boxIsChecked: ->
@@ -126,15 +125,15 @@ export default
 			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
 			autoIsloading = true
 			if @isOpen
-				@isOpen = 1
+				switchNum = 1
 			else
-				@isOpen = 0
+				switchNum = 0
 			if @activedCheckbox
 				@activedCheckbox = 1
 			else
 				@activedCheckbox = 0
 			params =
-				autoTakeOpen: @isOpen
+				autoTakeOpen: switchNum
 				isAdminFirst: @activedCheckbox
 			Utils.ajax ALPHA.API_PATH.configManagement.saveAutoDistribute,
 				method: 'put'
@@ -145,6 +144,10 @@ export default
 						type: 'success'
 						title: '保存成功'
 					@atuoIsDisabled = true
+				else
+					vm.$notify
+						type: 'warn'
+						title: res.msg
 
 
 
