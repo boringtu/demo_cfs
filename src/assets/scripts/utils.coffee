@@ -239,6 +239,7 @@ String::encodeHTML = (encodeAll) ->
 		matchHTML = /&(?!#?\w+;)|<|>|"|'|\//g
 		return @replace matchHTML, (m) -> encodeHTMLRules[m] or m
 
+###
 # A polyfill of String.fromCodePoint
 unless String.fromCodePoint
 	do (stringFromCharCode = String.fromCharCode) ->
@@ -272,6 +273,7 @@ unless String.fromCodePoint
 				writable: true
 		catch
 			String.fromCodePoint = fromCodePoint
+###
 
 ###
  # Array: 判断当前 array 中是否存在指定元素
