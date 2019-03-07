@@ -4,7 +4,7 @@
 import Utils from '@/assets/scripts/utils'
 export default
 	data: ->
-		isOnLine: +(localStorage.getItem 'lineStatus') || 1
+		isOnLine: localStorage.getItem 'lineStatus' || 1
 		onLineStatus: '在线'
 		offLineStatus: '离开'
 		lineStatusList: [
@@ -13,6 +13,7 @@ export default
 		]
 		isShowSlideCont: false
 	created: ->
+		console.log "ss", localStorage.getItem 'lineStatus'
 	mounted: ->
 	components: {
 		# chatFooter
@@ -43,5 +44,9 @@ export default
 			@isShowSlideCont = !@isShowSlideCont
 		chooseCheckedStatus: (item) ->
 			@isOnLine = item.id
-			Utils.ajax ALPHA.API_PATH.common.lineStatus,
+			data =
+				online: item.id
+			Utils.ajax ALPHA.API_PATH.common.lineStatus, params: data
+			.then (res) => 
+				console.log res.data
 			localStorage.setItem 'lineStatus', item.id

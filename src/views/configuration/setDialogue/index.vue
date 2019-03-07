@@ -17,7 +17,8 @@
 				.cont_box
 					.left 欢迎语：
 					.right
-						textarea(@input="contChange" v-model="welcomeCont")
+						textarea(@input="contChange" v-model="welcomeCont" ref="focusTextarea")
+						i(class="icon icon-attention" v-if="showWarn")
 				.btn_line
 					div(class="recover_default_btn" @click="isShowPop = true") 恢复默认设置
 					el-button(type="primary" class="save_btn" @click="saveSetDialogue" :loading="isloading" :disabled="isDisabled") 保存
@@ -29,7 +30,7 @@
 						//- el-switch(v-model="autoDistributeVal" @change="switchChange")
 						div(class="ele-switch" :class="{'is_open': isOpen, 'is_close': !isOpen}" @click="switchDistribute")
 						.districtOne
-							span(class="radio" :class="{'actived_radio': activedRadio}" @click="radioCheck")
+							span(class="radio" :class="{'actived_radio': activedRadio}")
 							span(class="radio_word") 依次分配
 						.districtTwo
 							span(class="checked_box" :class="{'isChecked': activedCheckbox}" @click="boxIsChecked")

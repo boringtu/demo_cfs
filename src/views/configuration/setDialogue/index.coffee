@@ -17,13 +17,19 @@ export default
 		atuoIsDisabled: true
 		isShowPop: false
 		isOpen: 0
+		showWarn: false
 	created: ->
 		@fetchInitSetting()
 	methods:
 		contChange: ->
 			@isDisabled = false
+			if @showWarn
+				@showWarn = false
 		# 保存
 		saveSetDialogue: ->
+			if !@welcomeCont
+				this.$refs.focusTextarea.focus()
+				return @showWarn = true
 			# 鉴权
 			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
 			@isloading = true
@@ -54,6 +60,8 @@ export default
 				@commonRecoverDefault(params)
 				
 			if @activeMenu is 1 #自动分配
+				# 鉴权
+				return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
 				params =
 					type: 'auto_take'
 				@commonRecoverDefault(params)
@@ -88,7 +96,7 @@ export default
 		fetchAutoSetting: ->
 			data =
 				adminId: ALPHA.admin.adminId
-				type: 'auto_take'
+				type: 'auto_take' 
 			Utils.ajax ALPHA.API_PATH.configManagement.defaultWelcomeSentence, params: data
 			.then (res) => 
 				console.log res.data
@@ -102,9 +110,9 @@ export default
 							when 'is_admin_first'
 								@activedCheckbox = +item.value is 1
 		# 自动分配
-		radioCheck: ->
-			@atuoIsDisabled = false
-			@activedRadio = !@activedRadio
+		# radioCheck: ->
+		# 	@atuoIsDisabled = false
+		# 	@activedRadio = !@activedRadio
 		switchDistribute: ->
 			@isOpen = !@isOpen
 			@atuoIsDisabled = false
@@ -117,6 +125,8 @@ export default
 			@activedCheckbox = !@activedCheckbox
 		# 自动分配保存
 		saveAutoDistribute: ->
+			# 鉴权
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
 			autoIsloading = true
 			if @isOpen
 				@isOpen = 1
