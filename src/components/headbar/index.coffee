@@ -13,7 +13,7 @@ export default
 		]
 		isShowSlideCont: false
 	created: ->
-		console.log "ss", localStorage.getItem 'lineStatus'
+		# console.log "ss", localStorage.getItem 'lineStatus'
 	mounted: ->
 	components: {
 		# chatFooter
@@ -44,9 +44,9 @@ export default
 			@isShowSlideCont = !@isShowSlideCont
 		chooseCheckedStatus: (item) ->
 			@isOnLine = item.id
+			localStorage.setItem 'lineStatus', item.id
 			data =
 				online: item.id
 			Utils.ajax ALPHA.API_PATH.common.lineStatus, params: data
 			.then (res) => 
 				console.log res.data
-			localStorage.setItem 'lineStatus', item.id

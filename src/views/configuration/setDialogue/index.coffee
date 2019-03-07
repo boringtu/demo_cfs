@@ -110,9 +110,6 @@ export default
 							when 'is_admin_first'
 								@activedCheckbox = +item.value is 1
 		# 自动分配
-		# radioCheck: ->
-		# 	@atuoIsDisabled = false
-		# 	@activedRadio = !@activedRadio
 		switchDistribute: ->
 			@isOpen = !@isOpen
 			@atuoIsDisabled = false
