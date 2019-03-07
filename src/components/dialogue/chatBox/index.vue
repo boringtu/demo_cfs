@@ -63,7 +63,8 @@
 					div.face-box
 						div
 							div
-								span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insertEmoji(emoji)") {{ emoji }}
+								//- span(class="face" v-for="(emoji, emojiName) in emojis.People" :key="emojiName" @click="insertEmoji(emoji)") {{ emoji }}
+								span(class="face" v-for="item in twemoji.list" :key="item" @click="insertEmoji(item)" v-html="createEmoji(item)")
 			form(enctype="multipart/form-data")
 				input(type="file" accept="image/gif, image/jpeg, image/png" @change="eventSendPic")
 				i.icon.icon-picture

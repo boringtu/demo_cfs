@@ -1,5 +1,6 @@
 'use strict'
 import Utils from '@/assets/scripts/utils'
+import twemoji from 'twemoji'
 
 export default
 	data: ->
@@ -25,6 +26,7 @@ export default
 		newUnreadElList: []
 		# 历史消息列表中第一条数据的timeStamp
 		referTimeStamp: 0
+		twemoji: ALPHA.twemoji
 
 	created: ->
 		window._imgLoaded = @eventImgLoaded
@@ -275,10 +277,14 @@ export default
 			# 清空消息框
 			@inputText = ''
 
+		createEmoji: (emoji) ->
+			emoji = String.fromCodePoint "0x#{ emoji }"
+			twemoji.parse emoji, ALPHA.twemoji.params
+
 		# 向输入框插入表情，并关闭表情选择面板
 		insertEmoji: (emoji) ->
 			# 向输入框追加表情
-			@inputText += emoji
+			@inputText += "[/#{ emoji }]"
 			# 关闭表情选择面板
 			@$refs.emojiPicker.hide()
 			# 使输入框获取焦点
@@ -504,6 +510,10 @@ export default
 								'&nbsp;'
 							else
 								char
+					# processing emoji
+					text = text.replace /\[\/\w+\]/g, (face) ->
+						emoji = String.fromCodePoint "0x#{ face.match(/\[\/(\w+)\]/)[1] }"
+						twemoji.parse emoji
 					text.encodeHTML()
 				when 2
 					toBottom = msg.sendType is 1 or @isLocateBottom()
