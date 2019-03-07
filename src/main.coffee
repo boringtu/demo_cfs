@@ -40,7 +40,6 @@ window.Stomp = Stomp
 # 响应拦截器
 axiosInterceptor = axios.interceptors.response.use (res) ->
 	data = res.data
-	console.log data
 	if data.state
 		# 如果响应 CODE 非 0 时，强制进入 reject
 		axios.interceptors.response.handlers[axiosInterceptor].rejected res
