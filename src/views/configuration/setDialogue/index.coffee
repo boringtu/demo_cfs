@@ -46,6 +46,14 @@ export default
 						type: 'success'
 						title: '保存成功'
 					@isDisabled = true
+		openConfirmPop: ->
+			if @activeMenu is 0 # 欢迎语
+				# 鉴权
+				return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
+			else
+				# 鉴权
+				return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.distributable
+			@isShowPop = true
 		# 恢復默認設置
 		recoverDefault: ->
 			# docScrollTop = document.documentElement.scrollTop || document.body.scrollTop
@@ -53,15 +61,11 @@ export default
 			# return document.body.scrollTop = document.documentElement.scrollTop = 0
 			# console.log(document.documentElement.scrollTop)
 			if @activeMenu is 0 # 欢迎语
-				# 鉴权
-				return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
 				params =
 					type: 'welcome_msg'
 				@commonRecoverDefault(params)
 				
 			if @activeMenu is 1 #自动分配
-				# 鉴权
-				return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
 				params =
 					type: 'auto_take'
 				@commonRecoverDefault(params)
@@ -122,7 +126,7 @@ export default
 		# 自动分配保存
 		saveAutoDistribute: ->
 			# 鉴权
-			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.dialogueModifiable
+			return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.distributable
 			autoIsloading = true
 			if @isOpen
 				switchNum = 1

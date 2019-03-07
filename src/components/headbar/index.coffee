@@ -13,7 +13,6 @@ export default
 		]
 		isShowSlideCont: false
 	created: ->
-		# console.log "ss", localStorage.getItem 'lineStatus'
 	mounted: ->
 	components: {
 		# chatFooter
@@ -49,4 +48,4 @@ export default
 				online: item.id
 			Utils.ajax ALPHA.API_PATH.common.lineStatus, params: data
 			.then (res) => 
-				console.log res.data
+				# console.log res.data
