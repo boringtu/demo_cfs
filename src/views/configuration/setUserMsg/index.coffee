@@ -3,6 +3,7 @@ import Utils from '@/assets/scripts/utils'
 export default
     data: ->
         switchOpen: true
+        switchBtn: ''
         tableData: []
         showData: []
         visitorMsg: ''
@@ -21,7 +22,6 @@ export default
             params: data
             .then (res) =>
                 if res.msg is 'success'
-                    console.log res.data.sys_conf
                     for item in res.data.sys_conf
                         if item.key is "visitor_info_json"
                             @tableData = JSON.parse(item.value)
@@ -80,7 +80,6 @@ export default
                             #     console.log @switchOpen
                             @switchOpen = true
                             # @switchOpen = item.value is 1
-                            # console.log @switchOpen
                         if item.key is "visitor_info_msg"
                             @visitorMsg = item.value
                             @msgNumber = @visitorMsg.length + '/200'
@@ -104,14 +103,14 @@ export default
                     @fetchInitSetting()
         saveVisitorInfo: ->
             if @switchOpen is false
-                @switchOpen = 0
+                @switchBtn = 0
             else
-                @switchOpen = 1
+                @switchBtn = 1
             return unless ALPHA.checkPermission ALPHA.PERMISSIONS.configManagement.saveVisitorInfo
             Utils.ajax ALPHA.API_PATH.configManagement.saveVisitorInfo,
                 method: 'put'
                 data:
-                    visitorInfoOpen: @switchOpen
+                    visitorInfoOpen: @switchBtn
                     visitorInfoMsg: @visitorMsg
                     visitorInfoJson: @tableData
             .then (res) =>
@@ -120,6 +119,7 @@ export default
                         type: 'success'
                         title: '提示'
                         message: '保存成功'
+                    @atuoIsDisabled = true
                     @getVisitorInfo()
 
     created: ->
