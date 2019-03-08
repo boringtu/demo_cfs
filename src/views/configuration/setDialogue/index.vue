@@ -15,7 +15,7 @@
 			div(v-if="activeMenu === 0" :data-type="0")
 				h2.top_tlt 欢迎语设置
 				.cont_box
-					.left 欢迎语：
+					.left 输入欢迎语：
 					.right
 						textarea(@input="contChange" v-model="welcomeCont" ref="focusTextarea")
 						i(class="icon icon-attention" v-if="showWarn")
