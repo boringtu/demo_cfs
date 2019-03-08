@@ -4,7 +4,7 @@
 import Utils from '@/assets/scripts/utils'
 export default
 	data: ->
-		isOnLine: localStorage.getItem 'lineStatus' || 1
+		isOnLine: ALPHA.lineStatus || 1
 		onLineStatus: '在线'
 		offLineStatus: '离开'
 		lineStatusList: [
