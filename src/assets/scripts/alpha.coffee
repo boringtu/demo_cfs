@@ -35,8 +35,6 @@ export default do ->
 
 		# 保存 Audio 实例的 space
 		audios: {}
-		# 静音标识
-		isMuted: 0
 
 	Object.defineProperties window.ALPHA,
 		# 枚举: 接口地址
@@ -161,6 +159,18 @@ export default do ->
 					console.error '无服务器时间数据'
 					return now
 				new Date +now - ~~timeDiff
+		# 静音标识
+		isMute:
+			get: ->
+				isMute = vm.$store.state.isMute
+				# 如 vuex 中已有数据，直接返回
+				return isMute if isMute
+				# 如 vuex 中没有，则去 localStorage 中取
+				isMute = +localStorage.getItem 'isMute'
+				# 如 localStorage 中也没有，返回 null
+				return null unless isMute
+				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
+				vm.$store.state.isMute = isMute
 		# LOGO Url
 		logoUrl:
 			get: ->

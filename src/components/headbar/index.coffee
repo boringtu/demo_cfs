@@ -12,6 +12,9 @@ export default
 			{icon: 'icon-afk', text: '离开', class: 'off_line', id: 0}
 		]
 		isShowSlideCont: false
+		mute:
+			state: ALPHA.isMute
+			tips: ['点击静音', '取消静音']
 	created: ->
 	mounted: ->
 	components: {
@@ -21,6 +24,11 @@ export default
 	computed: ->
 		admin: -> ALPHA.admin or {}
 	methods:
+		eventToggleMute: ->
+			@mute.state = 1 - @mute.state
+			localStorage.setItem 'isMute', @mute.state
+			@$store.state.isMute = @mute.state
+
 		# Event: 退出按钮点击事件
 		eventExit: (isForcible) ->
 			type = 'success'

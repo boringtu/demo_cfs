@@ -33,6 +33,7 @@ export default new Vuex.Store
 		logoUrl: ''
 		# 在线状态
 		lineStatus: 1
+		isMute: 0
 
 	mutations:
 		# 清空数据

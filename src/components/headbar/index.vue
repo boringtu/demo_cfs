@@ -10,6 +10,8 @@
 			div(class="line" v-for="item in lineStatusList" @click="chooseCheckedStatus(item)")
 				i(class="icon" :class="item.icon")
 				span(:class="item.class") {{item.text}}
+	el-tooltip(:content="mute.tips[mute.state]")
+		button(@click="eventToggleMute" class="icon" :class="{'icon-ring': !mute.state, 'icon-mute': mute.state}")
 	el-tooltip(content="退出")
 		button(@click="eventExit" class="icon icon-exit")
 </template>
