@@ -3,7 +3,7 @@
     padding: 0
     text-align: left
     .mainCont
-        width: 100%
+        // width: 100%
         margin-left: 50px
         margin-top: 37px
         .title
@@ -34,11 +34,13 @@
                         padding: 12px 10px
                         border-radius: 5px
                         font-size: 14px
-                        color: #999
+                        color: #333
                     .number
                         position: absolute
                         right: 21px
                         bottom: 10px
+                        color: #999
+                        background-color: white
 
                 .leftBottom
                     margin-top: 56px
@@ -55,16 +57,35 @@
                             th
                                 background: #F8F8F9
                             td
+                                .checked_box
+                                    width: 20px
+                                    height: 20px
+                                    cursor: pointer
+                                    margin-top: 12px
+                                .isChecked
+                                    background: #0783ff
+                                    &::after
+                                        left: 3px
+                                        bottom: 7px
+                                        width: 9px
+                                        height: 5px
+                                        border: 2px solid #fff
+                                        border-top-color: transparent
+                                        border-right-color: transparent
                                 .icon-enabled
                                     width: 16px
                                     height: 16px
                                     color: #2297F1
                                     margin-right: 7px
+                                    cursor: pointer
                                 .icon-forbidden
                                     width: 16px
                                     height: 16px
                                     margin-right: 7px
                                     color: #FF1616
+                                    cursor: pointer
+                                span
+                                    color: #333
             .boxRight
                 float: left
                 margin-left: 120px
@@ -83,11 +104,14 @@
                             margin-top: 16px
                             border-radius: 3px 3px 0 0
                         .introducer
+                            width: 450px
                             background: #2297F1
                             color: white
                             p
+                                width: 450px
                                 font-size: 14px
                                 padding: 18px 29px 21px 19px
+                                word-break: break-word
                         .preview_cont
                             margin-top: 47px
                             .divInput
@@ -101,6 +125,13 @@
                                     margin-left: 58px
                                     position: absolute
                                     top: 0
+                                    span
+                                        color: #E10000
+                                        font-size: 14px
+                                        line-height: 16px
+                                        margin-left: 5px
+                                        position: absolute
+                                        top: 10px
                                 .info
                                     display: inline-block
                                     width: 200px
@@ -115,30 +146,12 @@
                                 .footerBtn
                                     width: 170px
                                     height: 36px
+                                    // line-height: 36px
                                     background: #2297F1
                                     border-radius: 5px
                                     margin: 16px 140px 20px 140px
-    .footerBar
-        width: 100%
-        height: 80px
-        padding: 0
-        line-height: 80px
-        box-shadow: 0px -7px 10px 0px rgba(1,8,25,0.05)
-        position: fixed
-        bottom: 40px
-        .resetBtn
-            width: 140px
-            height: 36px
-            border: 1px solid #0083FF
-            color: #0083FF
-            border-radius: 5px
-            margin-left: 40%
-        .saveBtn
-            width: 100px
-            height: 36px
-            border-radius: 5px
-            background-color: #0083FF
-            margin-left: 20px
+                                    span
+                                        font-size: 16px
 .popup
 	position: absolute
 	top: 0

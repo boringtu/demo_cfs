@@ -4,12 +4,13 @@
     .mainCont
         h2.title 访客信息收集
         .contBtn 访客信息收集
-            el-switch(class="switchBtn" v-model="switchOpen" active-color="#2297F1" inactive-color="#EEEEEE")
+            el-switch(class="switchBtn" v-model="switchOpen" active-color="#2297F1" inactive-color="#EEEEEE" @change="saveBtnUnable")
+            // div(class="ele-switch switchBtn" :class="{'is_open': switchOpen, 'is_close': !switchOpen}" @click="switchDistribute")
         .contBox
             .boxLeft
                 .leftTop
                     .title 引导语
-                    textarea(placeholder="请输入引导语" v-model="visitorMsg" :onchange="getNumber()")
+                    textarea(placeholder="请输入引导语" v-model="visitorMsg" :onchange="getNumber()" maxlength="200" @input="saveBtnUnable")
                     span(class="number" v-model="msgNumber") {{msgNumber}}
                 .leftBottom
                     .title 选择需要收集的访客信息
@@ -28,8 +29,9 @@
                                         span(class="checked_box" :class="{'isChecked': item.require}" @click="boxIsChecked(index)")
                                     td {{item.type}}
                                     td
-                                        i(class="icon icon-item" :class="{'icon-enabled': item.ban === 0, 'icon-forbidden': item.ban === 1}")
-                                        el-button(type="text" class="btn edit_btn" @click="forbiddenOrEnabeld(index)") {{item.ban === 0 ? "启用": "禁用"}}
+                                        i(class="icon icon-item" :class="{'icon-enabled': item.ban === 0, 'icon-forbidden': item.ban === 1}" @click="forbiddenOrEnabeld(index)")
+                                        // el-button(type="text" class="btn edit_btn" @click="forbiddenOrEnabeld(index)")
+                                        span(@click="forbiddenOrEnabeld(index)") {{item.ban === 0 ? "启用": "禁用"}}
 
             .boxRight
                 .preview
@@ -41,13 +43,13 @@
                         .preview_cont
                             .divInput( v-for="item, index in showData")
                                 label {{item.name}}
-                                    span {{item.require === 0 ? "（选填）": "（必填）"}}
+                                    span {{item.require === 0 ? "": "*"}}
                                 .info
                             .footer
                                 el-button(type="primary" class="footerBtn") 立即咨询
-    .footerBar
-        el-button(class="resetBtn" @click="isShowPop = true") 恢复默认设置
-        el-button(type="primary" class="saveBtn" @click="saveVisitorInfo") 保存
+    .default_btn_line
+        div(class="recover_default_btn" @click="isShowPop = true") 恢复默认设置
+        el-button(type="primary" class="save_btn" @click="saveVisitorInfo" :disabled="atuoIsDisabled") 保存
     div(class="popup" v-if="isShowPop === true")
         .pop_cont
             .tlt 恢复默认设置
