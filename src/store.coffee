@@ -31,6 +31,7 @@ export default new Vuex.Store
         # 默认的管理员权限
 		menuManagerIdList: []
 		logoUrl: ''
+		# 在线状态
 		lineStatus: 1
 
 	mutations:
