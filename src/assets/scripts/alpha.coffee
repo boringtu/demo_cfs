@@ -161,16 +161,7 @@ export default do ->
 				new Date +now - ~~timeDiff
 		# 静音标识
 		isMute:
-			get: ->
-				isMute = vm.$store.state.isMute
-				# 如 vuex 中已有数据，直接返回
-				return isMute if isMute
-				# 如 vuex 中没有，则去 localStorage 中取
-				isMute = +localStorage.getItem 'isMute'
-				# 如 localStorage 中也没有，返回 null
-				return null unless isMute
-				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
-				vm.$store.state.isMute = isMute
+			get: -> vm.$store.state.isMute
 		# LOGO Url
 		logoUrl:
 			get: ->
@@ -233,15 +224,7 @@ export default do ->
 				vm.$store.state.admin = admin.toJSON()
 		# # 是否在线状态
 		lineStatus: 
-			get: ->
-				lineStatus = vm.$store.state.lineStatus
-				# 如 vuex 中已有数据，直接返回
-				return lineStatus unless lineStatus
-				# 如 vuex 中没有，则去 localStorage 中取
-				lineStatus = localStorage.getItem 'lineStatus'
-				return null unless lineStatus
-				# 如 localStorage 中存在，则缓存到 vuex 中，并返回
-				vm.$store.state.lineStatus = lineStatus
+			get: -> vm.$store.state.lineStatus
 		# 对话主题列表
 		topics:
 			get: ->

@@ -117,7 +117,7 @@ export default
 					type: 'success'
 					title: '登录成功'
 					message: '您已成功登录'
-					localStorage.setItem 'lineStatus', 1
+				vm.$store.commit 'setLineStatus', 1
 				# 登录成功跳转页面
 				target = name: 'dialogue'
 				target = path: @$route.query.redirect if @$route.query.redirect

@@ -1,10 +1,7 @@
 'use strict'
-# import chatHistory from '@/components/chatHistory/chatHistory'
-# import chatFooter from '@/components/chatFooter/chatFooter'
 import Utils from '@/assets/scripts/utils'
 export default
 	data: ->
-		isOnLine: ALPHA.lineStatus || 1
 		onLineStatus: '在线'
 		offLineStatus: '离开'
 		lineStatusList: [
@@ -12,22 +9,17 @@ export default
 			{icon: 'icon-afk', text: '离开', class: 'off_line', id: 0}
 		]
 		isShowSlideCont: false
-		mute:
-			state: ALPHA.isMute
-			tips: ['点击静音', '取消静音']
-	created: ->
-	mounted: ->
-	components: {
-		# chatFooter
-		# chatHistory
-	}
-	computed: ->
+	computed:
 		admin: -> ALPHA.admin or {}
+		isMute: -> @$store.state.isMute
+		muteTips: -> ['点击静音', '取消静音'][@isMute]
+		isOnLine: -> @$store.state.lineStatus
 	methods:
 		eventToggleMute: ->
-			@mute.state = 1 - @mute.state
-			localStorage.setItem 'isMute', @mute.state
-			@$store.state.isMute = @mute.state
+			# state = 1 - @$store.state.isMute
+			# @$store.state.isMute = state
+			# localStorage.setItem 'isMute', state
+			@$store.commit 'toggleMute'
 
 		# Event: 退出按钮点击事件
 		eventExit: (isForcible) ->
@@ -50,8 +42,7 @@ export default
 		chooseLineStatus: ->
 			@isShowSlideCont = !@isShowSlideCont
 		chooseCheckedStatus: (item) ->
-			@isOnLine = item.id
-			localStorage.setItem 'lineStatus', item.id
+			vm.$store.commit 'setLineStatus', item.id
 			data =
 				online: item.id
 			Utils.ajax ALPHA.API_PATH.common.lineStatus, params: data

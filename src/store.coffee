@@ -32,8 +32,8 @@ export default new Vuex.Store
 		menuManagerIdList: []
 		logoUrl: ''
 		# 在线状态
-		lineStatus: 1
-		isMute: 0
+		lineStatus: +localStorage.getItem('lineStatus') or 0
+		isMute: +localStorage.getItem('isMute') or 0
 
 	mutations:
 		# 清空数据
@@ -132,5 +132,13 @@ export default new Vuex.Store
 			for item in list when item.id is id
 				item.unreadCount++
 				break
+
+		toggleMute: (state) ->
+			state.isMute = 1 - state.isMute
+			localStorage.setItem 'isMute', state.isMute
+
+		setLineStatus: (state, status) ->
+			state.lineStatus = status
+			localStorage.setItem 'lineStatus', status
 
 	actions: {}
