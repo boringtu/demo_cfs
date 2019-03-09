@@ -11,7 +11,6 @@ export default
         isShowPop: false
         isUpdate: false
         atuoIsDisabled: true
-        # switchOpen: 1
     methods:
         # 获取初始数据
         getVisitorInfo: ->
@@ -26,11 +25,13 @@ export default
                         if item.key is "visitor_info_json"
                             @tableData = JSON.parse(item.value)
                             @showData = @tableData.concat()
+                            for item in @showData
+                                if item.ban is 0
+                                    item.isShow = true
+                                else
+                                    item.isShow = false
+                                # item.isShow = true
                         if item.key is "visitor_info_open"
-                            # if item.value is 0
-                            #     @switchOpen = false
-                            # else if item.value is 1
-                            #     @switchOpen = true
                             @switchOpen = +item.value is 1
                         if item.key is "visitor_info_msg"
                             @visitorMsg = item.value
@@ -39,26 +40,38 @@ export default
             @msgNumber = @visitorMsg.length + '/200'
         # 必填与选填
         boxIsChecked:(index) ->
-            @atuoIsDisabled = false
+            if @tableData[index].ban is 1
+                return false
             if @tableData[index].ban is 0
+                @atuoIsDisabled = false
                 if @tableData[index].require is 0
                     @tableData[index].require = 1
                 else if @tableData[index].require is 1
                     @tableData[index].require = 0
             else if @tableData[index].ban is 1
                 # @$message('该项并未启用，请启用后再进行设置')
+                # @atuoIsDisabled = false
                 return
         # 是否禁用
-        forbiddenOrEnabeld:(index) ->
+        forbiddenOrEnabeld:(index,name) ->
             @atuoIsDisabled = false
             if @tableData[index].ban is 0
                 @tableData[index].ban = 1
                 @tableData[index].require = 0
                 @boxIsChecked(index)
-                @showData.splice(@tableData[index],1)
+                for item in @showData
+                    if item.name is name
+                        item.isShow = false
+                # for item,number in @showData
+                #     console.log @showData
+                #     if name is item.name
+                #         # console.log number
+                #         @showData.splice(number,1)
             else if @tableData[index].ban is 1
                 @tableData[index].ban = 0
-                @showData.push(@tableData[index])
+                for item in @showData
+                    if item.name is name
+                        item.isShow = true
     	# 获取默认设置
         fetchInitSetting: ->
             data =
@@ -72,6 +85,11 @@ export default
                         if item.key is "visitor_info_json"
                             @tableData = JSON.parse(item.value)
                             @showData = @tableData.concat()
+                            for item in @showData
+                                if item.ban is 0
+                                    item.isShow = true
+                                else
+                                    item.isShow = false
                         if item.key is "visitor_info_open"
                             # if item.value is 0
                             #     @switchOpen = false
