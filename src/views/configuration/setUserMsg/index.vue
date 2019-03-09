@@ -29,9 +29,8 @@
                                         span(class="checked_box" :class="{'isChecked': item.require}" @click="boxIsChecked(index)")
                                     td {{item.type}}
                                     td
-                                        i(class="icon icon-item" :class="{'icon-enabled': item.ban === 0, 'icon-forbidden': item.ban === 1}" @click="forbiddenOrEnabeld(index)")
-                                        // el-button(type="text" class="btn edit_btn" @click="forbiddenOrEnabeld(index)")
-                                        span(@click="forbiddenOrEnabeld(index)") {{item.ban === 0 ? "启用": "禁用"}}
+                                        i(class="icon icon-item" :class="{'icon-enabled': item.ban === 0, 'icon-forbidden': item.ban === 1}" @click="forbiddenOrEnabeld(index,item.name)")
+                                        span(@click="forbiddenOrEnabeld(index,item.name)") {{item.ban === 0 ? "启用": "禁用"}}
 
             .boxRight
                 .preview
@@ -41,7 +40,7 @@
                         .introducer(v-if="visitorMsg.length>0")
                             p(v-model="visitorMsg") {{ visitorMsg }}
                         .preview_cont
-                            .divInput( v-for="item, index in showData")
+                            .divInput( v-for="item, index in showData" v-show="item.isShow")
                                 label {{item.name}}
                                     span {{item.require === 0 ? "": "*"}}
                                 .info
